@@ -317,9 +317,10 @@ if(!function_exists('for_each')){
     //数据库查询格式化
 
     function for_each($query, $tpl)
-    {
-        $db = new Db();
+    {     
+        var_dump($query);
         while ($row = $db->query($query)) {
+            
             $t = $tpl;
             $row['txt'] = $db->totxt($row['txt']);
             if ($row['color'] == '') {

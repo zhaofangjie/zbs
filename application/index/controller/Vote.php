@@ -24,13 +24,12 @@ class Vote extends Frontend
     public function show(){
         //用户登录后的id，开发期间先给默认值
         //$uid = $Think.session.uid;
-        $vid = $this->request->param('vid');
-        $db = Db::table('zb_apps_vote');
+        $vid = $this->request->param('vid');      
         $rid = $this->request->param('rid');
-        $v1=for_each($db->query("select count(*) as v1 from zb_apps_vote where v='0' and vid='$vid' and rid='$rid'"),'{v1}');
-        $v2=for_each($db->query("select count(*) as v2 from zb_apps_vote where v='1' and vid='$vid' and rid='$rid'"),'{v2}');
-        $v3=for_each($db->query("select count(*) as v3 from zb_apps_vote where v='2' and vid='$vid' and rid='$rid'"),'{v3}');
-        $data["status"]=1;
+        $v1=Db::table('zb_apps_vote')->where([['v','=','0'],['vid','=',$vid],['rid','=',$rid]])->count();
+        //$v2=Db::table('zb_apps_vote')->where([['v','=','1'],['vid','=',$vid],['rid','=',$rid]])->count();
+        //$v3=Db::table('zb_apps_vote')->where([['v','=','2'],['vid','=',$vid],['rid','=',$rid]])->count();
+        //$data["status"]=1;
         $data["msg"]="";
         $data["v1"]=(int)$v1;
         $data["v2"]=(int)$v2;
