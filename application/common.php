@@ -313,3 +313,43 @@ if(!function_exists('gdate')){
         return time() + $timeoffset;
     }
 }
+if(!function_exists('for_each')){
+    //数据库查询格式化
+
+    function for_each($query, $tpl)
+    {
+        $db = new Db();
+        while ($row = $db->query($query)) {
+            $t = $tpl;
+            $row['txt'] = $db->totxt($row['txt']);
+            if ($row['color'] == '') {
+                $row['color'] = rand_color();
+            }
+            $row['_sex'] = $row['sex'];
+            $sex = array("女", "男", "保密");
+            $row['sex'] = $sex[$row['sex']];
+            if ($row['tag'] == '1') {
+                if ($row['m_uid'] == $_SESSION['login_uid'] or $row['fuid'] == $_SESSION['login_uid']) {
+                    $row['txt'] .= "<font style='color:#CCC'> [仅我俩能看]</font>";
+                } else {
+                    $row['txt'] = "<font style='color:#CCC'>不公开的留言 [仅Ta俩能看]</font>";
+                }
+            }
+            $row['showstars'] = showstars($row['onlinetime']);
+            $row['nowtime'] = gdate();
+            $row['dateline1'] = date("Y-m-d H:i:s", $row['dateline']);
+            $row['vip_level'] = "0";
+            if ($row['vip_expire'] != '0') {
+                $tmp = explode('-', $row['vip_expire']);
+                if ((int) $tmp[1] > gdate()) {
+                    $row['vip_level'] = $tmp[0];
+                }
+            }
+            foreach ($row as $key => $value) {
+                $t = str_replace('{' . $key . '}', $value, $t);
+            }
+            $str .= $t;
+        }
+        return $str;
+    }
+}

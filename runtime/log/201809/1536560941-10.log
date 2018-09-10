@@ -1,0 +1,97 @@
+---------------------------------------------------------------
+[ 2018-09-10T14:29:01+08:00 ] 192.168.0.122 GET /index/face/pic/face.html
+[ info ] 192.168.1.98/index/face/pic/face.html [运行时间：0.090141s][吞吐率：11.09req/s] [内存消耗：1,907.90kb] [文件加载：52]
+[ info ] [ BEHAVIOR ] Run Closure @app_init [ RunTime:0.000037s ]
+[ info ] [ CACHE ] INIT File
+[ info ] [ BEHAVIOR ] Run Closure @app_init [ RunTime:0.004059s ]
+[ info ] [ LANG ] D:\xampp\htdocs\zbs\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'index',
+    1 => 'face',
+    2 => 'pic',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => '192.168.1.98',
+  'connection' => 'keep-alive',
+  'accept' => '*/*',
+  'x-requested-with' => 'XMLHttpRequest',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36',
+  'referer' => 'http://192.168.1.98/index/room',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'cookie' => 'tg=3663; guest=%E6%B8%B8%E5%AE%A2348600',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ LANG ] D:\xampp\htdocs\zbs\public/../application/index\lang\zh-cn.php
+[ info ] [ BEHAVIOR ] Run app\common\behavior\Common @module_init [ RunTime:0.003473s ]
+[ info ] [ LOG ] INIT File
+---------------------------------------------------------------
+[ 2018-09-10T14:29:01+08:00 ] 192.168.0.122 GET /room/face/pic/ldln_thumb.gif
+[ info ] 192.168.1.98/room/face/pic/ldln_thumb.gif [运行时间：0.090735s][吞吐率：11.02req/s] [内存消耗：1,705.19kb] [文件加载：48]
+[ info ] [ BEHAVIOR ] Run Closure @app_init [ RunTime:0.000034s ]
+[ info ] [ CACHE ] INIT File
+[ info ] [ BEHAVIOR ] Run Closure @app_init [ RunTime:0.003766s ]
+[ info ] [ LANG ] D:\xampp\htdocs\zbs\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'room',
+    1 => 'face',
+    2 => 'pic',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => '192.168.1.98',
+  'connection' => 'keep-alive',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36',
+  'accept' => 'image/webp,image/apng,image/*,*/*;q=0.8',
+  'referer' => 'http://192.168.1.98/index/room',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'cookie' => 'tg=3663; guest=%E6%B8%B8%E5%AE%A2348600',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ LOG ] INIT File
+zbs\public/../application/index\lang\zh-cn.php
+[ info ] [ BEHAVIOR ] Run app\common\behavior\Common @module_init [ RunTime:0.002957s ]
+[ info ] [ LOG ] INIT File
+---------------------------------------------------------------
+[ 2018-09-10T14:29:01+08:00 ] 192.168.0.122 GET /index/player.php?type=pc
+[ info ] 192.168.1.98/index/player.php?type=pc [运行时间：0.099040s][吞吐率：10.10req/s] [内存消耗：1,908.41kb] [文件加载：52]
+[ info ] [ BEHAVIOR ] Run Closure @app_init [ RunTime:0.000032s ]
+[ info ] [ CACHE ] INIT File
+[ info ] [ BEHAVIOR ] Run Closure @app_init [ RunTime:0.003212s ]
+[ info ] [ LANG ] D:\xampp\htdocs\zbs\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'index',
+    1 => 'player.php',
+    2 => NULL,
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => '192.168.1.98',
+  'connection' => 'keep-alive',
+  'upgrade-insecure-requests' => '1',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'referer' => 'http://192.168.1.98/index/room',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'cookie' => 'tg=3663; guest=%E6%B8%B8%E5%AE%A2348600',
+)
+[ info ] [ PARAM ] array (
+  'type' => 'pc',
+)
+[ info ] [ LANG ] D:\xampp\htdocs\zbs\public/../application/index\lang\zh-cn.php
+[ info ] [ BEHAVIOR ] Run app\common\behavior\Common @module_init [ RunTime:0.002862s ]
+[ info ] [ LOG ] INIT File
