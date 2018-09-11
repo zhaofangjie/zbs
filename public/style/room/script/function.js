@@ -812,7 +812,7 @@ Menu=(function(){
 		var n=CreateElm(this.MObj,'div','out','n');
 		n.onmouseout=function(){n.className='out';}
 		n.onmouseover=function(){n.className='over';}
-		n.innerHTML='<div id="icon" ><img src="images/'+icon+'" /></div><span id="txt">'+txt+'</span>';
+		n.innerHTML='<div id="icon" ><img src="/style/room/images/'+icon+'" /></div><span id="txt">'+txt+'</span>';
 		n.onclick=fun;
 		},
 	hr:function(){
@@ -1151,9 +1151,9 @@ function FormatMsg(Msg)
 	}
 
 	if(toUser.chatid!="ALL"){
-		str='<div style="clear:both; height:0px;"></div><div class="msg" id="'+msgid+'" '+msgAuditShow+'><div class="msg_head"><img src="../face/img.php?t=p1&u='+User.chatid+'"></div><div class="msg_content"><div>'+IsPersonal+'<font class="u" style="color:'+aColor[User.sex]+'" onclick="ToUser.set(\''+User.chatid+'\',\''+User.nick+'\')">'+User.nick+'</font> <img src="'+grouparr[User.color].ico+'" class="msg_group_ico" title="'+grouparr[User.color].title+"-"+grouparr[User.color].sn+'"> <font class="dui">    对</font> <font class="u" style="color:'+aColor[toUser.sex]+'" onclick="ToUser.set(\''+toUser.chatid+'\',\''+toUser.nick+'\')">'+toUser.nick+'</font> 说 <font class="date">'+date+'</font></div><div class="layim_chatsay" style="margin:5px 0px;"><font  style="'+Msg.Style+';" >'+Txt+msgBlockBt+msgAuditBt+'</font><em class="layim_zero"></em></div></div></div><div style="clear:both; height:0px;"></div>';
+		str='<div style="clear:both; height:0px;"></div><div class="msg" id="'+msgid+'" '+msgAuditShow+'><div class="msg_head"><img src="ajax/getFaceImg/?t=p1&u='+User.chatid+'"></div><div class="msg_content"><div>'+IsPersonal+'<font class="u" style="color:'+aColor[User.sex]+'" onclick="ToUser.set(\''+User.chatid+'\',\''+User.nick+'\')">'+User.nick+'</font> <img src="'+grouparr[User.color].ico+'" class="msg_group_ico" title="'+grouparr[User.color].title+"-"+grouparr[User.color].sn+'"> <font class="dui">    对</font> <font class="u" style="color:'+aColor[toUser.sex]+'" onclick="ToUser.set(\''+toUser.chatid+'\',\''+toUser.nick+'\')">'+toUser.nick+'</font> 说 <font class="date">'+date+'</font></div><div class="layim_chatsay" style="margin:5px 0px;"><font  style="'+Msg.Style+';" >'+Txt+msgBlockBt+msgAuditBt+'</font><em class="layim_zero"></em></div></div></div><div style="clear:both; height:0px;"></div>';
 	}else{
-		str='<div style="clear:both; height:0px;"></div><div class="msg"  id="'+msgid+'" '+msgAuditShow+'><div class="msg_head"><img src="../face/img.php?t=p1&u='+User.chatid+'"></div><div class="msg_content"><div>'+IsPersonal+'<font class="u" style="color:'+aColor[User.sex]+'" onclick="ToUser.set(\''+User.chatid+'\',\''+User.nick+'\')">'+User.nick+'</font> <img src="'+grouparr[User.color].ico+'" class="msg_group_ico"  title="'+grouparr[User.color].title+"-"+grouparr[User.color].sn+'">  <font class="date">'+date+'</font></div><div class="layim_chatsay" style="margin:5px 0px;"><font  style="'+Msg.Style+';" >'+Txt+msgBlockBt+msgAuditBt+'</font><em class="layim_zero"></em></div></div></div><div style="clear:both; height:0px;"></div>';
+		str='<div style="clear:both; height:0px;"></div><div class="msg"  id="'+msgid+'" '+msgAuditShow+'><div class="msg_head"><img src="ajax/getFaceImg/?t=p1&u='+User.chatid+'"></div><div class="msg_content"><div>'+IsPersonal+'<font class="u" style="color:'+aColor[User.sex]+'" onclick="ToUser.set(\''+User.chatid+'\',\''+User.nick+'\')">'+User.nick+'</font> <img src="'+grouparr[User.color].ico+'" class="msg_group_ico"  title="'+grouparr[User.color].title+"-"+grouparr[User.color].sn+'">  <font class="date">'+date+'</font></div><div class="layim_chatsay" style="margin:5px 0px;"><font  style="'+Msg.Style+';" >'+Txt+msgBlockBt+msgAuditBt+'</font><em class="layim_zero"></em></div></div></div><div style="clear:both; height:0px;"></div>';
 	}
 	}
 	return str;
