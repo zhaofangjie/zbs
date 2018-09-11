@@ -22,23 +22,22 @@ class Vote extends Frontend
     }
 
     public function show(){
-        //用户登录后的id，开发期间先给默认值
-        //$uid = $Think.session.uid;
-        $vid = $this->request->param('vid');      
+        $vid = $this->request->param('vid');
         $rid = $this->request->param('rid');
-        $v1=Db::table('zb_apps_vote')->where([['v','=','0'],['vid','=',$vid],['rid','=',$rid]])->count();
-        //$v2=Db::table('zb_apps_vote')->where([['v','=','1'],['vid','=',$vid],['rid','=',$rid]])->count();
-        //$v3=Db::table('zb_apps_vote')->where([['v','=','2'],['vid','=',$vid],['rid','=',$rid]])->count();
-        //$data["status"]=1;
+        $v1=Db::table('zb_apps_vote')->where(['v'=>'0','rid'=>$rid,'vid'=>$vid])->count();
+        $v2=Db::table('zb_apps_vote')->where(['v'=>'1','rid'=>$rid,'vid'=>$vid])->count();
+        $v3=Db::table('zb_apps_vote')->where(['v'=>'2','rid'=>$rid,'vid'=>$vid])->count();
+        $data["status"]=1;
         $data["msg"]="";
         $data["v1"]=(int)$v1;
         $data["v2"]=(int)$v2;
         $data["v3"]=(int)$v3;
         return json($data);
-
     }
 
     public function Vote(){
+        //用户登录后的id，开发期间先给默认值
+        //$uid = $Think.session.uid;
         $uid = 3307;
         $vid = $this->request->param('vid');
         $rid = $this->request->param('rid');
@@ -46,7 +45,7 @@ class Vote extends Frontend
         if($uid<1){
             $data["status"]=0;
             $data["msg"]="未登录，不能投票";
-            return json_encode($data);
+            return json($data);
         }
 
         if(count(Db::query("select * from zb_apps_vote where uid='$uid' and vid='$vid' and FROM_UNIXTIME(time,'%Y%m%d')='".date('Ymd',gdate())."'"))>0){
