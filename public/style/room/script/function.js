@@ -1433,11 +1433,11 @@ function randStr(){
 //初始化表情包和彩条
 function sendCaitiao(tag){
 	var ct=[];
-	ct['dyg']='<img src="/room/face/colorbar/dyg.gif">';
-	ct['zyg']='<img src="/room/face/colorbar/zyg.gif">';
-	ct['gl']='<img src="/room/face/pic/s1.gif"><img src="/room/face/pic/s1.gif"><img src="/room/face/pic/s6.gif"><img src="/room/face/pic/s6.gif"><img src="/room/face/pic/geili_thumb.gif"><img src="/room/face/pic/geili_thumb.gif"><img src="/room/face/pic/s0.gif"><img src="/room/face/pic/s0.gif">';
-	ct['zs']='<img src="/room/face/colorbar/zs.gif">';
-	ct['xh']='<img src="/room/face/colorbar/xh.gif">';
+	ct['dyg']='<img src="/style/room/face/colorbar/dyg.gif">';
+	ct['zyg']='<img src="/style/room/face/colorbar/zyg.gif">';
+	ct['gl']='<img src="/style/room/face/pic/s1.gif"><img src="/room/face/pic/s1.gif"><img src="/room/face/pic/s6.gif"><img src="/style/room/face/pic/s6.gif"><img src="/room/face/pic/geili_thumb.gif"><img src="/room/face/pic/geili_thumb.gif"><img src="/style/room/face/pic/s0.gif"><img src="/room/face/pic/s0.gif">';
+	ct['zs']='<img src="/style/room/face/colorbar/zs.gif">';
+	ct['xh']='<img src="/style/room/face/colorbar/xh.gif">';
 	app_sendmsg(ct[tag]);
 }
 function showFacePanel(e,toinput){
@@ -1451,7 +1451,7 @@ function showFacePanel(e,toinput){
 }
 function  initFaceColobar(){
 
-	$.get("face/pic/face.html",function(data){
+	$.get("/style/room/face/pic/face.html",function(data){
 		$('#face').html(data);
 		$('#facenav li').on('click',function(){
 			var rel = $(this).attr('rel');
@@ -1478,7 +1478,7 @@ function  initFaceColobar(){
 
 	});
 
-	$.get("face/colorbar/colorbar.html",function(data){
+	$.get("/style/room/face/colorbar/colorbar.html",function(data){
 		$('#caitiao').html(data);
 		//彩条
 		$('#bt_caitiao').on('click',function(){

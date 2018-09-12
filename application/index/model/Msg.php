@@ -6,11 +6,16 @@ use think\Model;
 
 class Msg extends Model
 {
-    
+
     protected $autoWriteTimestamp = true;
     protected $createTime = 'mtime';
-    
-    //自动完成
-    
-   
+
+    //鏃堕棿鏍煎紡
+    protected function getMtimeAttr($value){
+        return date('Y-m-d H:i:s', $value);
+    }
+
+    //鑷姩瀹屾垚
+
+
 }
