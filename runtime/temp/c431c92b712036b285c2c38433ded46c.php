@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:73:"D:\xampp\htdocs\zbs\public/../application/admin\view\user\user\index.html";i:1533742465;s:62:"D:\xampp\htdocs\zbs\application\admin\view\layout\default.html";i:1533742465;s:59:"D:\xampp\htdocs\zbs\application\admin\view\common\meta.html";i:1533742465;s:61:"D:\xampp\htdocs\zbs\application\admin\view\common\script.html";i:1533742465;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:78:"D:\xampp\htdocs\zbs\zbs\public/../application/admin\view\auth\admin\index.html";i:1536336567;s:66:"D:\xampp\htdocs\zbs\zbs\application\admin\view\layout\default.html";i:1536336567;s:63:"D:\xampp\htdocs\zbs\zbs\application\admin\view\common\meta.html";i:1536336567;s:65:"D:\xampp\htdocs\zbs\zbs\application\admin\view\common\script.html";i:1536336567;}*/ ?>
 <!DOCTYPE html>
 <html lang="<?php echo $config['language']; ?>">
     <head>
@@ -58,18 +58,11 @@
             <div class="tab-pane fade active in" id="one">
                 <div class="widget-body no-padding">
                     <div id="toolbar" class="toolbar">
-                        <?php echo build_toolbar('refresh,edit,del'); ?>
-                        <div class="dropdown btn-group <?php echo $auth->check('user/user/multi')?'':'hide'; ?>">
-                            <a class="btn btn-primary btn-more dropdown-toggle btn-disabled disabled" data-toggle="dropdown"><i class="fa fa-cog"></i> <?php echo __('More'); ?></a>
-                            <ul class="dropdown-menu text-left" role="menu">
-                                <li><a class="btn btn-link btn-multi btn-disabled disabled" href="javascript:;" data-params="status=normal"><i class="fa fa-eye"></i> <?php echo __('Set to normal'); ?></a></li>
-                                <li><a class="btn btn-link btn-multi btn-disabled disabled" href="javascript:;" data-params="status=hidden"><i class="fa fa-eye-slash"></i> <?php echo __('Set to hidden'); ?></a></li>
-                            </ul>
-                        </div>
+                        <?php echo build_toolbar('refresh,add,delete'); ?>
                     </div>
                     <table id="table" class="table table-striped table-bordered table-hover" 
-                           data-operate-edit="<?php echo $auth->check('user/user/edit'); ?>" 
-                           data-operate-del="<?php echo $auth->check('user/user/del'); ?>" 
+                           data-operate-edit="<?php echo $auth->check('auth/admin/edit'); ?>" 
+                           data-operate-del="<?php echo $auth->check('auth/admin/del'); ?>" 
                            width="100%">
                     </table>
                 </div>
@@ -78,7 +71,6 @@
         </div>
     </div>
 </div>
-
                             </div>
                         </div>
                     </div>

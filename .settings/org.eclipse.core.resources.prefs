@@ -1,2 +1,6 @@
 eclipse.preferences.version=1
+encoding//application/admin/controller/Index.php=UTF-8
+encoding//application/database.php=UTF-8
+encoding//application/index/controller/Kefu.php=UTF-8
+encoding//application/index/controller/Room.php=UTF-8
 encoding//application/index/model/Msg.php=UTF-8

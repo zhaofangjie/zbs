@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:71:"D:\xampp\htdocs\zbs\public/../application/index\view\user\register.html";i:1533742465;s:62:"D:\xampp\htdocs\zbs\application\index\view\layout\default.html";i:1533742465;s:59:"D:\xampp\htdocs\zbs\application\index\view\common\meta.html";i:1533742465;s:61:"D:\xampp\htdocs\zbs\application\index\view\common\script.html";i:1533742465;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:72:"D:\xampp\htdocs\zbs\zbs\public/../application/index\view\user\login.html";i:1536336567;s:66:"D:\xampp\htdocs\zbs\zbs\application\index\view\layout\default.html";i:1536336567;s:63:"D:\xampp\htdocs\zbs\zbs\application\index\view\common\meta.html";i:1536336567;s:65:"D:\xampp\htdocs\zbs\zbs\application\index\view\common\script.html";i:1536336567;}*/ ?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -83,60 +83,92 @@
         <main class="content">
             <div id="content-container" class="container">
     <div class="user-section login-section">
-        <div class="logon-tab clearfix"> <a href="<?php echo url('user/login'); ?>"><?php echo __('Sign in'); ?></a> <a class="active"><?php echo __('Sign up'); ?></a> </div>
+        <div class="logon-tab clearfix"> <a class="active"><?php echo __('Sign in'); ?></a> <a href="<?php echo url('user/register'); ?>"><?php echo __('Sign up'); ?></a> </div>
         <div class="login-main"> 
-            <form name="form1" id="register-form" class="form-vertical" method="POST" action="">
-                <input type="hidden" name="invite_user_id" value="0" />
+            <form name="form" id="login-form" class="form-vertical" method="POST" action="">
                 <input type="hidden" name="url" value="<?php echo $url; ?>" />
                 <?php echo token(); ?>
                 <div class="form-group">
-                    <label class="control-label required"><?php echo __('Email'); ?><span class="text-success"></span></label>
+                    <label class="control-label" for="account"><?php echo __('Account'); ?></label>
                     <div class="controls">
-                        <input type="text" name="email" id="email" data-rule="required;email" class="form-control input-lg" placeholder="<?php echo __('Email'); ?>">
-                        <p class="help-block"></p>
+                        <input class="form-control input-lg" id="account" type="text" name="account" value="" data-rule="required" placeholder="<?php echo __('Email/Mobile/Username'); ?>" autocomplete="off">
+                        <div class="help-block"></div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label"><?php echo __('Username'); ?></label>
+                    <label class="control-label" for="password"><?php echo __('Password'); ?></label>
                     <div class="controls">
-                        <input type="text" id="username" name="username" data-rule="required;username" class="form-control input-lg" placeholder="<?php echo __('Username must be 3 to 30 characters'); ?>">
-                        <p class="help-block"></p>
+                        <input class="form-control input-lg" id="password" type="password" name="password" data-rule="required;password" placeholder="<?php echo __('Password'); ?>" autocomplete="off">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label"><?php echo __('Password'); ?></label>
                     <div class="controls">
-                        <input type="password" id="password" name="password" data-rule="required;password" class="form-control input-lg" placeholder="<?php echo __('Password must be 6 to 30 characters'); ?>">
-                        <p class="help-block"></p>
+                        <input type="checkbox" name="keeplogin" checked="checked" value="1"> <?php echo __('Keep login'); ?> 
+                        <div class="pull-right"><a href="javascript:;" class="btn-forgot"><?php echo __('Forgot password'); ?></a></div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label"><?php echo __('Mobile'); ?></label>
-                    <div class="controls">
-                        <input type="text" id="mobile" name="mobile" data-rule="required;mobile" class="form-control input-lg" placeholder="<?php echo __('Mobile'); ?>">
-                        <p class="help-block"></p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label"><?php echo __('Captcha'); ?></label>
-                    <div class="controls">
-                        <div class="input-group input-group-lg">
-                            <input type="text" name="captcha" class="form-control" placeholder="<?php echo __('Captcha'); ?>" data-rule="required;length(4)" style="border-radius: 0;" />
-                            <span class="input-group-addon" style="padding:0;border:none;">
-                                <img src="<?php echo captcha_src(); ?>" width="140" height="42" onclick="this.src = '<?php echo captcha_src(); ?>?r=' + Math.random();"/>
-                            </span>
-                        </div>
-                        <p class="help-block"></p>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block"><?php echo __('Sign up'); ?></button>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block"><?php echo __('Sign in'); ?></button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+<script type="text/html" id="resetpwdtpl">
+    <form id="resetpwd-form" class="form-horizontal form-layer" method="POST" action="<?php echo url('api/user/resetpwd'); ?>">
+        <div class="form-body">
+            <input type="hidden" name="action" value="resetpwd" />
+            <div class="form-group">
+                <label for="" class="control-label col-xs-12 col-sm-3"><?php echo __('Type'); ?>:</label>
+                <div class="col-xs-12 col-sm-8">
+                    <div class="radio">
+                        <label for="type-email"><input id="type-email" checked="checked" name="type" data-send-url="<?php echo url('api/ems/send'); ?>" data-check-url="<?php echo url('api/validate/check_ems_correct'); ?>" type="radio" value="email"> <?php echo __('Reset password by email'); ?></label>
+                        <label for="type-mobile"><input id="type-mobile" name="type" type="radio" data-send-url="<?php echo url('api/sms/send'); ?>" data-check-url="<?php echo url('api/validate/check_sms_correct'); ?>" value="mobile"> <?php echo __('Reset password by mobile'); ?></label>
+                    </div>        
+                </div>
+            </div>
+            <div class="form-group" data-type="email">
+                <label for="email" class="control-label col-xs-12 col-sm-3"><?php echo __('Email'); ?>:</label>
+                <div class="col-xs-12 col-sm-8">
+                    <input type="text" class="form-control" id="email" name="email" value="" data-rule="required(#type-email:checked);email;remote(<?php echo url('api/validate/check_email_exist'); ?>, event=resetpwd, id=<?php echo $user['id']; ?>)" placeholder="">
+                    <span class="msg-box"></span>
+                </div>
+            </div>
+            <div class="form-group hide" data-type="mobile">
+                <label for="mobile" class="control-label col-xs-12 col-sm-3"><?php echo __('Mobile'); ?>:</label>
+                <div class="col-xs-12 col-sm-8">
+                    <input type="text" class="form-control" id="mobile" name="mobile" value="" data-rule="required(#type-mobile:checked);mobile;remote(<?php echo url('api/validate/check_mobile_exist'); ?>, event=resetpwd, id=<?php echo $user['id']; ?>)" placeholder="">
+                    <span class="msg-box"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="captcha" class="control-label col-xs-12 col-sm-3"><?php echo __('Captcha'); ?>:</label>
+                <div class="col-xs-12 col-sm-8">
+                    <div class="input-group">
+                        <input type="text" name="captcha" class="form-control" data-rule="required;length(4);integer[+];remote(<?php echo url('api/validate/check_ems_correct'); ?>, event=resetpwd, email:#email)" />
+                        <span class="input-group-btn" style="padding:0;border:none;">
+                            <a href="javascript:;" class="btn btn-info btn-captcha" data-url="<?php echo url('api/ems/send'); ?>" data-type="email" data-event="resetpwd"><?php echo __('Send verification code'); ?></a>
+                        </span>
+                    </div>
+                    <span class="msg-box"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="newpassword" class="control-label col-xs-12 col-sm-3"><?php echo __('New password'); ?>:</label>
+                <div class="col-xs-12 col-sm-8">
+                    <input type="password" class="form-control" id="newpassword" name="newpassword" value="" data-rule="required;password" placeholder="">
+                    <span class="msg-box"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group form-footer">
+            <label class="control-label col-xs-12 col-sm-3"></label>
+            <div class="col-xs-12 col-sm-8">
+                <button type="submit" class="btn btn-md btn-info"><?php echo __('Ok'); ?></button>
+            </div>
+        </div>
+    </form>
+</script>
         </main>
 
         <footer class="footer" style="clear:both">

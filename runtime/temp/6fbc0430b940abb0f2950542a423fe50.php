@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:70:"D:\xampp\htdocs\zbs\public/../application/index\view\user\loginzb.html";i:1536115465;s:62:"D:\xampp\htdocs\zbs\application\index\view\layout\default.html";i:1533742465;s:59:"D:\xampp\htdocs\zbs\application\index\view\common\meta.html";i:1533742465;s:61:"D:\xampp\htdocs\zbs\application\index\view\common\script.html";i:1533742465;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:75:"D:\xampp\htdocs\zbs\zbs\public/../application/index\view\user\register.html";i:1536336567;s:66:"D:\xampp\htdocs\zbs\zbs\application\index\view\layout\default.html";i:1536336567;s:63:"D:\xampp\htdocs\zbs\zbs\application\index\view\common\meta.html";i:1536336567;s:65:"D:\xampp\htdocs\zbs\zbs\application\index\view\common\script.html";i:1536336567;}*/ ?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -81,7 +81,62 @@
         </nav>
 
         <main class="content">
-            hello world
+            <div id="content-container" class="container">
+    <div class="user-section login-section">
+        <div class="logon-tab clearfix"> <a href="<?php echo url('user/login'); ?>"><?php echo __('Sign in'); ?></a> <a class="active"><?php echo __('Sign up'); ?></a> </div>
+        <div class="login-main"> 
+            <form name="form1" id="register-form" class="form-vertical" method="POST" action="">
+                <input type="hidden" name="invite_user_id" value="0" />
+                <input type="hidden" name="url" value="<?php echo $url; ?>" />
+                <?php echo token(); ?>
+                <div class="form-group">
+                    <label class="control-label required"><?php echo __('Email'); ?><span class="text-success"></span></label>
+                    <div class="controls">
+                        <input type="text" name="email" id="email" data-rule="required;email" class="form-control input-lg" placeholder="<?php echo __('Email'); ?>">
+                        <p class="help-block"></p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label"><?php echo __('Username'); ?></label>
+                    <div class="controls">
+                        <input type="text" id="username" name="username" data-rule="required;username" class="form-control input-lg" placeholder="<?php echo __('Username must be 3 to 30 characters'); ?>">
+                        <p class="help-block"></p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label"><?php echo __('Password'); ?></label>
+                    <div class="controls">
+                        <input type="password" id="password" name="password" data-rule="required;password" class="form-control input-lg" placeholder="<?php echo __('Password must be 6 to 30 characters'); ?>">
+                        <p class="help-block"></p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label"><?php echo __('Mobile'); ?></label>
+                    <div class="controls">
+                        <input type="text" id="mobile" name="mobile" data-rule="required;mobile" class="form-control input-lg" placeholder="<?php echo __('Mobile'); ?>">
+                        <p class="help-block"></p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label"><?php echo __('Captcha'); ?></label>
+                    <div class="controls">
+                        <div class="input-group input-group-lg">
+                            <input type="text" name="captcha" class="form-control" placeholder="<?php echo __('Captcha'); ?>" data-rule="required;length(4)" style="border-radius: 0;" />
+                            <span class="input-group-addon" style="padding:0;border:none;">
+                                <img src="<?php echo captcha_src(); ?>" width="140" height="42" onclick="this.src = '<?php echo captcha_src(); ?>?r=' + Math.random();"/>
+                            </span>
+                        </div>
+                        <p class="help-block"></p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block"><?php echo __('Sign up'); ?></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
         </main>
 
         <footer class="footer" style="clear:both">

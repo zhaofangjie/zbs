@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xampp\htdocs\zbs\public/../application/index\view\kefu\index.html";i:1536742862;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:72:"D:\xampp\htdocs\zbs\zbs\public/../application/index\view\kefu\index.html";i:1536766519;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -29,7 +29,7 @@ a { color: #FFF; text-decoration: none;}
     <div class='li_phone'>78519123</div>
   </div>
 
-<?=$list?>
+<?php echo $list; ?>
 </div>
 <script>
 $(function(){
