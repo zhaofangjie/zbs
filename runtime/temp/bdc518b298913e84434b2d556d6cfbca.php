@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:72:"D:\xampp\htdocs\zbs\zbs\public/../application/index\view\room\index.html";i:1536754478;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xampp\htdocs\zbs\public/../application/index\view\room\index.html";i:1536831008;}*/ ?>
 
 <!DOCTYPE html>
 <html lang="zh-cn">
@@ -27,9 +27,9 @@
 var UserList;
 var ToUser;
 var VideoLoaded=false;
-var My={dm:'192.168.2.193',rid:'1',roomid:'192.168.2.193/1',chatid:'6',name:'游客133318',nick:'游客133318',sex:'2',age:'0',fuser:'lafang518',qx:'0',ip:'192.168.2.193',vip:'',color:'0',cam:'0',state:'0',mood:'',rst:'',camState:'1',key:'AzUBalNhXnhZMAw1DjoLKAUxWi4HbwliUG5QagZj'}
+var My={dm:'192.168.1.98',rid:'1',roomid:'192.168.1.98/1',chatid:'6',name:'游客133318',nick:'游客133318',sex:'2',age:'0',fuser:'lafang518',qx:'0',ip:'192.168.1.98',vip:'',color:'0',cam:'0',state:'0',mood:'',rst:'',camState:'1',key:'AzUBalNhXnhZMAw1DjoLKAUxWi4HbwliUG5QagZj'}
 
-var RoomInfo={loginTip:'1',Msglog:'1',msgBlock:'1',msgAudit:'0',defaultTitle:document.title,MaxVideo:'10',VServer:'',VideoQ:'',TServer:'192.168.2.193',TSPort:'7272',PVideo:'1',AutoPublicVideo:'0',AutoSelfVideo:'0',type:'1',PVideoNick:'',OtherVideoAutoPlayer:'1',r:'80|100'}
+var RoomInfo={loginTip:'1',Msglog:'1',msgBlock:'1',msgAudit:'0',defaultTitle:document.title,MaxVideo:'10',VServer:'',VideoQ:'',TServer:'192.168.1.98',TSPort:'7272',PVideo:'1',AutoPublicVideo:'0',AutoSelfVideo:'0',type:'1',PVideoNick:'',OtherVideoAutoPlayer:'1',r:'80|100'}
 var grouparr=new Array();
 grouparr['14']={"id":"14","title":"\u84dd\u94bb\u4f1a\u5458 ","rules":"wt_view,wt_add,scpl_view,msg_send,jyts_view,hd_view,files_view","sn":"50\u4e07\u2264\u5b9e\u76d8\u5165\u91d1\uff1c100\u4e07","ico":"\/upfiles\/day_150609\/201506091903246505.png","type":"0","ov":"10"};
 grouparr['13']={"id":"13","title":"\u7eff\u94bb\u4f1a\u5458","rules":"wt_view,wt_add,scpl_view,msg_send,jyts_view,hd_view,files_view","sn":"10\u4e07\u2264\u5b9e\u76d8\u5165\u91d1\uff1c50\u4e07","ico":"\/upload\/upfile\/day_150609\/201506091901139196.png","type":"0","ov":"9"};
@@ -56,9 +56,13 @@ var msg_unallowable="黑平台|返佣|日返|高返佣|头寸|打包|手续费|�
   <div id="UI_Head">
     <div class="head" style=" background:#000" >
       <div id="head_box" class="head_box">
-        <div class="logo_bg" style="BACKGROUND: url(/uploads/day_180814/201808141324549530.png) no-repeat"> <a href="room/ico" target="_blank" class="zmurl"><img src="/style/room/images/icon1.png">桌面快捷</a> &nbsp;&nbsp; <a href="javascript:void(0)" class="kefu" onClick="openWin(2,'客服列表','kefu',810,500)"><img src="/style/room/images/icon_qq.png">客服列表</a> </div>
+        <div class="logo_bg" style="BACKGROUND: url(/uploads/day_180814/201808141324549530.png) no-repeat"> <a href="<?php echo url('room/ico'); ?>" target="_blank" class="zmurl"><img src="/style/room/images/icon1.png">桌面快捷</a> &nbsp;&nbsp; <a href="javascript:void(0)" class="kefu" onClick="openWin(2,'客服列表','kefu',810,500)"><img src="/style/room/images/icon_qq.png">客服列表</a> </div>
         <div class="head_user">
-                    <a href="javascript:void(0)" class="reg" onClick="openWin(2,false,'minilogin.php?a=0',390,380)">注册</a> <a href="javascript:void(0)" class="login" onClick="openWin(2,false,'minilogin.php',390,310)">登录</a>
+                    <?php if($user): ?>
+<a href="javascript:void(0)" class="userinfo" onClick="openWin(2,false,'profiles.php?uid=<?php echo $user->id; ?>',460,600)">
+<img src="<?php echo url('ajax/getFaceImg'); ?>?t=p1&u=<?php echo $user->id; ?>" border="0" class="userimg"/><?php echo $user->nickname; ?>▼</a>
+<a href="<?php echo url('user/logout'); ?>" class="userlogout">退出</a>
+                    <?php else: endif; ?>
                   </div>
       </div>
     </div>
@@ -108,7 +112,7 @@ var msg_unallowable="黑平台|返佣|日返|高返佣|头寸|打包|手续费|�
 		    </div>
     <div id="UI_Left2"  class="bg_png1">
     <div class="bg_png1">
-        <iframe height="71" width="100%" allowTransparency="true" marginwidth="0" marginheight="0"  frameborder="0" scrolling="no" src="http://192.168.2.193/index/vote/?rid=1"></iframe>
+        <iframe height="71" width="100%" allowTransparency="true" marginwidth="0" marginheight="0"  frameborder="0" scrolling="no" src="http://192.168.1.98/index/vote/?rid=1"></iframe>
       </div>
       <div  class="title_tab"> <a href="javascript:void(0)" class="bg_png2" onClick="bt_SwitchListTab('User')" id="listTab1">在线会员(<span id="OnlineUserNum"></span>)</a> <a href="javascript:void(0)" onClick="bt_SwitchListTab('Other')" id="listTab2">我的客服(<span id="OnlineOtherNum"></span>)</a> </div>
       <div style="clear:both"></div>

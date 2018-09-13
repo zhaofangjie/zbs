@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:77:"D:\xampp\htdocs\zbs\zbs\public/../application/admin\view\user\group\edit.html";i:1536336567;s:66:"D:\xampp\htdocs\zbs\zbs\application\admin\view\layout\default.html";i:1536336567;s:63:"D:\xampp\htdocs\zbs\zbs\application\admin\view\common\meta.html";i:1536336567;s:65:"D:\xampp\htdocs\zbs\zbs\application\admin\view\common\script.html";i:1536336567;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:73:"D:\xampp\htdocs\zbs\public/../application/admin\view\user\user\index.html";i:1536812361;s:62:"D:\xampp\htdocs\zbs\application\admin\view\layout\default.html";i:1536812361;s:59:"D:\xampp\htdocs\zbs\application\admin\view\common\meta.html";i:1536812361;s:61:"D:\xampp\htdocs\zbs\application\admin\view\common\script.html";i:1536812361;}*/ ?>
 <!DOCTYPE html>
 <html lang="<?php echo $config['language']; ?>">
     <head>
@@ -50,46 +50,34 @@
                             <!-- END RIBBON -->
                             <?php endif; ?>
                             <div class="content">
-                                <form id="edit-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
-    <input type="hidden" name="row[rules]" value="<?php echo $row['rules']; ?>" />
-    <div class="form-group">
-        <label for="c-name" class="control-label col-xs-12 col-sm-2"><?php echo __('Name'); ?>:</label>
-        <div class="col-xs-12 col-sm-8">
-            <input id="c-name" class="form-control" name="row[name]" type="text" value="<?php echo $row['name']; ?>">
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="nickname" class="control-label col-xs-12 col-sm-2"><?php echo __('Permission'); ?>:</label>
-        <div class="col-xs-12 col-sm-8">
-            <span class="text-muted"><input type="checkbox" name="" id="checkall" /> <label for="checkall"><small><?php echo __('Check all'); ?></small></label></span>
-            <span class="text-muted"><input type="checkbox" name="" id="expandall" /> <label for="expandall"><small><?php echo __('Expand all'); ?></small></label></span>
+                                <div class="panel panel-default panel-intro">
+    <?php echo build_heading(); ?>
 
-            <div id="treeview"></div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="c-status" class="control-label col-xs-12 col-sm-2"><?php echo __('Status'); ?>:</label>
-        <div class="col-xs-12 col-sm-8">
-            
-            <div class="radio">
-            <?php if(is_array($statusList) || $statusList instanceof \think\Collection || $statusList instanceof \think\Paginator): if( count($statusList)==0 ) : echo "" ;else: foreach($statusList as $key=>$vo): ?>
-            <label for="row[status]-<?php echo $key; ?>"><input id="row[status]-<?php echo $key; ?>" name="row[status]" type="radio" value="<?php echo $key; ?>" <?php if(in_array(($key), is_array($row['status'])?$row['status']:explode(',',$row['status']))): ?>checked<?php endif; ?> /> <?php echo $vo; ?></label> 
-            <?php endforeach; endif; else: echo "" ;endif; ?>
+    <div class="panel-body">
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade active in" id="one">
+                <div class="widget-body no-padding">
+                    <div id="toolbar" class="toolbar">
+                        <?php echo build_toolbar('refresh,edit,del'); ?>
+                        <div class="dropdown btn-group <?php echo $auth->check('user/user/multi')?'':'hide'; ?>">
+                            <a class="btn btn-primary btn-more dropdown-toggle btn-disabled disabled" data-toggle="dropdown"><i class="fa fa-cog"></i> <?php echo __('More'); ?></a>
+                            <ul class="dropdown-menu text-left" role="menu">
+                                <li><a class="btn btn-link btn-multi btn-disabled disabled" href="javascript:;" data-params="status=normal"><i class="fa fa-eye"></i> <?php echo __('Set to normal'); ?></a></li>
+                                <li><a class="btn btn-link btn-multi btn-disabled disabled" href="javascript:;" data-params="status=hidden"><i class="fa fa-eye-slash"></i> <?php echo __('Set to hidden'); ?></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <table id="table" class="table table-striped table-bordered table-hover" 
+                           data-operate-edit="<?php echo $auth->check('user/user/edit'); ?>" 
+                           data-operate-del="<?php echo $auth->check('user/user/del'); ?>" 
+                           width="100%">
+                    </table>
+                </div>
             </div>
 
         </div>
     </div>
-    <div class="form-group layer-footer">
-        <label class="control-label col-xs-12 col-sm-2"></label>
-        <div class="col-xs-12 col-sm-8">
-            <button type="submit" class="btn btn-success btn-embossed disabled"><?php echo __('OK'); ?></button>
-            <button type="reset" class="btn btn-default btn-embossed"><?php echo __('Reset'); ?></button>
-        </div>
-    </div>
-</form>
-<script>
-    var nodeData = <?php echo json_encode($nodeList);; ?>;
-</script>
+</div>
 
                             </div>
                         </div>

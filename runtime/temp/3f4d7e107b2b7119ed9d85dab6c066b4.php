@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:72:"D:\xampp\htdocs\zbs\zbs\public/../application/index\view\vote\index.html";i:1536586941;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xampp\htdocs\zbs\public/../application/index\view\vote\index.html";i:1536562362;}*/ ?>
 <!doctype html>
 <html>
 <head>

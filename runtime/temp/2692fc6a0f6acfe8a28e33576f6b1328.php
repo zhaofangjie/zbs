@@ -1,9 +1,9 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:75:"D:\xampp\htdocs\zbs\zbs\public/../application/index\view\user\register.html";i:1536336567;s:66:"D:\xampp\htdocs\zbs\zbs\application\index\view\layout\default.html";i:1536336567;s:63:"D:\xampp\htdocs\zbs\zbs\application\index\view\common\meta.html";i:1536336567;s:65:"D:\xampp\htdocs\zbs\zbs\application\index\view\common\script.html";i:1536336567;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:71:"D:\xampp\htdocs\zbs\public/../application/index\view\user\register.html";i:1533742465;s:62:"D:\xampp\htdocs\zbs\application\index\view\layout\default.html";i:1536824996;s:59:"D:\xampp\htdocs\zbs\application\index\view\common\meta.html";i:1536821644;s:61:"D:\xampp\htdocs\zbs\application\index\view\common\script.html";i:1533742465;}*/ ?>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
-<title><?php echo (isset($title) && ($title !== '')?$title:''); ?> – <?php echo __('The fastest framework based on ThinkPHP5 and Bootstrap'); ?></title>
+<title><?php echo $title; ?></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="renderer" content="webkit">
 
@@ -42,18 +42,18 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="<?php echo url('/'); ?>" style="padding:6px 15px;"><img src="/assets/img/logo.png" style="height:40px;" alt=""></a>
+                    <a class="navbar-brand" href="<?php echo url('/'); ?>" style="padding:6px 15px;"><img src="/style/images/logo.png" style="height:40px;" alt=""></a>
                 </div>
                 <div class="collapse navbar-collapse" id="header-navbar">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="https://www.fastadmin.net" target="_blank"><?php echo __('Home'); ?></a></li>
-                        <li><a href="https://www.fastadmin.net/store.html" target="_blank"><?php echo __('Store'); ?></a></li>
-                        <li><a href="https://www.fastadmin.net/service.html" target="_blank"><?php echo __('Services'); ?></a></li>
-                        <li><a href="https://www.fastadmin.net/download.html" target="_blank"><?php echo __('Download'); ?></a></li>
-                        <li><a href="https://www.fastadmin.net/demo.html" target="_blank"><?php echo __('Demo'); ?></a></li>
-                        <li><a href="https://www.fastadmin.net/donate.html" target="_blank"><?php echo __('Donation'); ?></a></li>
-                        <li><a href="https://forum.fastadmin.net" target="_blank"><?php echo __('Forum'); ?></a></li>
-                        <li><a href="https://doc.fastadmin.net" target="_blank"><?php echo __('Docs'); ?></a></li>
+                        <li><a href="#" target="_blank"><?php echo __('Home'); ?></a></li>
+                        <li><a href="#" target="_blank"><?php echo __('Store'); ?></a></li>
+                        <li><a href="#" target="_blank"><?php echo __('Services'); ?></a></li>
+                        <li><a href="#" target="_blank"><?php echo __('Download'); ?></a></li>
+                        <li><a href="#" target="_blank"><?php echo __('Demo'); ?></a></li>
+                        <li><a href="#" target="_blank"><?php echo __('Donation'); ?></a></li>
+                        <li><a href="#" target="_blank"><?php echo __('Forum'); ?></a></li>
+                        <li><a href="#" target="_blank"><?php echo __('Docs'); ?></a></li>
                         <li class="dropdown">
                             <?php if($user): ?>
                             <a href="<?php echo url('user/index'); ?>" class="dropdown-toggle" data-toggle="dropdown" style="padding-top: 10px;height: 50px;">
@@ -140,8 +140,8 @@
         </main>
 
         <footer class="footer" style="clear:both">
-            <!-- FastAdmin是开源程序，建议在您的网站底部保留一个FastAdmin的链接 -->
-            <p class="copyright">Copyright&nbsp;©&nbsp;2017-2018 Powered by <a href="https://www.fastadmin.net" target="_blank">FastAdmin</a> All Rights Reserved <?php echo $site['name']; ?> <?php echo __('Copyrights'); ?> <a href="https://www.miibeian.gov.cn" target="_blank"><?php echo $site['beian']; ?></a></p>
+
+            <p class="copyright">Copyright&nbsp;©&nbsp;2017-2018 Powered by <a href="#" target="_blank">融智汇创</a> All Rights Reserved <?php echo $site['name']; ?> <?php echo __('Copyrights'); ?> <a href="https://www.miibeian.gov.cn" target="_blank"><?php echo $site['beian']; ?></a></p>
         </footer>
 
         <script src="/assets/js/require<?php echo \think\Config::get('app_debug')?'':'.min'; ?>.js" data-main="/assets/js/require-frontend<?php echo \think\Config::get('app_debug')?'':'.min'; ?>.js?v=<?php echo $site['version']; ?>"></script>

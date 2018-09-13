@@ -1,3 +1,4 @@
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:69:"D:\xampp\htdocs\zbs\public/../application/index\view\index\index.html";i:1536830640;}*/ ?>
 <!DOCTYPE html>
 <html>
 
@@ -9,11 +10,11 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>{$site.name}</title>
+        <title><?php echo $site['name']; ?></title>
 
         <!-- Bootstrap Core CSS -->
         <link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-        <link href="__CDN__/assets/css/index.css" rel="stylesheet">
+        <link href="/assets/css/index.css" rel="stylesheet">
 
         <!-- Plugin CSS -->
         <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -34,19 +35,19 @@
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-menu">
                         <span class="sr-only">Toggle navigation</span><i class="fa fa-bars"></i>
                     </button>
-                    <a class="navbar-brand page-scroll" href="#page-top"><img src="__CDN__/style/images/logo.png" style="width:200px;" alt=""></a>
+                    <a class="navbar-brand page-scroll" href="#page-top"><img src="/style/images/logo.png" style="width:200px;" alt=""></a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="navbar-collapse-menu">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#" target="_blank">{:__('Home')}</a></li>
-                        <li><a href="#" target="_blank">{:__('Store')}</a></li>
-                        <li><a href="#" target="_blank">{:__('Services')}</a></li>
-                        <li><a href="#" target="_blank">{:__('Download')}</a></li>
-                        <li><a href="#" target="_blank">{:__('Demo')}</a></li>
-                        <li><a href="#" target="_blank">{:__('Donation')}</a></li>
-                        <li><a href="#" target="_blank">{:__('Forum')}</a></li>
-                        <li><a href="#" target="_blank">{:__('Docs')}</a></li>
+                        <li><a href="#" target="_blank"><?php echo __('Home'); ?></a></li>
+                        <li><a href="#" target="_blank"><?php echo __('Store'); ?></a></li>
+                        <li><a href="#" target="_blank"><?php echo __('Services'); ?></a></li>
+                        <li><a href="#" target="_blank"><?php echo __('Download'); ?></a></li>
+                        <li><a href="#" target="_blank"><?php echo __('Demo'); ?></a></li>
+                        <li><a href="#" target="_blank"><?php echo __('Donation'); ?></a></li>
+                        <li><a href="#" target="_blank"><?php echo __('Forum'); ?></a></li>
+                        <li><a href="#" target="_blank"><?php echo __('Docs'); ?></a></li>
                     </ul>
                 </div>
                 <!-- /.navbar-collapse -->
@@ -62,8 +63,8 @@
                             <div class="header-content-inner">
                                 <h1>知客易汇</h1>
                                 <h3>专业的投资顾问平台</h3>
-                                <a href="{:url('admin/index/login')}" class="btn btn-warning btn-xl page-scroll">{:__('Go to Dashboard')}</a>
-                                <a href="{:url('index/user/index')}" class="btn btn-outline btn-xl page-scroll">{:__('Go to Member center')}</a>
+                                <a href="<?php echo url('admin/index/login'); ?>" class="btn btn-warning btn-xl page-scroll"><?php echo __('Go to Dashboard'); ?></a>
+                                <a href="<?php echo url('index/user/index'); ?>" class="btn btn-outline btn-xl page-scroll"><?php echo __('Go to Member center'); ?></a>
                             </div>
                         </div>
                     </div>
@@ -76,7 +77,7 @@
                 <div class="row">
                     <div class="col-lg-12 text-center">
                         <div class="section-heading">
-                            <h2>{:__('Features')}</h2>
+                            <h2><?php echo __('Features'); ?></h2>
                         </div>
                     </div>
                 </div>
@@ -87,43 +88,43 @@
                                 <div class="col-md-4">
                                     <div class="feature-item">
                                         <i class="icon-user text-primary"></i>
-                                        <h3>{:__('Auth')}</h3>
-                                        <p class="text-muted">{:__('Auth tips')}</p>
+                                        <h3><?php echo __('Auth'); ?></h3>
+                                        <p class="text-muted"><?php echo __('Auth tips'); ?></p>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="feature-item">
                                         <i class="icon-screen-smartphone text-primary"></i>
-                                        <h3>{:__('Responsive')}</h3>
-                                        <p class="text-muted">{:__('Responsive tips')}</p>
+                                        <h3><?php echo __('Responsive'); ?></h3>
+                                        <p class="text-muted"><?php echo __('Responsive tips'); ?></p>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="feature-item">
                                         <i class="icon-present text-primary"></i>
-                                        <h3>{:__('Languages')}</h3>
-                                        <p class="text-muted">{:__('Languages tips')}</p>
+                                        <h3><?php echo __('Languages'); ?></h3>
+                                        <p class="text-muted"><?php echo __('Languages tips'); ?></p>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="feature-item">
                                         <i class="icon-layers text-primary"></i>
-                                        <h3>{:__('Module')}</h3>
-                                        <p class="text-muted">{:__('Module tips')}</p>
+                                        <h3><?php echo __('Module'); ?></h3>
+                                        <p class="text-muted"><?php echo __('Module tips'); ?></p>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="feature-item">
                                         <i class="icon-docs text-primary"></i>
-                                        <h3>{:__('CRUD')}</h3>
-                                        <p class="text-muted">{:__('CRUD tips')}</p>
+                                        <h3><?php echo __('CRUD'); ?></h3>
+                                        <p class="text-muted"><?php echo __('CRUD tips'); ?></p>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="feature-item">
                                         <i class="icon-puzzle text-primary"></i>
-                                        <h3>{:__('Extension')}</h3>
-                                        <p class="text-muted">{:__('Extension tips')}</p>
+                                        <h3><?php echo __('Extension'); ?></h3>
+                                        <p class="text-muted"><?php echo __('Extension tips'); ?></p>
                                     </div>
                                 </div>
                             </div>
@@ -151,7 +152,7 @@
                         <a href="">ICP:</a>
                     </li>
                     <li>
-                        <a href="https://shang.qq.com/wpa/qunwpa?idkey=00790ef1ed399b248ac6c4c77c1b8ca8c54d9bad3e75cda8b92844eeb4f8229b">{:__('QQ group')}</a>
+                        <a href="https://shang.qq.com/wpa/qunwpa?idkey=00790ef1ed399b248ac6c4c77c1b8ca8c54d9bad3e75cda8b92844eeb4f8229b"><?php echo __('QQ group'); ?></a>
                     </li>
                 </ul>
             </div>

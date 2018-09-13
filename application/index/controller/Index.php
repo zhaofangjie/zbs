@@ -19,7 +19,7 @@ class Index extends Frontend
 
     public function index()
     {
-        return $this->view->fetch('indexzb');
+        return $this->view->fetch();
     }
 
 
