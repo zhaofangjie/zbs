@@ -12,123 +12,127 @@
 
 <body>
 <div class="login">
-    
+
     <div class="header">
         <div class="switch" id="switch"><a class="switch_btn_focus" id="switch_qlogin" href="javascript:void(0);" tabindex="7">快速登录</a>
 			<a class="switch_btn" id="switch_login" href="javascript:void(0);" tabindex="8">快速注册</a><div class="switch_bottom" id="switch_bottom" style="position: absolute; width: 66px; left: 0px;"></div>
         </div>
-    </div>    
-  
-    
-    <div class="web_qr_login" id="web_qr_login" style="display: block; height: 235px;">    
+    </div>
+
+
+    <div class="web_qr_login" id="web_qr_login" style="display: block; height: 235px;">
 
             <!--登录-->
             <div class="web_login" id="web_login">
-               
-               
+
+
                <div class="login-box">
-    
-            
+
+
 			<div class="login_form">
 				<form action="?act=login" method="post" enctype="application/x-www-form-urlencoded"  name="loginform"  id="login_form" class="loginForm" >
+                {:token()}
                 <div class="uinArea" id="uinArea">
                 <label class="input-tips" for="username">帐号：</label>
                 <div class="inputOuter" id="uArea">
-                    
+
                     <input type="text" id="username" name="username" class="inputstyle"/>
                 </div>
                 </div>
                 <div class="pwdArea" id="pwdArea">
-               <label class="input-tips" for="password">密码：</label> 
+               <label class="input-tips" for="password">密码：</label>
                <div class="inputOuter" id="pArea">
-                    
+
                     <input type="password" id="password" name="password" class="inputstyle"/>
                 </div>
                 </div>
-               
+
                 <div style="padding-left:30px;margin-top:20px;"><input type="submit" value="登 录" style="width:150px;" class="button_blue"/><a href="javascript://" onclick="top.location.href='./';location.href='./'" class="zcxy" target="_blank">游客体验</a></div>
               </form>
            </div>
-           
+
             	</div>
-               
+
             </div>
             <!--登录end-->
   </div>
 
   <!--注册-->
     <div class="qlogin" id="qlogin" style="display: none; ">
-   
+
     <div class="web_login"> <form action="?act=reg" method="post" enctype="application/x-www-form-urlencoded" id="regUser">
         <ul class="reg_form" id="reg-ul">
         		<div id="userCue" class="cue">快速注册请注意格式</div>
                 <li>
-                	
+                 <input type="hidden" name="invite_user_id" value="0" />
+					 {:token()}
                     <label for="user"  class="input-tips2">用户名：</label>
                     <div class="inputOuter2">
                         <input type="text" id="u" name="u" maxlength="16" class="inputstyle2" placeholder="6-16位字符"/>
                     </div>
-                    
+
                 </li>
-                
+
                 <li>
                 <label for="passwd" class="input-tips2">密码：</label>
                     <div class="inputOuter2">
                         <input type="password" id="p"  name="p" maxlength="16" class="inputstyle2"/>
                     </div>
-                    
+
                 </li>
                 <li>
                 <label for="passwd2" class="input-tips2">确认密码：</label>
                     <div class="inputOuter2">
                         <input type="password" id="p2" name="p2" maxlength="16" class="inputstyle2" />
                     </div>
-                    
+
                 </li>
-                
+
                 <li>
-                 <label for="qq" class="input-tips2">QQ：</label>
+                 <label for="qq" class="input-tips2">验证码：</label>
                     <div class="inputOuter2">
-                       
-                        <input type="text" id="qq" name="qq" maxlength="12" class="inputstyle2"/>
+						<input type="text" name="captcha" class="inputstyle2" placeholder="验证码" data-rule="required;length(4)" style="border-radius: 0;" />
+                            <span class="input-group-addon" style="padding:0;border:none;">
+                                <img src="{:captcha_src()}" width="140" height="42" onclick="this.src = '{:captcha_src()}?r=' + Math.random();"/>
+                            </span>
                     </div>
-                   
+
                 </li>
                 <li>
                  <label for="email" class="input-tips2">邮箱：</label>
                     <div class="inputOuter2">
-                       
+
                         <input type="text" id="email" name="email" maxlength="30" class="inputstyle2"/>
                     </div>
-                   
+
                 </li>
                 <li>
                  <label for="phone" class="input-tips2">手机：</label>
                     <div class="inputOuter2">
-                       
+
                         <input type="text" id="phone" name="phone" maxlength="11" class="inputstyle2"/>
                     </div>
-                   
+
                 </li>
-                
+
                 <li>
                     <div class="inputArea">
                         <input type="button" id="reg"  style="margin-top:10px;margin-left:85px;" class="button_blue" value="同意协议并注册"/> <a href="#" class="zcxy" target="_blank">注册协议</a>
                     </div>
-                    
+
                 </li><div class="cl"></div>
             </ul></form>
-           
-    
+
+
     </div>
-   
-    
+
+
     </div>
     <!--注册end-->
 </div>
 <script>
 $(function(){
-	
+
 	$('#switch_qlogin').click(function(){
 		$('#switch_login').removeClass("switch_btn_focus").addClass('switch_btn');
 		$('#switch_qlogin').removeClass("switch_btn").addClass('switch_btn_focus');
@@ -140,11 +144,11 @@ $(function(){
 		}catch(e){}
 		});
 	$('#switch_login').click(function(){
-		
+
 		$('#switch_login').removeClass("switch_btn").addClass('switch_btn_focus');
 		$('#switch_qlogin').removeClass("switch_btn_focus").addClass('switch_btn');
 		$('#switch_bottom').animate({left:'152px',width:'66px'});
-		
+
 		$('#qlogin').css('display','block');
 		$('#web_qr_login').css('display','none');
 		try{
@@ -157,7 +161,7 @@ $(function(){
 		}
 
 	});
-	
+
 function logintab(){
 	scrollTo(0);
 	$('#switch_qlogin').removeClass("switch_btn_focus").addClass('switch_btn');
@@ -165,27 +169,27 @@ function logintab(){
 	$('#switch_bottom').animate({left:'152px',width:'66px'});
 	$('#qlogin').css('display','none');
 	$('#web_qr_login').css('display','block');
-	
+
 }
 
 
-//根据参数名获得该参数 pname等于想要的参数名 
-function getParam(pname) { 
-    var params = location.search.substr(1); // 获取参数 平且去掉？ 
-    var ArrParam = params.split('&'); 
-    if (ArrParam.length == 1) { 
-        //只有一个参数的情况 
-        return params.split('=')[1]; 
-    } 
-    else { 
-         //多个参数参数的情况 
-        for (var i = 0; i < ArrParam.length; i++) { 
-            if (ArrParam[i].split('=')[0] == pname) { 
-                return ArrParam[i].split('=')[1]; 
-            } 
-        } 
-    } 
-}  
+//根据参数名获得该参数 pname等于想要的参数名
+function getParam(pname) {
+    var params = location.search.substr(1); // 获取参数 平且去掉？
+    var ArrParam = params.split('&');
+    if (ArrParam.length == 1) {
+        //只有一个参数的情况
+        return params.split('=')[1];
+    }
+    else {
+         //多个参数参数的情况
+        for (var i = 0; i < ArrParam.length; i++) {
+            if (ArrParam[i].split('=')[0] == pname) {
+                return ArrParam[i].split('=')[1];
+            }
+        }
+    }
+}
 
 
 var reMethod = "GET",
@@ -219,7 +223,7 @@ $(document).ready(function() {
 		}
 		$.ajax({
 			type: reMethod,
-			url: '../ajax.php?act=regcheck',
+			url: '?act=reg',
 			data: "username=" + $("#u").val() + '&temp=' + new Date(),
 			dataType: 'html',
 			success: function(result) {
@@ -264,25 +268,10 @@ $(document).ready(function() {
 			});
 			return false;
 		}
-		var sqq = /^[1-9]{1}[0-9]{4,9}$/;
-		if (!sqq.test($('#qq').val()) || $('#qq').val().length < 5 || $('#qq').val().length > 12) {
-			$('#qq').focus().css({
-				border: "1px solid red",
-				boxShadow: "0 0 2px red"
-			});
-			$('#userCue').html("<font color='red'><b>×QQ号码格式不正确</b></font>");
-			return false;
-		} else {
-			$('#qq').css({
-				border: "1px solid #D7D7D7",
-				boxShadow: "none"
-			});
-			
-		}
 
 		$('#regUser').submit();
 	});
-	
+
 
 });
 </script>
