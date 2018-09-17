@@ -11,7 +11,7 @@ use think\Validate;
 class Mlogin extends Frontend
 {
     protected $layout='';
-    protected $noNeedLogin=['index','login'];
+    protected $noNeedLogin=['index','login','register'];
     protected $noNeedRight = ['*'];
 
     public function _initialize()
@@ -52,6 +52,8 @@ class Mlogin extends Frontend
     public function index(){
          return $this->fetch();
     }
+    
+    //登陆
 
     public function login(){
         if ($this->auth->id)
@@ -60,7 +62,7 @@ class Mlogin extends Frontend
                 $account = $this->request->post('username');
                 $password = $this->request->post('password');
                 //$keeplogin = (int)$this->request->post('keeplogin');
-                $token = $this->request->post('__token__');
+                $token = $this->request->post('__token1__');
                 $rule = [
                     'account'   => 'require|length:3,50',
                     'password'  => 'require|length:6,30',
@@ -95,6 +97,87 @@ class Mlogin extends Frontend
                 } else {
                     echo "<script>top.layer.msg('{$this->auth->getError()}',{shift: 6});layer.msg('{$this->auth->getError()}',{shift: 6});</script>";
                 }
+                return $this->fetch('index');
             }
+    }
+    
+    
+    /**
+     * 注册会员
+     */
+    
+    public function register()
+    {
+        $url = $this->request->request('url');
+        if ($this->auth->id)
+            $this->success(__('You\'ve logged in, do not login again'), $url);
+            if ($this->request->isPost()) {
+                $username = $this->request->post('username');
+                $password = $this->request->post('password');
+                $email = $this->request->post('email');
+                $mobile = $this->request->post('mobile', '');
+                $captcha = $this->request->post('captcha');
+                $token = $this->request->post('__token2__');
+                $rule = [
+                    'username'  => 'require|length:3,30',
+                    'password'  => 'require|length:6,30',
+                    'email'     => 'require|email',
+                    'mobile'    => 'regex:/^1\d{10}$/',
+                    'captcha'   => 'require|captcha',
+                    '__token__' => 'token',
+                ];
+                
+                $msg = [
+                    'username.require' => 'Username can not be empty',
+                    'username.length'  => 'Username must be 3 to 30 characters',
+                    'password.require' => 'Password can not be empty',
+                    'password.length'  => 'Password must be 6 to 30 characters',
+                    'captcha.require'  => 'Captcha can not be empty',
+                    'captcha.captcha'  => 'Captcha is incorrect',
+                    'email'            => 'Email is incorrect',
+                    'mobile'           => 'Mobile is incorrect',
+                ];
+                $data = [
+                    'username'  => $username,
+                    'password'  => $password,
+                    'email'     => $email,
+                    'mobile'    => $mobile,
+                    'captcha'   => $captcha,
+                    '__token__' => $token,
+                ];
+                $validate = new Validate($rule, $msg);
+                $result = $validate->check($data);
+                if (!$result) {
+                    $this->error(__($validate->getError()), null, ['token' => $this->request->token()]);
+                }
+                if ($this->auth->register($username, $password, $email, $mobile)) {
+                    $synchtml = '';
+                    ////////////////同步到Ucenter////////////////
+                    if (defined('UC_STATUS') && UC_STATUS) {
+                        $uc = new \addons\ucenter\library\client\Client();
+                        $synchtml = $uc->uc_user_synregister($this->auth->id, $password);
+                    }
+                    $this->success(__('Sign up successful') . $synchtml, $url ? $url : url('user/index'));
+                } else {
+                    $this->error($this->auth->getError(), null, ['token' => $this->request->token()]);
+                }
+                
+            }           
+    }
+    
+    /**
+     * 注销登录
+     */
+    function logout()
+    {
+        //注销本站
+        $this->auth->logout();
+        $synchtml = '';
+        ////////////////同步到Ucenter////////////////
+        if (defined('UC_STATUS') && UC_STATUS) {
+            $uc = new \addons\ucenter\library\client\Client();
+            $synchtml = $uc->uc_user_synlogout();
+        }
+        $this->success(__('Logout successful') . $synchtml, url('/index/room'));
     }
 }

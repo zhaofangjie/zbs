@@ -34,7 +34,7 @@
                 <div class="uinArea" id="uinArea">
                 <label class="input-tips" for="username">帐号：</label>
                 <div class="inputOuter" id="uArea">
-
+					<input type="hidden" name="__token1__" value="{$Request.token}" />
                     <input type="text" id="username" name="username" class="inputstyle"/>
                 </div>
                 </div>
@@ -59,11 +59,11 @@
   <!--注册-->
     <div class="qlogin" id="qlogin" style="display: none; ">
 
-    <div class="web_login"> <form action="?act=reg" method="post" enctype="application/x-www-form-urlencoded" id="regUser">
+    <div class="web_login"> <form action="login" method="post" enctype="application/x-www-form-urlencoded" id="regUser">
         <ul class="reg_form" id="reg-ul">
         		<div id="userCue" class="cue">快速注册请注意格式</div>
                 <li>
-                {:token()}
+                <input type="hidden" name="__token2__" value="{$Request.token}" />
                  <input type="hidden" name="invite_user_id" value="0" />
                     <label for="user"  class="input-tips2">用户名：</label>
                     <div class="inputOuter2">
@@ -221,10 +221,10 @@ $(document).ready(function() {
 
 		}
 
-		token = $("input[name='__token__']").val();
+		token = $("input[name='__token2__']").val();
 		$.ajax({
 			type: reMethod,
-			url: '?act=reg',
+			url: 'register',
 			data: "username=" + $("#u").val() + "&password="+$("#p").val()+"&captcha="+$('#c').val()+"&email="+$('#email').val()+"&phone="+$('#phone').val()+"&__token__="+token+'&temp=' + new Date(),
 			dataType: 'json',
 			success: function(result) {
