@@ -59,10 +59,10 @@ var msg_unallowable="黑平台|返佣|日返|高返佣|头寸|打包|手续费|�
         <div class="head_user">
                     {if $user}
 <a href="javascript:void(0)" class="userinfo" onClick="openWin(2,false,'profiles.php?uid={$user->id}',460,600)">
-<img src="{:url('ajax/getFaceImg')}?t=p1&u={$user->id}" border="0" class="userimg"/>{$user->nickname}▼</a>
-<a href="mlogin?act=logout" class="userlogout">退出</a>
+<img src="{:url('/index/ajax/getFaceImg')}?t=p1&u={$user->id}" border="0" class="userimg"/>{$user->nickname}▼</a>
+<a href="/index/mlogin/?act=logout" class="userlogout">退出</a>
                     {else /}
- <a href="javascript:void(0)" class="reg" onClick="openWin(2,false,'mlogin?a=0',390,380)">注册</a> <a href="javascript:void(0)" class="login" onClick="openWin(2,false,'mlogin',390,310)">登录</a>
+ <a href="javascript:void(0)" class="reg" onClick="openWin(2,false,'/index/mlogin/?a=0',390,380)">注册</a> <a href="javascript:void(0)" class="login" onClick="openWin(2,false,'/index/mlogin/',390,310)">登录</a>
                     {/if}
                   </div>
       </div>

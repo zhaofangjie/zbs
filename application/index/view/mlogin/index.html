@@ -30,8 +30,7 @@
 
 
 			<div class="login_form">
-				<form action="?act=login" method="post" enctype="application/x-www-form-urlencoded"  name="loginform"  id="login_form" class="loginForm" >
-                {:token()}
+				<form action="login" method="post" enctype="application/x-www-form-urlencoded"  name="loginform"  id="login_form" class="loginForm" >
                 <div class="uinArea" id="uinArea">
                 <label class="input-tips" for="username">帐号：</label>
                 <div class="inputOuter" id="uArea">
@@ -64,8 +63,8 @@
         <ul class="reg_form" id="reg-ul">
         		<div id="userCue" class="cue">快速注册请注意格式</div>
                 <li>
+                {:token()}
                  <input type="hidden" name="invite_user_id" value="0" />
-					 {:token()}
                     <label for="user"  class="input-tips2">用户名：</label>
                     <div class="inputOuter2">
                         <input type="text" id="u" name="u" maxlength="16" class="inputstyle2" placeholder="6-16位字符"/>
@@ -89,9 +88,9 @@
                 </li>
 
                 <li>
-                 <label for="qq" class="input-tips2">验证码：</label>
+                 <label for="captcha" class="input-tips2">验证码：</label>
                     <div class="inputOuter2">
-						<input type="text" name="captcha" class="inputstyle2" placeholder="验证码" data-rule="required;length(4)" style="border-radius: 0;" />
+						<input type="text" id="c" name="captcha" class="inputstyle2" placeholder="验证码" data-rule="required;length(4)" style="border-radius: 0;" />
                             <span class="input-group-addon" style="padding:0;border:none;">
                                 <img src="{:captcha_src()}" width="140" height="42" onclick="this.src = '{:captcha_src()}?r=' + Math.random();"/>
                             </span>
@@ -192,7 +191,7 @@ function getParam(pname) {
 }
 
 
-var reMethod = "GET",
+var reMethod = "POST",
 	pwdmin = 6;
 
 $(document).ready(function() {
@@ -221,22 +220,21 @@ $(document).ready(function() {
 			return false;
 
 		}
+
+		token = $("input[name='__token__']").val();
 		$.ajax({
 			type: reMethod,
 			url: '?act=reg',
-			data: "username=" + $("#u").val() + '&temp=' + new Date(),
-			dataType: 'html',
+			data: "username=" + $("#u").val() + "&password="+$("#p").val()+"&captcha="+$('#c').val()+"&email="+$('#email').val()+"&phone="+$('#phone').val()+"&__token__="+token+'&temp=' + new Date(),
+			dataType: 'json',
 			success: function(result) {
-
-				if (result!='1') {
+				alert(result.code);
+				if (result.code!='1') {
 					$('#u').focus().css({
 						border: "1px solid red",
 						boxShadow: "0 0 2px red"
 					});
-					if(result=='-1')
-					$("#userCue").html("<font color='red'><b>×用户名含关键字，不能使用！</b></font>");
-					else if(result=='0')
-					$("#userCue").html("<font color='red'><b>×用户名被占用！</b></font>");
+					$("#userCue").html("<font color='red'><b>×"+result.msg+"</b></font>");
 					return false;
 				} else {
 					$('#u').css({
@@ -268,8 +266,6 @@ $(document).ready(function() {
 			});
 			return false;
 		}
-
-		$('#regUser').submit();
 	});
 
 
