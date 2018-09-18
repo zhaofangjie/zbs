@@ -354,3 +354,35 @@ if(!function_exists('for_each')){
         return $str;
     }
 }
+
+
+//游客登录
+
+if(!function_exists('gusetLogin')){
+    
+    function gusetLogin()
+    {
+        global $db, $tablepre, $onlineip, $cfg;
+        if (!isset($_COOKIE['guest']) || $_COOKIE['guest'] == "" || $_COOKIE['guest'] == "deleted") {
+            $guest = "游客" . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9);
+            $regtime = gdate();
+            $p = md5('123123');
+            $tuser = userinfo($_COOKIE['tg'], '{username}');
+            if (trim($tuser) == "") {
+                $rowt = $db->fetch_row($db->query("select uid,username from {$tablepre}members where  gid='3' and lastvisit>({$time}-180) order by rand() limit 1"));
+                $tuser = $rowt['username'];
+                setcookie("tg", $rowt['uid'], gdate() + 315360000, '/');
+            }
+            $db->query("insert into {$tablepre}members(username,password,sex,email,regdate,regip,lastvisit,lastactivity,gold,realname,gid,phone,fuser,tuser,state)\tvalues('{$guest}','{$p}','2','','{$regtime}','{$onlineip}','{$regtime}','{$regtime}','0','0','0','0','{$tuser}','{$tuser}','1')");
+            $uid = $db->insert_id();
+            $db->query("replace into {$tablepre}memberfields (uid,nickname)\tvalues('{$uid}','{$guest}')\t");
+            setcookie("guest", $guest, gdate() + 315360000, "/");
+        } else {
+            if (user_login($_COOKIE['guest'], '123123') !== true) {
+                setcookie("guest", '', time() - 1, "/");
+                return false;
+            }
+        }
+        return true;
+    }
+}

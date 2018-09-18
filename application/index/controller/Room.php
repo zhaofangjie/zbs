@@ -3,6 +3,9 @@ namespace app\index\controller;
 
 use app\common\controller\Frontend;
 use app\index\model\Msg;
+use think\Lang;
+//修改，读取数据库
+use think\Db;
 
 class Room extends Frontend
 {
@@ -12,8 +15,25 @@ class Room extends Frontend
 
 
     public function index(){
-        //聊天记录
-       // $query = $db->query("select * from {$tablepre}msgs where rid='" . $cfg['config']['id'] . "' and p='false' and state!='1' and `type`='0' order by id desc limit 0,20 ");
+        //读取房间配置
+        //默认为第一个房间配置
+        $cfg['config'] = Db::table('zb_room_config')->where('id',1)->find();
+        //判断房间状态
+        $url = $this->request->request('url');
+        if ($cfg['config']['state'] == '0') {
+            $this->error('系统处于关闭状态！请稍候……',$url);
+        }
+        
+        //开启游客登录
+        if (!isset($_SESSION['login_uid']) and $cfg['config']['loginguest'] == "1") {
+            if (gusetLogin()) {
+                exit("<script>location.reload();</script>");
+            }
+        }
+        if ($cfg['config']['state'] == '0') {
+            exit("<script>location.href='error.php?msg=系统处于关闭状态！请稍候……'</script>");
+            exit;
+        }
         $omsg='';
         $data = Msg::where('rid','1')->where('p','false')->where('state','<>','1')->where('type','0')->order('id desc')->limit(0,20)->select();
         foreach ($data as $msg){
@@ -25,6 +45,8 @@ class Room extends Frontend
             }
         }
         $this->assign('omsg',$omsg);
+        $this->assign('cfg',$cfg);
+        $this->assign('onlineip',request()->ip());
         return $this->fetch();
     }
 
