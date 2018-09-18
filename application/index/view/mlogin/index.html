@@ -92,7 +92,7 @@
                     <div class="inputOuter2">
 						<input type="text" id="c" name="captcha" class="inputstyle2" placeholder="验证码" data-rule="required;length(4)" style="border-radius: 0;" />
                             <span class="input-group-addon" style="padding:0;border:none;">
-                                <img src="{:captcha_src()}" width="140" height="42" onclick="this.src = '{:captcha_src()}?r=' + Math.random();"/>
+                                <img id="capt" src="{:captcha_src()}" width="140" height="42" onclick="this.src = '{:captcha_src()}?r=' + Math.random();"/>
                             </span>
                     </div>
 
@@ -200,10 +200,7 @@ $(document).ready(function() {
 	$('#reg').click(function() {
 
 		if ($('#u').val() == "") {
-			$('#u').focus().css({
-				border: "1px solid red",
-				boxShadow: "0 0 2px red"
-			});
+			$('#u').focus();
 			$('#userCue').html("<font color='red'><b>×用户名不能为空</b></font>");
 			return false;
 		}
@@ -211,14 +208,28 @@ $(document).ready(function() {
 
 
 		if ($('#u').val().length < 2 || $('#u').val().length > 16) {
-
-			$('#u').focus().css({
-				border: "1px solid red",
-				boxShadow: "0 0 2px red"
-			});
 			$('#userCue').html("<font color='red'><b>×用户名位2-16字符</b></font>");
 			return false;
 
+		}
+
+		if ($('#p').val().length < pwdmin) {
+			$('#p').focus();
+			$('#userCue').html("<font color='red'><b>×密码不能小于" + pwdmin + "位</b></font>");
+			return false;
+		}
+
+		if ($('#p2').val() != $('#p').val()) {
+			$('#p2').focus();
+			$('#userCue').html("<font color='red'><b>×两次密码不一致！</b></font>");
+			return false;
+		}
+
+		var semail=/^[\w\-\.]+@[\w\-\.]+(\.\w+)+$/;
+		if($('#email').val().length < 7 || !semail.test( $('#email').val())){
+			$('#userCue').html("<font color='red'><b>×邮箱格式错误！</b></font>");
+			$('#email').focus();
+			return false;
 		}
 
 		token = $("input[name='__token2__']").val();
@@ -228,44 +239,16 @@ $(document).ready(function() {
 			data: "username=" + $("#u").val() + "&password="+$("#p").val()+"&captcha="+$('#c').val()+"&email="+$('#email').val()+"&phone="+$('#phone').val()+"&__token__="+token+'&temp=' + new Date(),
 			dataType: 'json',
 			success: function(result) {
-				alert(result.code);
 				if (result.code!='1') {
-					$('#u').focus().css({
-						border: "1px solid red",
-						boxShadow: "0 0 2px red"
-					});
 					$("#userCue").html("<font color='red'><b>×"+result.msg+"</b></font>");
+					$("#capt").click();
 					return false;
 				} else {
-					$('#u').css({
-						border: "1px solid #D7D7D7",
-						boxShadow: "none"
-					});
+					//top.layer.msg('注册成功!',{shift: 6});layer.msg('注册成功！',{shift: 6});
+					top.location.reload(true);location.href='./';
 				}
-
 			}
 		});
-
-
-		if ($('#p').val().length < pwdmin) {
-			$('#p').focus();
-			$('#userCue').html("<font color='red'><b>×密码不能小于" + pwdmin + "位</b></font>");
-			return false;
-		}
-		if ($('#p2').val() != $('#p').val()) {
-			$('#p2').focus();
-			$('#userCue').html("<font color='red'><b>×两次密码不一致！</b></font>");
-			return false;
-		}
-		var semail=/^[\w\-\.]+@[\w\-\.]+(\.\w+)+$/;
-		if($('#email').val().length < 7 || !semail.test( $('#email').val())){
-			$('#userCue').html("<font color='red'><b>×邮箱格式错误！</b></font>");
-			$('#email').focus().css({
-				border: "1px solid red",
-				boxShadow: "0 0 2px red"
-			});
-			return false;
-		}
 	});
 
 

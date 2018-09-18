@@ -276,4 +276,7 @@ return [
         //API接口地址
         'api_url'             => 'https://api.fastadmin.net',
     ],
+
+    //直播室配置
+
 ];
