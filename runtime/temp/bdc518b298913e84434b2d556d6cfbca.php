@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xampp\htdocs\zbs\public/../application/index\view\room\index.html";i:1536916644;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"D:\xampp\htdocs\zbs\public/../application/index\view\room\index.html";i:1537415620;}*/ ?>
 
 <!DOCTYPE html>
 <html lang="zh-cn">
@@ -60,10 +60,10 @@ var msg_unallowable="黑平台|返佣|日返|高返佣|头寸|打包|手续费|�
         <div class="head_user">
                     <?php if($user): ?>
 <a href="javascript:void(0)" class="userinfo" onClick="openWin(2,false,'profiles.php?uid=<?php echo $user->id; ?>',460,600)">
-<img src="<?php echo url('ajax/getFaceImg'); ?>?t=p1&u=<?php echo $user->id; ?>" border="0" class="userimg"/><?php echo $user->nickname; ?>▼</a>
-<a href="mlogin?act=logout" class="userlogout">退出</a>
+<img src="<?php echo url('/index/ajax/getFaceImg'); ?>?t=p1&u=<?php echo $user->id; ?>" border="0" class="userimg"/><?php echo $user->nickname; ?>▼</a>
+<a href="mlogin/logout" class="userlogout">退出</a>
                     <?php else: ?>
- <a href="javascript:void(0)" class="reg" onClick="openWin(2,false,'mlogin?a=0',390,380)">注册</a> <a href="javascript:void(0)" class="login" onClick="openWin(2,false,'mlogin',390,310)">登录</a>
+ <a href="javascript:void(0)" class="reg" onClick="openWin(2,false,'/index/mlogin/?a=0',390,380)">注册</a> <a href="javascript:void(0)" class="login" onClick="openWin(2,false,'/index/mlogin/',390,310)">登录</a>
                     <?php endif; ?>
                   </div>
       </div>
