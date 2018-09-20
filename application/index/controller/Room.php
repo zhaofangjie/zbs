@@ -67,8 +67,79 @@ class Room extends Frontend
     }
 
     protected function gusetLogin(){
-        return false;
+        session_start();
+        if (!isset($_COOKIE['guest']) || $_COOKIE['guest'] == "" || $_COOKIE['guest'] == "deleted") {
+            $guest = "游客" . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9);
+            $regtime = time();
+            $p = md5('123123');
+           
+                $tuser =$this->userinfo(cookie('tg'), 'username');
+            
+            
+            //随机找一个客服
+            if (trim($tuser) == "") {
+                $rowt = Db::table("zb_user")->where('group_id',3)->where('prevtime','>',time())->orderRaw('rand()')->find();
+                dump($rowt);
+                $tuser = $rowt['username'];
+                setcookie("tg", $rowt['id'], time() + 315360000, '/');
+            }
+            $onlineip = request()->ip();
+            Db::query("insert into zb_user(username,password,gender,email,jointime,joinip,logintime,prevtime,score,nickname,group_id,mobile,kuser,tuser,status,level)\tvalues('{$guest}','{$p}','2','','{$regtime}','{$onlineip}','{$regtime}','{$regtime}','0','0','0','0','{$tuser}','{$tuser}','normal',0)");
+            $uid = Db::table('zb_user')->getLastInsID();
+            //$db->query("replace into {$tablepre}memberfields (uid,nickname)\tvalues('{$uid}','{$guest}')\t");
+            cookie("guest", $guest, time() + 315360000, "/");
+        } else {
+            if (user_login($_COOKIE['guest'], '123123') !== true) {
+                cookie("guest", '', time() - 1, "/");
+                return false;
+            }
+        }
+        return true;
 
+    }
+    
+    /*
+     * 返回用户信息
+     * @ $uid 用户id  init
+     * $tpl 字段  array
+     * return  str 
+     */
+    protected function userinfo($uid,$tpl){
+        if ($uid == "") {
+            return "";
+        }
+        $query =  Db::table("zb_user")->find($uid);
+        return $query[$tpl];
+    }
+    
+    public function user_login($u, $p){
+        global $db, $tablepre, $onlineip, $cfg;
+        $query = $db->query("select * from {$tablepre}members where username='{$u}' and password='" . md5($p) . "'");
+        while ($row = $db->fetch_row($query)) {
+            if ($cfg['config']['regaudit'] == '1' && $row['state'] == '0') {
+                return "用户未审核！";
+            }
+            $_SESSION['login_uid'] = $row['uid'];
+            $_SESSION['login_user'] = $row['username'];
+            $_SESSION['login_nick'] = $row['username'];
+            $_SESSION['login_gid'] = $row['gid'];
+            $_SESSION['login_sex'] = $row['sex'];
+            $time = gdate();
+            $_SESSION['onlines_state']['time'] = $time;
+            $tuser = userinfo($_COOKIE['tg'], '{username}');
+            if (trim($tuser) == "") {
+                $rowt = $db->fetch_row($db->query("select uid,username from {$tablepre}members where  gid='3' and lastvisit>({$time}-180) order by rand() limit 1"));
+                $tuser = $rowt['username'];
+                setcookie("tg", $rowt['uid'], gdate() + 315360000, '/');
+            }
+            $db->query("update {$tablepre}members set fuser='{$tuser}',tuser='{$tuser}' where fuser='' and tuser='' and uid='{$row[uid]}'");
+            $db->query("update {$tablepre}members set lastvisit=lastactivity,regip='{$onlineip}' where uid={$row[uid]}");
+            $db->query("update {$tablepre}members set lastactivity={$time} where uid={$row[uid]}");
+            $db->query("update {$tablepre}memberfields set logins=logins+1 where uid={$row[uid]}");
+            $db->query("insert into  {$tablepre}msgs(rid,ugid,uid,uname,tuid,tname,mtime,ip,msg,`type`)\r\n\tvalues('{$cfg[config][id]}','{$row[gid]}','{$row[uid]}','{$row[username]}','{$cfg[config][defvideo]}','{$cfg[config][defvideonick]}','" . gdate() . "','{$onlineip}','用户登陆','1')\r\n\t\t");
+            return true;
+        }
+        return "用户名或密码错误！";
     }
 
 }
