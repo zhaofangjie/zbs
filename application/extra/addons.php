@@ -11,6 +11,10 @@ return array (
   ),
   'route' => 
   array (
+    '/blog$' => 'blog/index/index',
+    '/blog/p/[:id]' => 'blog/index/post',
+    '/blog/c/[:id]' => 'blog/index/category',
+    '/blog/archieve' => 'blog/index/archieve',
     '/$' => 'cms/index/index',
     '/c/[:diyname]' => 'cms/channel/index',
     '/t/[:name]' => 'cms/tags/index',
