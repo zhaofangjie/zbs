@@ -52,8 +52,18 @@ class Room extends Frontend
         }
         $uid = cookie('uid');
         //更新用户ip
-        if ($userinfo['fuser'] == "") {
-            $userinfo['fuser'] = userinfo($_COOKIE['tg'], '{username}');
+        Db::table('zb_user')->update(['joinip'=>request()->ip(),'id'=>$uid]);
+        //查询用户相关信息
+        $userinfo = Db::table('zb_user')->find($uid); 
+        if ($userinfo['kuser'] == "") {
+            $userinfo['kuser'] = $this->userinfo(cookie('tg'), 'username');
+        }
+        session('login_gid', $userinfo['group_id']);
+        //黑名单 
+        $query = Db::table('zb_ban')->where('username',$userinfo['username'])->whereOr('ip',request()->ip())->where('losttime','>',time())->find();
+        if($query){
+            $msg='用户名或IP受限！过期时间'. date("Y-m-d H:i:s", $query['losttime']);
+            $this->error($msg);
         }
         $omsg='';
         $data = Msg::where('rid','1')->where('p','false')->where('state','<>','1')->where('type','0')->order('id desc')->limit(0,20)->select();
@@ -101,7 +111,7 @@ class Room extends Frontend
             if (trim($tuser) == "") {
                 $rowt = Db::table("zb_user")->where('group_id',3)->where('prevtime','>',time()-3600*24)->orderRaw('rand()')->limit(1)->find();
                 $tuser = $rowt['username'];
-                setcookie("tg", $rowt['id'], time() + 315360000, '/');
+                cookie("tg", $rowt['id'], time() + 315360000, '/');
             }
             $onlineip = request()->ip();
             Db::query("insert into zb_user(username,password,salt,gender,email,jointime,joinip,logintime,prevtime,score,nickname,group_id,mobile,kuser,tuser,status,level)\tvalues('{$guest}','{$p}','guest','2','','{$regtime}','{$onlineip}','{$regtime}','{$regtime}','0','0','0','0','{$tuser}','{$tuser}','normal',0)");
