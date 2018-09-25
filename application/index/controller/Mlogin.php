@@ -34,18 +34,19 @@ class Mlogin extends Frontend
             Cookie::set('uid', $user->id, $expire);
             Cookie::set('token', $auth->getToken(), $expire);
         });
-            Hook::add('user_register_successed', function ($user) use ($auth) {
-                Cookie::set('uid', $user->id);
-                Cookie::set('token', $auth->getToken());
-            });
-                Hook::add('user_delete_successed', function ($user) use ($auth) {
-                    Cookie::delete('uid');
-                    Cookie::delete('token');
-                });
-                    Hook::add('user_logout_successed', function ($user) use ($auth) {
-                        Cookie::delete('uid');
-                        Cookie::delete('token');
-                    });
+        Hook::add('user_register_successed', function ($user) use ($auth) {
+            Cookie::set('uid', $user->id);
+            Cookie::set('token', $auth->getToken());
+        });
+        Hook::add('user_delete_successed', function ($user) use ($auth) {
+            Cookie::delete('uid');
+            Cookie::delete('token');
+         });
+       Hook::add('user_logout_successed', function ($user) use ($auth) {
+           Cookie::delete('uid');
+           Cookie::delete('token');
+           Cookie::delete('guest');
+       });
     }
 
     //ajax 登陆 注册 退出

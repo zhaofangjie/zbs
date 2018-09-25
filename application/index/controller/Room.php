@@ -38,15 +38,23 @@ class Room extends Frontend
             $this->error('系统处于关闭状态！请稍候……',$url);
         }
 
-        //如果客户没有登录，则赋予游客身份并随机分配客服
-        if (!(Cookie::has('guest')) and $this->cfg['config']['loginguest'] == "1") {
+        //如果客户没有登录，且系统允许游客登录，则赋予游客身份并随机分配客服
+        if (!(Cookie::has('uid')) and $this->cfg['config']['loginguest'] == "1") {
             if ($this->gusetLogin()) {
                 exit("<script>location.reload();</script>");
             }
         }
 
-        //不允许游客登录
-
+        //没有登录不允许访问
+        if (!(Cookie::has('uid'))) {
+            exit("<script>location.href='/index/user/login'</script>");
+            exit;
+        }
+        $uid = cookie('uid');
+        //更新用户ip
+        if ($userinfo['fuser'] == "") {
+            $userinfo['fuser'] = userinfo($_COOKIE['tg'], '{username}');
+        }
         $omsg='';
         $data = Msg::where('rid','1')->where('p','false')->where('state','<>','1')->where('type','0')->order('id desc')->limit(0,20)->select();
         foreach ($data as $msg){
@@ -100,7 +108,9 @@ class Room extends Frontend
             $uid = Db::table('zb_user')->getLastInsID();
             //$db->query("replace into {$tablepre}memberfields (uid,nickname)\tvalues('{$uid}','{$guest}')\t");
             cookie("guest", $guest, time() + 315360000, "/");
+            cookie("uid", $uid, time() + 315360000, "/");
         } else {
+            //如果登录失败，则将游客信息置空，表示重新配置
             if ($this->auth->login(cookie('guest'), '123123') != true) {
                 setcookie("guest", '', time() - 1, "/");
                 return false;
