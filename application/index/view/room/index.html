@@ -5,9 +5,9 @@
 <meta name="renderer" content="webkit">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
-<title>财运金融直播室</title>
-<meta content="" name="keywords">
-<meta content="" name="description">
+<title>{$cfg['config']['title']}</title>
+<meta content="$cfg['config']['keys']" name="keywords">
+<meta content="$cfg['config']['dc']" name="description">
 <link rel="shortcut icon" type="image/x-icon" href="__CDN__/style/images/favio.ico" />
 <link href="__CDN__/style/room/skins/qqxiaoyou/css.css" rel="stylesheet" type="text/css"  />
 <link href="__CDN__/style/room/images/layim.css" rel="stylesheet" type="text/css"  />
@@ -21,32 +21,76 @@
 <script src="__CDN__/style/room/script/function.js?{time()}" type="text/javascript" charset="utf-8"></script>
 <script src="__CDN__/style/room/script/init.js?{time()}" type="text/javascript" charset="utf-8"></script>
 <script src="__CDN__/style/room/script/device.min.js"></script>
-<!--系统开发：QQ78519123-->
 <script>
 var UserList;
 var ToUser;
 var VideoLoaded=false;
-var My={dm:'192.168.2.193',rid:'1',roomid:'192.168.2.193/1',chatid:'6',name:'游客133318',nick:'游客133318',sex:'2',age:'0',fuser:'lafang518',qx:'0',ip:'192.168.2.193',vip:'',color:'0',cam:'0',state:'0',mood:'',rst:'',camState:'1',key:'AzUBalNhXnhZMAw1DjoLKAUxWi4HbwliUG5QagZj'}
+var My={dm:'<?php
+echo $_SERVER['HTTP_HOST'];
+?>',rid:'<?php
+echo $cfg['config']['id'];
+?>',roomid:'<?php
+echo $_SERVER['HTTP_HOST'];
+?>/<?php
+echo $cfg['config']['id'];
+?>',chatid:'<?php
+echo $userinfo['id'];
+?>',name:'<?php
+echo $userinfo['username'];
+?>',nick:'<?php
+echo $userinfo['nickname'];
+?>',sex:'<?php
+echo $userinfo['gender'];
+?>',age:'0',fuser:'<?php
+echo $userinfo['kuser'];
+?>',qx:'<?php
+echo check_auth('room_admin') ? '1' : '0';
+?>',ip:'<?php
+echo $onlineip;
+?>',vip:'',color:'<?php
+echo $userinfo['group_id'];
+?>',cam:'0',state:'0',mood:'<?php
+echo $userinfo['mood'];
+?>',rst:'<?php
+echo $time;
+?>',camState:'1',key:'<?php
+echo connectkey();
+?>'}
 
-var RoomInfo={loginTip:'1',Msglog:'1',msgBlock:'1',msgAudit:'0',defaultTitle:document.title,MaxVideo:'10',VServer:'',VideoQ:'',TServer:'192.168.2.193',TSPort:'7272',PVideo:'1',AutoPublicVideo:'0',AutoSelfVideo:'0',type:'1',PVideoNick:'',OtherVideoAutoPlayer:'1',r:'80|100'}
+var RoomInfo={loginTip:'<?php
+echo $cfg['config']['logintip'];
+?>',Msglog:'<?php
+echo $cfg['config']['msglog'];
+?>',msgBlock:'<?php
+echo $cfg['config']['msgblock'];
+?>',msgAudit:'<?php
+echo $cfg['config']['msgaudit'];
+?>',defaultTitle:document.title,MaxVideo:'10',VServer:'<?php
+echo $cfg['config']['vserver'];
+?>',VideoQ:'',TServer:'<?php
+echo $ts[0];
+?>',TSPort:'<?php
+echo $ts[1];
+?>',PVideo:'<?php
+echo $cfg['config']['defvideo'];
+?>',AutoPublicVideo:'0',AutoSelfVideo:'0',type:'1',PVideoNick:'<?php
+echo $cfg['config']['defvide0nick'];
+?>',OtherVideoAutoPlayer:'<?php
+echo $cfg['config']['livetype'];
+?>',r:'<?php
+echo $cfg['config']['rebots'];
+?>'}
 var grouparr=new Array();
-grouparr['14']={"id":"14","title":"\u84dd\u94bb\u4f1a\u5458 ","rules":"wt_view,wt_add,scpl_view,msg_send,jyts_view,hd_view,files_view","sn":"50\u4e07\u2264\u5b9e\u76d8\u5165\u91d1\uff1c100\u4e07","ico":"\/upfiles\/day_150609\/201506091903246505.png","type":"0","ov":"10"};
-grouparr['13']={"id":"13","title":"\u7eff\u94bb\u4f1a\u5458","rules":"wt_view,wt_add,scpl_view,msg_send,jyts_view,hd_view,files_view","sn":"10\u4e07\u2264\u5b9e\u76d8\u5165\u91d1\uff1c50\u4e07","ico":"\/upload\/upfile\/day_150609\/201506091901139196.png","type":"0","ov":"9"};
-grouparr['12']={"id":"12","title":"\u9ec4\u94bb\u4f1a\u5458","rules":"wt_view,wt_add,scpl_view,msg_send,jyts_view,hd_view,files_view","sn":"5\u4e07\u2264\u5b9e\u76d8\u5165\u91d1\uff1c10\u4e07","ico":"\/upload\/upfile\/day_150609\/201506091901023356.png","type":"0","ov":"8"};
-grouparr['11']={"id":"11","title":"\u7ea2\u94bb\u4f1a\u5458","rules":"wt_view,wt_add,scpl_view,msg_send,jyts_view,hd_view,files_view","sn":"0\uff1c\u5b9e\u76d8\u5165\u91d1\uff1c5\u4e07","ico":"\/upload\/upfile\/day_150609\/201506091900277659.png","type":"0","ov":"7"};
-grouparr['15']={"id":"15","title":"\u666e\u901a\u4f1a\u5458","rules":"wt_view,wt_add,scpl_view,msg_send,jyts_view,files_view","sn":"\u5f00\u6237\u7528\u6237","ico":"\/upload\/upfile\/day_150609\/201506091858517138.png","type":"0","ov":"6"};
-grouparr['4']={"id":"4","title":"\u8bb2\u5e08","rules":"apps_wt,apps_scpl,apps_jyts,apps_hd,apps_files,adminlogin,wt_view,wt_re,user_kick,scpl_view,scpl_add,msg_send,msg_block,msg_audit,jyts_view,jyts_add,hd_view,hd_add,files_view,files_add,def_videosrc","sn":"\u9ad8\u7ea7\u91d1\u878d\u5206\u6790\u5e08","ico":"\/upload\/upfile\/day_150609\/201506091905105798.gif","type":"0","ov":"4"};
-grouparr['3']={"id":"3","title":"\u52a9\u7406","rules":"sys_ban,adminlogin,wt_view,wt_re,user_kick,user_info,scpl_view,room_admin,rebots_msg,msg_send,msg_ptp,msg_priv,msg_block,msg_audit,jyts_view,hd_view,files_view","sn":"\u52a9\u7406\u91d1\u878d\u5206\u6790\u5e08","ico":"\/upload\/upfile\/day_150530\/201505301010256819.gif","type":"0","ov":"3"};
-grouparr['2']={"id":"2","title":"\u7ba1\u7406","rules":"users_group,users_del,users_admin,tongji_reg,sys_server,sys_notice,sys_log,sys_base,sys_ban,apps_wt,apps_scpl,apps_manage,apps_jyts,apps_hd,apps_files,adminlogin,wt_view,wt_re,wt_add,user_kick,user_info_gl,user_info,scpl_view,scpl_add,room_admin,rebots_msg,msg_send,msg_ptp,msg_priv,msg_block,msg_audit,jyts_view,jyts_add,hd_view,hd_add,files_view,files_add,def_videosrc","sn":"\u7cfb\u7edf\u7ba1\u7406\u5458","ico":"\/upload\/upfile\/day_150609\/201506091905376720.png","type":"0","ov":"2"};
-grouparr['0']={"id":"0","title":"\u6e38\u5ba2","rules":"wt_view,msg_send,msg_priv","sn":"\u672a\u77e5\u8bbf\u5ba2","ico":"\/uploads\/day_150530\/201505301011416492.png","type":"0","ov":"0"};
-grouparr['1']={"id":"1","title":"\u8bd5\u7528\u4f1a\u5458 ","rules":"wt_view,wt_add,scpl_view,msg_send,jyts_view","sn":"\u6ce8\u518c\u7528\u6237","ico":"\/upload\/upfile\/day_150530\/201505301049413884.png","type":"0","ov":"0"};
-grouparr['16']={"id":"16","title":"\u7d2b\u94bb\u4f1a\u5458","rules":"wt_view,wt_add,scpl_view,msg_send,jyts_view,hd_view,files_view","sn":"100\u4e07\u2264\u5b9e\u76d8\u5165\u91d1\uff1c500\u4e07 ","ico":"\/upload\/upfile\/day_150609\/201506091903586499.png","type":"0","ov":"0"};
-grouparr['17']={"id":"17","title":"\u7687\u51a0\u4f1a\u5458","rules":"wt_view,wt_add,scpl_view,msg_send,jyts_view,hd_view,files_view","sn":"500\u4e07\u2264\u5b9e\u76d8\u5165\u91d1","ico":"\/upload\/upfile\/day_150609\/201506091904403677.gif","type":"0","ov":"0"};
+<?php
+echo $grouparr;
+?>
 var ReLoad;
 var isIE=document.all;
 var aSex=['<span class="sex-womon"></span>','<span class="sex-man"></span>',''];
 var aColor=['#FFF','#FFF','#FFF'];
-var msg_unallowable="黑平台|返佣|日返|高返佣|头寸|打包|手续费|刷单|套利|黑公司|QQ|私聊|群|加群|返佣|黑平台|代理|代客操盘|违规操作";
+var msg_unallowable="<?php
+echo $msg_unallowable;
+?>";
 </script>
 </head>
 <body onresize="OnResize()" onUnload="OnUnload()" style="background:url(__CDN__/uploads/day_150529/201505292232163512.jpg) repeat 0 0 #408080; ">

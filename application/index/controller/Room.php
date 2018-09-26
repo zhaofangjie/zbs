@@ -54,30 +54,54 @@ class Room extends Frontend
         //更新用户ip
         Db::table('zb_user')->update(['joinip'=>request()->ip(),'id'=>$uid]);
         //查询用户相关信息
-        $userinfo = Db::table('zb_user')->find($uid); 
+        $userinfo = Db::table('zb_user')->find($uid);
         if ($userinfo['kuser'] == "") {
             $userinfo['kuser'] = $this->userinfo(cookie('tg'), 'username');
         }
         session('login_gid', $userinfo['group_id']);
-        //黑名单 
-        $query = Db::table('zb_ban')->where('username',$userinfo['username'])->whereOr('ip',request()->ip())->where('losttime','>',time())->find();
+        //黑名单
+        $query = Db::table('zb_ban')->where('(username = :username or ip = :ip) and losttime > :time',['username'=>$userinfo['username'],'ip'=>request()->ip(),'time'=>time()])->find();
         if($query){
             $msg='用户名或IP受限！过期时间'. date("Y-m-d H:i:s", $query['losttime']);
             $this->error($msg);
         }
+
+        //用户权限
+        $query = Db::table('zb_user_group')->order('id desc')->select();
+        $group=array();
+        $groupli = '';
+        $grouparr = '';
+        foreach($query as $row){
+            $groupli .= "<div id='group_{$row['id']}'></div>";
+            $grouparr .= "grouparr[{$row['id']}]=" . json_encode($row) . ";\n";
+            $group["m" . $row['id']] = $row;
+        }
+        //历史聊天记录
         $omsg='';
-        $data = Msg::where('rid','1')->where('p','false')->where('state','<>','1')->where('type','0')->order('id desc')->limit(0,20)->select();
-        foreach ($data as $msg){
-            $msg->msg = str_replace(array('&', '', '"', '<', '>'), array('&', "\\'", '"', '<', '>'), $msg->msg);
-            if ($msg->tuid != "ALL") {
-                $omsg = "<div style='clear:both;'></div><div class='msg'  id='".$msg->msgid."'><div class='msg_head'><img src='ajax/getFaceImg/?t=p1&u={$msg->uid}'></div><div class='msg_content'><div><font class='u'  onclick='ToUser.set(\"{$msg->uid}\",\"$msg->uname\")'>$msg->uname</font> <img src='/uploads/day_150609/201506091905376720.png' class='msg_group_ico' title='游客-未知访客'>   <font class='dui'>对</font> <font class='u' onclick='ToUser.set(\"{$msg->tuid}\",\"{$msg->tname}\")'>{$msg->tname}</font> <font class='date'>" . $msg->mtime . "</font></div><div class='layim_chatsay' style='margin:5px 0px;'><font  style='{$msg->style};'>{$msg->msg}</font><em class='layim_zero'></em></div></div></div><div style='clear:both;'></div>" . $omsg;
+        $query = Msg::where('rid','1')->where('p','false')->where('state','<>','1')->where('type','0')->order('id desc')->limit(0,20)->select();
+        foreach ($query as $row){
+            $row['msg'] = str_replace(array('&', '', '"', '<', '>'), array('&', "\\'", '"', '<', '>'), $row['msg']);
+            if ($row['tuid'] != "ALL") {
+                $omsg = "<div style='clear:both;'></div><div class='msg'  id='{$row['msgid']}'><div class='msg_head'><img src='ajax/getFaceImg/?t=p1&u={$row['uid']}'></div><div class='msg_content'><div><font class='u'  onclick='ToUser.set(\"{$row['uid']}\",\"{$row['uname']}\")'>{$row['uname']}</font> <img src='" . $group["m" . $row['ugid']]['ico'] . "' class='msg_group_ico' title='" . $group["m" . $row['ugid']]['name'] . "-" . $group["m" . $row['ugid']]['sn'] . "'>   <font class='dui'>对</font> <font class='u' onclick='ToUser.set(\"{$row['tuid']}\",\"{$row['tname']}\")'>{$row['tname']}</font> 说 <font class='date'>" . $row['mtime'] . "</font></div><div class='layim_chatsay' style='margin:5px 0px;'><font  style='{$row['style']};'>".html_entity_decode($row['msg'])."</font><em class='layim_zero'></em></div></div></div><div style='clear:both;'></div>" . $omsg;
             } else {
-                $omsg = "<div style='clear:both;'></div><div class='msg' id='{$msg->msgid}'><div class='msg_head'><img src='ajax/getFaceImg/?t=p1&u={$msg->uid}'></div><div class='msg_content'><div><font class='u'  onclick='ToUser.set(\"{$msg->uid}\",\"{$msg->uname}\")'>{$msg->uname}</font> <img src='/uploads/day_150609/201506091905376720.png' class='msg_group_ico' title='游客-未知访客'> <font class='date'>" . $msg->mtime. "</font></div><div class='layim_chatsay' style='margin:5px 0px;'><font  style='{$msg->style};'>{$msg->msg}</font><em class='layim_zero'></em></div></div></div><div style='clear:both;'></div>" . $omsg;
+            $omsg = "<div style='clear:both;'></div><div class='msg' id='{$row['msgid']}'><div class='msg_head'><img src='ajax/getFaceImg/?t=p1&u={$row['uid']}'></div><div class='msg_content'><div><font class='u'  onclick='ToUser.set(\"{$row['uid']}\",\"{$row['uname']}\")'>{$row['uname']}</font> <img src='" . $group["m" . $row['ugid']]['ico'] . "' class='msg_group_ico' title='" . $group["m" . $row['ugid']]['name'] . "-" . $group["m" . $row['ugid']]['sn'] . "'> <font class='date'>" .$row['mtime'] . "</font></div><div class='layim_chatsay' style='margin:5px 0px;'><font  style='{$row['style']};'>".html_entity_decode($row['msg'])."</font><em class='layim_zero'></em></div></div></div><div style='clear:both;'></div>" . $omsg;
             }
         }
+
+        //文字服务器  ip 端口
+        $ts = explode(':', $this->cfg['config']['tserver']);
+        //房间号写入session
+
+        if (!Session::has('room_' . $uid . '_' . $this->cfg['config']['id'])) {
+            Db::query("insert into zb_msg(rid,ugid,uid,uname,tuid,tname,mtime,ip,msg,`type`)values('{$this->cfg['config']['id']}','{$userinfo['group_id']}','{$userinfo['id']}','{$userinfo['username']}','{$this->cfg['config']['defvideo']}','{$this->cfg['config']['defvideonick']}','" .time(). "','{request()->ip()}','登陆直播间','3')");
+            //插入数据库登录数据
+            session('room_' . $uid . '_' . $this->cfg['config']['id'],1);
+        }
+        $this->assign('ts',$ts);
         $this->assign('omsg',$omsg);
         $this->assign('cfg',$this->cfg);
         $this->assign('onlineip',request()->ip());
+        $this->assign('userinfo',$userinfo);
         return $this->fetch();
     }
 
