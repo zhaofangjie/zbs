@@ -3,12 +3,14 @@ namespace app\index\controller;
 
 use app\common\controller\Frontend;
 use app\index\model\Msg;
+use think\Config;
 use think\Lang;
 //修改，读取数据库
 use think\Db;
 use think\Cookie;
-
+use think\Hook;
 use think\Session;
+use think\Validate;
 
 class Room extends Frontend
 {
@@ -39,18 +41,23 @@ class Room extends Frontend
         }
 
         //如果客户没有登录，且系统允许游客登录，则赋予游客身份并随机分配客服
-        if (!(Cookie::has('uid')) and $this->cfg['config']['loginguest'] == "1") {
+
+        if (!($this->auth->id) and $this->cfg['config']['loginguest'] == "1") {
+            dump($this->auth->isLogin());
             if ($this->gusetLogin()) {
+                dump($this->auth->isLogin());
                 exit("<script>location.reload();</script>");
             }
         }
 
+        dump($this->gusetLogin());
+        exit();
         //没有登录不允许访问
-        if (!(Cookie::has('uid'))) {
+        if (!($this->auth->id)) {
             exit("<script>location.href='/index/user/login'</script>");
             exit;
         }
-        $uid = cookie('uid');
+        $uid = $this->auth->id;
         //更新用户ip
         Db::table('zb_user')->update(['joinip'=>request()->ip(),'id'=>$uid]);
         //查询用户相关信息
@@ -97,6 +104,11 @@ class Room extends Frontend
             //插入数据库登录数据
             session('room_' . $uid . '_' . $this->cfg['config']['id'],1);
         }
+
+        //用户权限
+        //$rules = $this->auth->getRuleList();
+        dump($this->auth->_user);
+        exit();
         $this->assign('ts',$ts);
         $this->assign('omsg',$omsg);
         $this->assign('cfg',$this->cfg);
@@ -140,9 +152,8 @@ class Room extends Frontend
             $onlineip = request()->ip();
             Db::query("insert into zb_user(username,password,salt,gender,email,jointime,joinip,logintime,prevtime,score,nickname,group_id,mobile,kuser,tuser,status,level)\tvalues('{$guest}','{$p}','guest','2','','{$regtime}','{$onlineip}','{$regtime}','{$regtime}','0','0','0','0','{$tuser}','{$tuser}','normal',0)");
             $uid = Db::table('zb_user')->getLastInsID();
-            //$db->query("replace into {$tablepre}memberfields (uid,nickname)\tvalues('{$uid}','{$guest}')\t");
+            $this->auth->login($guest, '123123');
             cookie("guest", $guest, time() + 315360000, "/");
-            cookie("uid", $uid, time() + 315360000, "/");
         } else {
             //如果登录失败，则将游客信息置空，表示重新配置
             if ($this->auth->login(cookie('guest'), '123123') != true) {
@@ -150,7 +161,7 @@ class Room extends Frontend
                 return false;
             }
         }
-        return true;
+        return $this->auth->id;
     }
 
     /*
