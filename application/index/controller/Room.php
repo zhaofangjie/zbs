@@ -41,9 +41,8 @@ class Room extends Frontend
         }
 
         //如果客户没有登录，且系统允许游客登录，则赋予游客身份并随机分配客服
-
         if (!($this->auth->id) and $this->cfg['config']['loginguest'] == "1") {
-            dump($this->auth->isLogin());
+            dump($this->auth->_logind());
             if ($this->gusetLogin()) {
                 dump($this->auth->isLogin());
                 exit("<script>location.reload();</script>");
@@ -151,8 +150,6 @@ class Room extends Frontend
             }
             $onlineip = request()->ip();
             Db::query("insert into zb_user(username,password,salt,gender,email,jointime,joinip,logintime,prevtime,score,nickname,group_id,mobile,kuser,tuser,status,level)\tvalues('{$guest}','{$p}','guest','2','','{$regtime}','{$onlineip}','{$regtime}','{$regtime}','0','0','0','0','{$tuser}','{$tuser}','normal',0)");
-            $uid = Db::table('zb_user')->getLastInsID();
-            $this->auth->login($guest, '123123');
             cookie("guest", $guest, time() + 315360000, "/");
         } else {
             //如果登录失败，则将游客信息置空，表示重新配置
@@ -161,7 +158,29 @@ class Room extends Frontend
                 return false;
             }
         }
-        return $this->auth->id;
+        return true;
+    }
+
+    //直播室用户登录
+    protected function userLogin($u,$p){
+
+        if($this->auth->login($u, $p)){
+
+            session('login_uid',$this->auth->id);
+            session('login_user',$this->auth->username);
+            session('login_nick',$this->auth->nickname);
+            session('login_gid'.$this->auth->group_id);
+            session('login_sex',$this->auth->gender);
+            session('onlines_state.time',$time);
+            $tuser = $this->userinfo(cookie('tg'), 'username');
+            //随机找一个客服
+            if (trim($tuser) == "") {
+                $rowt = Db::table("zb_user")->where('group_id',3)->where('prevtime','>',time()-3600*24)->orderRaw('rand()')->limit(1)->find();
+                $tuser = $rowt['username'];
+                cookie("tg", $rowt['id'], time() + 315360000, '/');
+            }
+            return true;
+        }
     }
 
     /*
