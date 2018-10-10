@@ -40,23 +40,20 @@ class Room extends Frontend
             $this->error('系统处于关闭状态！请稍候……',$url);
         }
 
+
         //如果客户没有登录，且系统允许游客登录，则赋予游客身份并随机分配客服
-        if (!($this->auth->id) and $this->cfg['config']['loginguest'] == "1") {
-            dump($this->auth->_logind());
+        if (!session::has('login_uid') and $this->cfg['config']['loginguest'] == "1") {
             if ($this->gusetLogin()) {
-                dump($this->auth->isLogin());
                 exit("<script>location.reload();</script>");
             }
         }
 
-        dump($this->gusetLogin());
-        exit();
         //没有登录不允许访问
-        if (!($this->auth->id)) {
+        if (!session::has('login_uid')) {
             exit("<script>location.href='/index/user/login'</script>");
             exit;
         }
-        $uid = $this->auth->id;
+        $uid = session('login_uid');
         //更新用户ip
         Db::table('zb_user')->update(['joinip'=>request()->ip(),'id'=>$uid]);
         //查询用户相关信息
@@ -73,7 +70,12 @@ class Room extends Frontend
         }
 
         //用户权限
-        $query = Db::table('zb_user_group')->order('id desc')->select();
+        $rules = $this->auth_group(session('login_gid'));
+        dump($rules);
+        $res= in_array('room_admin',$rules);
+        dump($res);
+        $query = $this->check_auth('room_admin');
+
         $group=array();
         $groupli = '';
         $grouparr = '';
@@ -104,10 +106,9 @@ class Room extends Frontend
             session('room_' . $uid . '_' . $this->cfg['config']['id'],1);
         }
 
-        //用户权限
-        //$rules = $this->auth->getRuleList();
-        dump($this->auth->_user);
-        exit();
+        //直播室权限检查
+        $rules = $this->check_auth('room_admin');
+        dump($rules);
         $this->assign('ts',$ts);
         $this->assign('omsg',$omsg);
         $this->assign('cfg',$this->cfg);
@@ -153,8 +154,8 @@ class Room extends Frontend
             cookie("guest", $guest, time() + 315360000, "/");
         } else {
             //如果登录失败，则将游客信息置空，表示重新配置
-            if ($this->auth->login(cookie('guest'), '123123') != true) {
-                setcookie("guest", '', time() - 1, "/");
+            if ($this->userLogin(cookie('guest'), '123123') != true) {
+                cookie("guest", '', time() - 1, "/");
                 return false;
             }
         }
@@ -169,18 +170,19 @@ class Room extends Frontend
             session('login_uid',$this->auth->id);
             session('login_user',$this->auth->username);
             session('login_nick',$this->auth->nickname);
-            session('login_gid'.$this->auth->group_id);
+            session('login_gid',$this->auth->group_id);
             session('login_sex',$this->auth->gender);
-            session('onlines_state.time',$time);
+            //session('onlines_state.time',$time);
             $tuser = $this->userinfo(cookie('tg'), 'username');
             //随机找一个客服
             if (trim($tuser) == "") {
                 $rowt = Db::table("zb_user")->where('group_id',3)->where('prevtime','>',time()-3600*24)->orderRaw('rand()')->limit(1)->find();
-                $tuser = $rowt['username'];
-                cookie("tg", $rowt['id'], time() + 315360000, '/');
+                $tuser = $this->auth->username;
+                cookie("tg", $this->auth->id, time() + 315360000, '/');
             }
             return true;
         }
+        return false;
     }
 
     /*
@@ -196,6 +198,42 @@ class Room extends Frontend
         $query =  Db::table("zb_user")->find($uid);
         return $query[$tpl];
     }
+
+
+    /*
+     *直播室权限检查
+     *
+     */
+    protected function auth_group($gid)
+    {
+
+        $query =Db::table('zb_user_group')->where('id',$gid)->find();
+        if($query) {
+            $rules = explode(',', $query['rules']);
+            $rulesNameArr = Db::table('zb_user_rule')->where('status', 'normal')->where('id', 'in', $rules)->field('name')->select();
+            return $rulesNameArr;
+        }
+        return NULL;
+    }
+
+    protected function check_auth($auth)
+    {
+        $auth_rules = $this->auth_group(session('login_gid'));
+        if (in_array($auth,$auth_rules) !== false) {
+            return true;
+        }
+        return false;
+    }
+
+    protected function check_user_auth($uid, $auth)
+    {
+        $auth_rules = $this->auth_group($this->userinfo($uid, 'group_id'));
+        if (in_array($auth,$auth_rules) !== false) {
+            return true;
+        }
+        return false;
+    }
+
 }
 
 ?>
