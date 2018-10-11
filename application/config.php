@@ -20,7 +20,7 @@ return [
     // 应用调试模式
     'app_debug'              => Env::get('app.debug', true),
     // 应用Trace
-    'app_trace'              => Env::get('app.trace', true),
+    'app_trace'              => Env::get('app.trace', false),
     // 应用模式状态
     'app_status'             => '',
     // 是否支持多模块
@@ -278,5 +278,11 @@ return [
     ],
 
     //直播室配置
+    'room'              =>[
+        'guest'             =>true,//游客登录 true开启 false关闭
+        'reg_unallowable'    =>"|江泽民|毛泽东|邓小平", //注册屏蔽关键字 并为空以"|" 开头并隔开
+        'msg_unallowable'    =>"黑平台|返佣|日返|高返佣|头寸|打包|手续费|刷单|套利|黑公司|QQ|私聊|群|加群|返佣|黑平台|代理|代客操盘|违规操作", //聊天屏蔽关键字 空以"|" 并隔开
+        'ipmax'              =>5,//同一IP每天限制注册次数
+    ]
 
 ];

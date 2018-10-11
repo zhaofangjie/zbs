@@ -505,7 +505,7 @@ UserList=(function(){
 			var UserMenu= Menu.init('120px');
 			if(My.chatid==u.chatid)
 			{
-				UserMenu.add('zl.gif','个人资料',function(){getId('menu').style.display='none';openWin(2,false,'profiles.php?uid='+u.chatid,460,600);});
+				UserMenu.add('zl.gif','个人资料',function(){getId('menu').style.display='none';openWin(2,false,'/index/profiles/?uid='+u.chatid,460,600);});
 				if(RoomInfo.OtherVideoAutoPlayer=='0'&&check_auth("room_admin"))
 					UserMenu.add('tv.gif','上麦-房间主持人',function(){UserList.setVideo(u);getId('menu').style.display='none';});
 			}

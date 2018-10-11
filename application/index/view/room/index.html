@@ -44,18 +44,16 @@ echo $userinfo['gender'];
 ?>',age:'0',fuser:'<?php
 echo $userinfo['kuser'];
 ?>',qx:'<?php
-echo check_auth('room_admin') ? '1' : '0';
+echo $isadmin ? '1' : '0';
 ?>',ip:'<?php
 echo $onlineip;
 ?>',vip:'',color:'<?php
 echo $userinfo['group_id'];
 ?>',cam:'0',state:'0',mood:'<?php
-echo $userinfo['mood'];
+echo $userinfo['bio'];
 ?>',rst:'<?php
-echo $time;
-?>',camState:'1',key:'<?php
-echo connectkey();
-?>'}
+echo time();
+?>',camState:'1',key:'0001'}
 
 var RoomInfo={loginTip:'<?php
 echo $cfg['config']['logintip'];
@@ -74,7 +72,7 @@ echo $ts[1];
 ?>',PVideo:'<?php
 echo $cfg['config']['defvideo'];
 ?>',AutoPublicVideo:'0',AutoSelfVideo:'0',type:'1',PVideoNick:'<?php
-echo $cfg['config']['defvide0nick'];
+echo $cfg['config']['defvideonick'];
 ?>',OtherVideoAutoPlayer:'<?php
 echo $cfg['config']['livetype'];
 ?>',r:'<?php
@@ -89,7 +87,7 @@ var isIE=document.all;
 var aSex=['<span class="sex-womon"></span>','<span class="sex-man"></span>',''];
 var aColor=['#FFF','#FFF','#FFF'];
 var msg_unallowable="<?php
-echo $msg_unallowable;
+echo config('room.msg_unallowable');
 ?>";
 </script>
 </head>
@@ -157,7 +155,7 @@ echo $msg_unallowable;
 		    </div>
     <div id="UI_Left2"  class="bg_png1">
     <div class="bg_png1">
-        <iframe height="71" width="100%" allowTransparency="true" marginwidth="0" marginheight="0"  frameborder="0" scrolling="no" src="http://192.168.2.193/index/vote/?rid=1"></iframe>
+        <iframe height="71" width="100%" allowTransparency="true" marginwidth="0" marginheight="0"  frameborder="0" scrolling="no" src="http://192.168.1.98/index/vote/?rid=1"></iframe>
       </div>
       <div  class="title_tab"> <a href="javascript:void(0)" class="bg_png2" onClick="bt_SwitchListTab('User')" id="listTab1">在线会员(<span id="OnlineUserNum"></span>)</a> <a href="javascript:void(0)" onClick="bt_SwitchListTab('Other')" id="listTab2">我的客服(<span id="OnlineOtherNum"></span>)</a> </div>
       <div style="clear:both"></div>

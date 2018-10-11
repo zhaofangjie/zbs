@@ -69,12 +69,17 @@ class Room extends Frontend
             $this->error($msg);
         }
 
-        //用户权限
-        $rules = $this->auth_group(session('login_gid'));
-        dump($rules);
-        $res= in_array('room_admin',$rules);
-        dump($res);
-        $query = $this->check_auth('room_admin');
+        //是否有房间管理权限
+        $this->assign('isadmin',$this->check_auth('room_admin'));
+
+        //查询会员组
+        $query = Db::table('zb_user_group')->order('ov desc')->select();
+        foreach($query as $k=>$v){
+            $query[$k]['rules'] = $this->replace_auth( $v['rules']);
+            $query[$k]['title'] = $v['name'];
+            $query[$k]['sn'] = $v['name'];
+            $query[$k]['type'] = 0;
+        }
 
         $group=array();
         $groupli = '';
@@ -84,6 +89,10 @@ class Room extends Frontend
             $grouparr .= "grouparr[{$row['id']}]=" . json_encode($row) . ";\n";
             $group["m" . $row['id']] = $row;
         }
+
+        $this->assign('groupli',$groupli);
+        $this->assign('grouparr',$grouparr);
+        $this->assign('group',$group);
         //历史聊天记录
         $omsg='';
         $query = Msg::where('rid','1')->where('p','false')->where('state','<>','1')->where('type','0')->order('id desc')->limit(0,20)->select();
@@ -107,8 +116,6 @@ class Room extends Frontend
         }
 
         //直播室权限检查
-        $rules = $this->check_auth('room_admin');
-        dump($rules);
         $this->assign('ts',$ts);
         $this->assign('omsg',$omsg);
         $this->assign('cfg',$this->cfg);
@@ -202,7 +209,8 @@ class Room extends Frontend
 
     /*
      *直播室权限检查
-     *
+     *@param $gid 会员组id
+     *@ return  array  权限 name
      */
     protected function auth_group($gid)
     {
@@ -210,8 +218,11 @@ class Room extends Frontend
         $query =Db::table('zb_user_group')->where('id',$gid)->find();
         if($query) {
             $rules = explode(',', $query['rules']);
-            $rulesNameArr = Db::table('zb_user_rule')->where('status', 'normal')->where('id', 'in', $rules)->field('name')->select();
-            return $rulesNameArr;
+            $rulesArr = Db::table('zb_user_rule')->where('status', 'normal')->where('id', 'in', $rules)->field('name')->select();
+            foreach($rulesArr as $rule){
+                $rulesNames[] = $rule['name'];
+            }
+            return $rulesNames;
         }
         return NULL;
     }
@@ -234,6 +245,24 @@ class Room extends Frontend
         return false;
     }
 
+    /*
+     * 权限id换成name
+     */
+
+    protected function replace_auth($rules){
+        $rulestr = '';
+        $rules = explode(',',$rules);
+        $rulesArr = Db::table('zb_user_rule')->where('status', 'normal')->field('id,name')->select();
+        foreach($rules as $rule){
+            foreach($rulesArr as $v){
+                if($rule == $v['id']){
+                    $rulestr .= ','.$v['name'];
+                }
+            }
+        }
+
+        return trim($rulestr,',');
+    }
 }
 
 ?>
