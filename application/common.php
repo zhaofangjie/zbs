@@ -300,3 +300,18 @@ if (!function_exists('var_export_short')) {
     }
 
 }
+
+if(!function_exists('group_info')){
+
+    /**
+     * 返回会员组信息列表
+     *
+     */
+    function group_info($gid){
+        $info = think\Db::table('zb_user_group')->where('id',$gid)->find();
+        if($info){
+            return $info;
+        }
+        return null;
+    }
+}

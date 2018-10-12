@@ -263,6 +263,27 @@ class Room extends Frontend
 
         return trim($rulestr,',');
     }
+
+
+    /*
+     * 直播室查看个人信息
+     */
+    public function profile(){
+
+        $uid = request()->param('uid');
+        if($uid != session('login_uid')){
+            exit('0');
+        }
+        $this->view->assign('uid',$uid);
+        $userinfo = Db::table('zb_user')->find($uid);
+        //检查是否具有管理权限
+        $gl = $this->check_auth('user_info_gl');
+        $this->assign('gl',$gl);
+        $this->view->assign('title',(__('Profile')));
+        $this->view->assign('userinfo',$userinfo);
+        $this->view->fetch();
+    }
+
 }
 
 ?>

@@ -29,18 +29,18 @@
 <div class="main">
   <div class="head">
     <div class="m10 fl" style="text-shadow:2px 2px 2px #000;">
-      <div class="fl mr10" style="width:74px; height:74px;"><img src='../face/img.php?t=p1&u=<?=$userinfo['uid']?>' style="width:74px; height:74px; border:0px"/></div>
+      <div class="fl mr10" style="width:74px; height:74px;"><img src="/index/ajax/getFaceImg/?t=p1&u={$userinfo['id']}" style="width:74px; height:74px; border:0px"/></div>
       <div class="fl" style="width:350px; height:74px;">
         <div style="height:34px; overflow:hidden"><span class="ttff f24 cfff">
-          <?=$userinfo['nickname']?>
+          {$userinfo['nickname']}
           </span> &nbsp;<span class="ttff  f14 cfff">
-          <?=$userinfo['username']?>
+          {$userinfo['username']}
           </span></div>
         <div>
-          <?=showstars($userinfo['onlinetime'])?>
+          {showstars($userinfo['onlinetime'])}
         </div>
         <div class="ttff f14 cfff" style="height:20px; overflow:hidden">
-          <?=$userinfo['mood']?>
+          {$userinfo['bio']}
         </div>
       </div>
     </div>
@@ -48,11 +48,11 @@
     <div class="fl" id="nav">
     <a href="javascript://" onClick="$('.tab').hide();$('#tab_1').show()">用户资料</a>
     <?php
-    if($uid==$_SESSION['login_uid']){
+    if($uid==session('login_uid')){
 	?>
     <a href="javascript://" style="background:#F63" onClick="$('.tab').hide();$('#tab_2').show()">编辑资料</a>
     <a href="javascript://" style="background:#666" onClick="$('.tab').hide();$('#tab_3').show()">修改密码</a>
-    <?php }?>
+    <?php } ?>
     </div>
     <div class="cl"></div>
   </div>
@@ -61,84 +61,82 @@
       <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td class="th">用户性别：</td>
-          <td><?php $sex=array("女","男","保密");echo  $sex[$userinfo['sex']];?>
+          <td><?php $sex=array("女","男","保密");echo  $sex[$userinfo['gender']];?>
             &nbsp;</td>
         </tr>
         <tr>
           <td  class="th">在线时长：</td>
-          <td><?php echo round($userinfo['onlinetime'] / 60/60, 2).'小时';?>&nbsp; 登录
-            <?=$userinfo['logins']?>
-            次</td>
+          <td><?php echo round($userinfo['logintime'] / 60/60, 2).'小时';?></td>
         </tr>
         <tr>
           <td class="th">注册时间：</td>
-          <td><?php echo date('Y-m-d H:i:s',$userinfo['regdate']);?>&nbsp;</td>
+          <td><?php echo date('Y-m-d H:i:s',$userinfo['jointime']);?>&nbsp;</td>
         </tr>
         <tr>
           <td  class="th">用户组：</td>
-          <td><?php $arr=group_info($userinfo['gid']); echo $arr['title']."-".$arr['sn'];?>
+          <td><?php $arr=group_info($userinfo['group_id']); echo $arr['name']."-".$arr['sn'];?>
             &nbsp;</td>
         </tr>
 <?php
-if($userinfo['gid']=='3'){
+if($userinfo['group_id']=='3'){
 
 
 ?>
         <tr>
           <td class="th">客服手机：</td>
-          <td><?=$userinfo['phone']?>
+          <td>{$userinfo['phone']}
             &nbsp;</td>
         </tr>
         <tr>
           <td class="th">客服QQ：</td>
-          <td><a href="http://wpa.qq.com/msgrd?v=3&uin=<?=$userinfo['realname']?>&site=qq&menu=yes">
-    <?=$userinfo['realname']?></a>
+          <td><a href="http://wpa.qq.com/msgrd?v=3&uin={$userinfo['realname']}&site=qq&menu=yes">
+    {$userinfo['realname']}</a>
             &nbsp;</td>
         </tr>
 <?php
 }
 //后台管理资料
-if(check_auth('user_info_gl')){
+if($gl){
 
 ?>
         <tr>
           <td class="th">登录IP：</td>
-          <td><?=$userinfo['regip']?>
+          <td>{$userinfo['regip']}
             &nbsp;</td>
         </tr>
         <tr>
           <td class="th">邮箱：</td>
-          <td><?=$userinfo['email']?>
+          <td>{$userinfo['email']}
             &nbsp;</td>
         </tr>
         <tr>
           <td class="th">手机：</td>
-          <td><?=$userinfo['phone']?>
+          <td>{$userinfo['phone']}
             &nbsp;</td>
         </tr>
         <tr>
           <td class="th">QQ：</td>
-          <td><a href="http://wpa.qq.com/msgrd?v=3&uin=<?=$userinfo['realname']?>&site=qq&menu=yes">
-    <?=$userinfo['realname']?></a>
+          <td><a href="http://wpa.qq.com/msgrd?v=3&uin={$userinfo['realname']}&site=qq&menu=yes">
+    {$userinfo['realname']}</a>
             &nbsp;</td>
         </tr>
         <tr>
           <td class="th">用户关联：</td>
           <td>用户客服：
-            <?=$userinfo['fuser']?>
+            {$userinfo['fuser']}
             &nbsp; 推广人：
-            <?=$userinfo['tuser']?></td>
+            {$userinfo['tuser']}</td>
         </tr>
         <tr>
           <td class="th">备注：</td>
-          <td><?=$userinfo['sn']?>
+          <td>{$userinfo['sn']}
             &nbsp;</td>
         </tr>
         <?php }
 //end后台管理资料
 ?>
       </table>
-      <div class="user_pic"><img src="../face/img.php?t=p2&u=<?=$userinfo['uid']?>"></div>
+      <div class="user_pic"><img src="index/ajax/getFaceImg/?t=p2&u={$userinfo['id']}"></div>
     </div>
 
     <div id="tab_2" style="margin:10px;" class="ttff tab hide">
@@ -147,27 +145,27 @@ if(check_auth('user_info_gl')){
 
         <tr>
           <td class="th">用户昵称：</td>
-          <td><input name="nickname" type="text" id="nickname" value="<?=$userinfo['nickname']?>" style="width:120px;">
+          <td><input name="nickname" type="text" id="nickname" value="{$userinfo['nickname']}" style="width:120px;">
           性别：<select name="sex" id="sex">
-            <option value="<?=$userinfo['sex']?>"><?php $sex=array("女","男","保密");echo  $sex[$userinfo['sex']];?></option>
+            <option value="{$userinfo['gender']}"><?php $sex=array("女","男","保密");echo  $sex[$userinfo['gender']];?></option>
             <option value="1">男</option>
             <option value="0">女</option>
             <option value="2">保密</option>
           </select>
-          <input type="hidden" name="uid" value="<?=$userinfo['uid']?>"><input type="hidden" name="act" value="edit"></td>
+          <input type="hidden" name="uid" value="{$userinfo['id']}"><input type="hidden" name="act" value="edit"></td>
         </tr>
         <tr>
           <td  class="th">用户签名：</td>
-          <td><input name="mood" type="text" id="mood" value="<?=$userinfo['mood']?>">  </td>
+          <td><input name="mood" type="text" id="mood" value="{$userinfo['bio']}">  </td>
         </tr>
         <tr>
           <td class="th">联系邮箱：</td>
-          <td><input name="email" type="text" id="email" value="<?=$userinfo['email']?>" style=" width:115px">QQ:<input name="realname" type="text" id="realname" value="<?=$userinfo['realname']?>" style=" width:100px;"></td>
+          <td><input name="email" type="text" id="email" value="{$userinfo['email']}" style=" width:115px">QQ:<input name="realname" type="text" id="realname" value="{$userinfo['nickname']}" style=" width:100px;"></td>
         </tr>
 
                 <tr>
           <td  class="th">联系手机：</td>
-          <td><input name="phone" type="text" id="phone" value="<?=$userinfo['phone']?>">
+          <td><input name="phone" type="text" id="phone" value="{$userinfo['mobile']}">
             </td>
         </tr>
                         <tr>
@@ -178,7 +176,7 @@ if(check_auth('user_info_gl')){
           <td colspan="2"  class="th">推送消息：(私聊消息)</td>
           </tr>
 		<tr>
-		  <td colspan="2"  class="th"><textarea name="kfmsg" id="kfmsg" style="width:100%;" class="xheditor {height:120,tools:'FontSize,Bold,Italic,Underline,FontColor,Emot,Img,Source'}"><?=tohtml($userinfo['kfmsg'])?></textarea></td>
+		  <td colspan="2"  class="th"><textarea name="kfmsg" id="kfmsg" style="width:100%;" class="xheditor {height:120,tools:'FontSize,Bold,Italic,Underline,FontColor,Emot,Img,Source'}">{tohtml($userinfo['kfmsg'])}</textarea></td>
 		  </tr>
                                 <tr>
           <td  class="th">&nbsp;</td>
@@ -186,7 +184,7 @@ if(check_auth('user_info_gl')){
         </tr>
       </table>
       </form>
-      <div class="user_pic"><img src="../face/img.php?t=p2&u=<?=$userinfo['uid']?>"></div>
+      <div class="user_pic"><img src="index/ajax/getFaceImg/?t=p2&u={$userinfo['id']}"></div>
       <div class="user_edit_pic"><div id="epf"></div>
       <input type="button" onClick="saveToServer();" class="bc"  value="确定"  style="width:40px; border:0px;">
       <input type="button" onClick="$('.user_edit_pic').hide()" class="bc"  value="取消" style="width:40px; border:0px; background:#666"></div>
@@ -198,7 +196,7 @@ if(check_auth('user_info_gl')){
 
         <tr>
           <td class="th">旧密码：</td>
-          <td><input name="oldpwd" type="password" id="oldpwd" ><input type="hidden" name="uid" value="<?=$userinfo['uid']?>"><input type="hidden" name="act" value="editpwd"></td>
+          <td><input name="oldpwd" type="password" id="oldpwd" ><input type="hidden" name="uid" value="{$userinfo['id']}"><input type="hidden" name="act" value="editpwd"></td>
         </tr>
         <tr>
           <td  class="th">新密码：</td>
@@ -217,10 +215,9 @@ if(check_auth('user_info_gl')){
     </div>
   </div>
 </div>
-<?=$msg?>
-<script type="text/javascript" src="../xheditor/xheditor.js"></script>
-<script type="text/javascript" src="../xheditor/xheditor_lang/zh-cn.js"></script>
-<script type="text/javascript" src="../upload/swfupload/swfupload.js"></script>
+<script type="text/javascript" src="__CDN__/style/xheditor/xheditor.js"></script>
+<script type="text/javascript" src="__CDN__/style/xheditor/xheditor_lang/zh-cn.js"></script>
+<script type="text/javascript" src="__CDN__/style/upload/swfupload/swfupload.js"></script>
 <script>
 function thisMovie(movieName)
 {
