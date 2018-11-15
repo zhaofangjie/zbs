@@ -97,7 +97,12 @@ echo config('room.msg_unallowable');
   <div id="UI_Head">
     <div class="head" style=" background:#000" >
       <div id="head_box" class="head_box">
-        <div class="logo_bg" style="BACKGROUND: url(__CDN__/uploads/day_180814/201808141324549530.png) no-repeat"> <a href="{:url('room/ico')}" target="_blank" class="zmurl"><img src="__CDN__/style/room/images/icon1.png">桌面快捷</a> &nbsp;&nbsp; <a href="javascript:void(0)" class="kefu" onClick="openWin(2,'客服列表','kefu',810,500)"><img src="__CDN__/style/room/images/icon_qq.png">客服列表</a> </div>
+        <div class="logo_bg" style="BACKGROUND: url(<?php
+echo $cfg['config']['logo'];
+?>) no-repeat">
+<a href="{:url('room/ico')}" target="_blank" class="zmurl"><img src="__CDN__/style/room/images/icon1.png">桌面快捷</a>   
+ <a href="javascript:void(0)" class="kefu" onClick="openWin(2,'客服列表','apps/kefu',810,500)"><img src="__CDN__/style/room/images/icon_qq.png">客服列表</a>
+ </div>
         <div class="head_user">
                     {if $user}
 <a href="javascript:void(0)" class="userinfo" onClick="openWin(2,false,'profiles.php?uid={$user->id}',460,600)">
@@ -111,53 +116,23 @@ echo config('room.msg_unallowable');
     </div>
   </div>
   <div id="UI_Left">
-    <div id="UI_Left1" class="bg_png1">
-
-		<a href='javascript://' class='appico' onClick='openApp({"id":"6","title":"\u8d22\u7ecf\u65e5\u5386","ico":"\/upload\/upfile\/day_150430\/201504302308103419.png","url":"http:\/\/www.jin10.com\/jin10.com.html","w":"850","h":"630","target":"POPWin","s":"0","ov":"100"})' id='app_6'>
-		<img src='__CDN__/uploads/day_150430/201504302308103419.png' /><br>
-		<span>财经日历</span>
-		</a>
-
-		<a href='javascript://' class='appico' onClick='openApp({"id":"1","title":"\u558a\u5355\u63d0\u9192","ico":"\/upload\/upfile\/day_150430\/201504302308191061.png","url":"\/apps\/hd.php","w":"1000","h":"600","target":"POPWin","s":"0","ov":"99"})' id='app_1'>
-		<img src='__CDN__/uploads/day_150430/201504302308191061.png' /><br>
-		<span>喊单提醒</span>
-		</a>
-
-		<a href='javascript://' class='appico' onClick='openApp({"id":"2","title":"\u5728\u7ebf\u7b54\u7591","ico":"\/upload\/upfile\/day_150430\/201504302320344261.png","url":"\/apps\/wt.php","w":"1000","h":"600","target":"POPWin","s":"0","ov":"98"})' id='app_2'>
-		<img src='__CDN__/uploads/day_150430/201504302320344261.png' /><br>
-		<span>在线答疑</span>
-		</a>
-
-		<a href='javascript://' class='appico' onClick='openApp({"id":"8","title":"\u8bfe\u7a0b\u8868","ico":"\/upload\/upfile\/day_150430\/201504302259205356.png","url":"\/upload\/upfile\/day_150530\/201505301141396060.png","w":"1000","h":"600","target":"QPWin","s":"0","ov":"94"})' id='app_8'>
-		<img src='__CDN__/uploads/day_150430/201504302259205356.png' /><br>
-		<span>课程表</span>
-		</a>
-
-		<a href='javascript://' class='appico' onClick='openApp({"id":"5","title":"\u5171\u4eab\u6587\u6863","ico":"\/upload\/upfile\/day_150430\/201504302322063407.png","url":"\/apps\/files.php","w":"700","h":"500","target":"POPWin","s":"0","ov":"12"})' id='app_5'>
-		<img src='__CDN__/uploads/day_150430/201504302322063407.png' /><br>
-		<span>共享文档</span>
-		</a>
-
-		<a href='javascript://' class='appico' onClick='openApp({"id":"4","title":"\u6838\u5fc3\u5185\u53c2","ico":"\/upload\/upfile\/day_150430\/201504302321202271.png","url":"\/apps\/scpl.php","w":"1000","h":"600","target":"POPWin","s":"0","ov":"11"})' id='app_4'>
-		<img src='__CDN__/uploads/day_150430/201504302321202271.png' /><br>
-		<span>核心内参</span>
-		</a>
-
-		<a href='javascript://' class='appico' onClick='openApp({"id":"3","title":"\u8d8b\u52bf\u8ddf\u8e2a","ico":"\/upload\/upfile\/day_150430\/201504302308415495.png","url":"\/apps\/jyts.php","w":"1000","h":"600","target":"POPWin","s":"0","ov":"10"})' id='app_3'>
-		<img src='__CDN__/uploads/day_150430/201504302308415495.png' /><br>
-		<span>趋势跟踪</span>
-		</a>
-
-		<a href='javascript://' class='appico' onClick='openApp({"id":"7","title":"\u8bb2\u5e08\u699c","ico":"\/upload\/upfile\/day_150430\/201504302303453733.png","url":"\/apps\/rank.php","w":"820","h":"600","target":"POPWin","s":"0","ov":"0"})' id='app_7'>
-		<img src='__CDN__/uploads/day_150430/201504302303453733.png' /><br>
-		<span>讲师榜</span>
-		</a>
-		    </div>
+  <!-- 左侧小工具 -->
+     <div id="UI_Left1" class="bg_png1">
+{volist name="apps" id="app"}
+	<a href='javascript://' class='appico' onClick='openApp({:json_encode($app)})' id='app_{$app.id}'>
+	<img src='{$app.ico}' /><br><span>{$app.title}</span></a>
+{/volist}
+    </div>
     <div id="UI_Left2"  class="bg_png1">
     <div class="bg_png1">
-        <iframe height="71" width="100%" allowTransparency="true" marginwidth="0" marginheight="0"  frameborder="0" scrolling="no" src="http://192.168.1.98/index/vote/?rid=1"></iframe>
+    <!-- 投票 -->
+      <iframe height="71" width="100%" allowTransparency="true" marginwidth="0" marginheight="0"  frameborder="0" scrolling="no" src="/index/vote?rid=<?php
+echo $cfg['config']['id'];
+?>"></iframe>
       </div>
-      <div  class="title_tab"> <a href="javascript:void(0)" class="bg_png2" onClick="bt_SwitchListTab('User')" id="listTab1">在线会员(<span id="OnlineUserNum"></span>)</a> <a href="javascript:void(0)" onClick="bt_SwitchListTab('Other')" id="listTab2">我的客服(<span id="OnlineOtherNum"></span>)</a> </div>
+      <div  class="title_tab"> <a href="javascript:void(0)" class="bg_png2" onClick="bt_SwitchListTab('User')" id="listTab1">在线会员(<span id="OnlineUserNum"></span>)</a>
+      <a href="javascript:void(0)" onClick="bt_SwitchListTab('Other')" id="listTab2">
+{$userinfo['group_id'] == '3' ? "我的客户" : "我的客服"}(<span id="OnlineOtherNum"></span>)</a> </div>
       <div style="clear:both"></div>
       <div id="OnlineUser_Find" style="height:25px; margin:0px; padding:2px; overflow:hidden; line-height:25px; border:1px solid #999" class="bg_png2">
         <input name="" type="image" title="找人" onClick="bt_FindUser()" src="__CDN__/style/room/images/search.png" style="float:right; margin:5px;" />
@@ -169,23 +144,27 @@ echo config('room.msg_unallowable');
       <div id="OnLineUser_FindList" class="OnLineUser" style="height:50px;display:none" ></div>
       <div id="OnLineUser" class="OnLineUser"  style="height:50px;">
         <div id="group_my"></div>
-        <div id='group_14'></div><div id='group_13'></div><div id='group_12'></div><div id='group_11'></div><div id='group_15'></div><div id='group_4'></div><div id='group_3'></div><div id='group_2'></div><div id='group_0'></div><div id='group_1'></div><div id='group_16'></div><div id='group_17'></div>        <div id="group_rebots"></div>
+        {$groupli}
+        <div id="group_rebots"></div>
       </div>
-      <div style="height:100px; background:#fff"><img src="__CDN__/uploads/day_180814/201808141408256617.jpg" width=190></div>
+      <div style="height:100px; background:#fff">
+      <img src="{$cfg['config']['ewm']}" width='190'></div>
     </div>
 
   </div>
   <div id="UI_Right" class="bg_png">
-    <div id="RoomMV">
+		<div id="RoomMV">
       <div class="title_bar">
 		<span id="Div_VN1">直播视频</span> [<a href='javascript:showLive()'>刷新</a>]
-		<span id="defvideosrc">当前讲师:系统管理员</span> <span id="bt_defvideosrc" style="display:none"> [<a href='javascript:bt_defvideosrc()'>上课</a>]</span>
-		<a href="javascript://" onClick="openWin(2,'讲师榜','/apps/rank.php',820,600)" style="float:right; color:#FF0">《为讲师点赞》</a></div>
+		<span id="defvideosrc">当前讲师:{$cfg['config']['defvideonick']}</span>
+		<span id="bt_defvideosrc" style="display:none"> [<a href='javascript:bt_defvideosrc()'>上课</a>]</span>
+		<a href="javascript://" onClick="openWin(2,'讲师榜','/apps/rank',820,600)" style="float:right; color:#FF0">《为讲师点赞》</a></div>
       <div id="OnLine_MV">
       <span style="font-size:18px">您还没有安装flash播放器,请点击<a href="http://www.adobe.com/go/getflash" target="_blank"  style="font-size:18px;color:#090">这里</a>安装</span>
 
       </div>
     </div>
+
     <div class="bg_png2 NoticeList">
             <div class="tab bg_png1">
           <a href='javascript:void(0)' id='notice_1' class='notice_tab'>活动公告</a>          <a href='javascript:void(0)' id='notice_12' class='notice_tab'>财运直播介绍</a>          <div style=" clear:both"></div>

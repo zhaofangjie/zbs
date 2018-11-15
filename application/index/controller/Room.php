@@ -121,6 +121,10 @@ class Room extends Frontend
         $this->assign('cfg',$this->cfg);
         $this->assign('onlineip',request()->ip());
         $this->assign('userinfo',$userinfo);
+
+        //左侧工具栏
+        $apps = Db::table('zb_apps_manage')->where('s','0')->order('ov desc')->select();
+        $this->assign('apps',$apps);
         return $this->fetch();
     }
 
@@ -171,15 +175,13 @@ class Room extends Frontend
 
     //直播室用户登录
     protected function userLogin($u,$p){
-
         if($this->auth->login($u, $p)){
-
             session('login_uid',$this->auth->id);
             session('login_user',$this->auth->username);
             session('login_nick',$this->auth->nickname);
             session('login_gid',$this->auth->group_id);
             session('login_sex',$this->auth->gender);
-            //session('onlines_state.time',$time);
+            session('onlines_state.time',$time);
             $tuser = $this->userinfo(cookie('tg'), 'username');
             //随机找一个客服
             if (trim($tuser) == "") {
@@ -260,7 +262,6 @@ class Room extends Frontend
                 }
             }
         }
-
         return trim($rulestr,',');
     }
 

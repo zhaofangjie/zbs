@@ -1,21 +1,26 @@
 <?php
-/*
- *已转移至apps模块
- */
 namespace app\index\controller;
 
 use app\common\controller\Frontend;
-
 use think\Db;
 
-class Kefu extends Frontend
+
+/*
+ * 工具类 投票 客服 喊单
+ */
+class Apps extends Frontend
 {
-    protected $noNeedLogin = '*';
-    protected $noNeedRight = '*';
     protected $layout = '';
+    protected $noNeedLogin = ['kefu','vote'];
+    protected $noNeedRight = ['*'];
+
+    public function _initialize(){
+        parent::_initialize();
+        $auth = $this->auth;
+    }
 
     //展示客服
-    public function index(){
+    public function kefu(){
         //客服信息  调用QQ企业客服  调用客服的qq信息，客服组id号为3
         $data = Db::table('zb_user')->where('group_id','3')->select();
         $list='';
@@ -30,7 +35,12 @@ class Kefu extends Frontend
             ";
         }
         $this->assign('list',$list);
-       return $this->fetch();
+        return $this->fetch();
+
+    }
+
+    //讲师排行
+    public function rank(){
 
     }
 }
