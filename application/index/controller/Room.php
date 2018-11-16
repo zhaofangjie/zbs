@@ -41,6 +41,24 @@ class Room extends Frontend
         }
 
 
+        //如果已经登录,首次进入
+        if($this->auth->isLogin() and !session::has('login_uid')){
+            //如果已经的登录，则把直播室所需相关信息写入session
+            session('login_uid',$this->auth->id);
+            session('login_user',$this->auth->username);
+            session('login_nick',$this->auth->nickname);
+            session('login_gid',$this->auth->group_id);
+            session('login_sex',$this->auth->gender);
+            session('onlines_state.time',time());
+            $tuser = $this->userinfo(cookie('tg'), 'username');
+            //随机找一个客服
+            if (trim($tuser) == "") {
+                $rowt = Db::table("zb_user")->where('group_id',3)->where('status','normal')->orderRaw('rand()')->limit(1)->find();
+                $tuser = $this->auth->username;
+                cookie("tg", $this->auth->id, time() + 315360000, '/');
+            }
+        }
+
         //如果客户没有登录，且系统允许游客登录，则赋予游客身份并随机分配客服
         if (!session::has('login_uid') and $this->cfg['config']['loginguest'] == "1") {
             if ($this->gusetLogin()) {
@@ -48,11 +66,6 @@ class Room extends Frontend
             }
         }
 
-        //没有登录不允许访问
-        if (!session::has('login_uid')) {
-            exit("<script>location.href='/index/user/login'</script>");
-            exit;
-        }
         $uid = session('login_uid');
         //更新用户ip
         Db::table('zb_user')->update(['joinip'=>request()->ip(),'id'=>$uid]);
@@ -110,8 +123,17 @@ class Room extends Frontend
         //房间号写入session
 
         if (!Session::has('room_' . $uid . '_' . $this->cfg['config']['id'])) {
-            Db::query("insert into zb_msg(rid,ugid,uid,uname,tuid,tname,mtime,ip,msg,`type`)values('{$this->cfg['config']['id']}','{$userinfo['group_id']}','{$userinfo['id']}','{$userinfo['username']}','{$this->cfg['config']['defvideo']}','{$this->cfg['config']['defvideonick']}','" .time(). "','{request()->ip()}','登陆直播间','3')");
+            $data['rid']=$this->cfg['config']['id']; //房间号
+            $data['ugid'] = $userinfo['group_id'];      //用户组
+            $data['uname'] = $userinfo['username'];
+            $data['tuid'] = $this->cfg['config']['defvideo'];
+            $data['tname']=$this->cfg['config']['defvideonick'];
+            $data['mtime'] = time();
+            $data['ip'] = request()->ip();
+            $data['msg'] = '登录直播间';
+            $data['type'] = '3';
             //插入数据库登录数据
+            Db::table('zb_msg')->insert($data);
             session('room_' . $uid . '_' . $this->cfg['config']['id'],1);
         }
 
@@ -148,9 +170,9 @@ class Room extends Frontend
     }
 
     protected function gusetLogin(){
-        if (!(Cookie::has('guest')) ||cookie('guest') == "" || cookie('guest') == "deleted") {
+        //是否已经登录，1.auth登录  2.游客登录
+        if (!session::has('login_uid')) {
             $guest = "游客" . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9);
-            $regtime = time();
             $p = md5(md5('123123').'guest');
 
             $tuser =$this->userinfo(cookie('tg'), 'username');
@@ -161,8 +183,26 @@ class Room extends Frontend
                 cookie("tg", $rowt['id'], time() + 315360000, '/');
             }
             $onlineip = request()->ip();
-            Db::query("insert into zb_user(username,password,salt,gender,email,jointime,joinip,logintime,prevtime,score,nickname,group_id,mobile,kuser,tuser,status,level)\tvalues('{$guest}','{$p}','guest','2','','{$regtime}','{$onlineip}','{$regtime}','{$regtime}','0','0','0','0','{$tuser}','{$tuser}','normal',0)");
+            //插入游客数据
+
+            $data['username'] = $guest;
+            $data['password'] = $p;
+            $data['salt'] = 'guest';
+            $data['gender'] = '2';
+            $data['jointime']= time();
+            $data['joinip'] = request()->ip();
+            $data['logintime'] = time();
+            $data['prevtime'] = time();
+            $data['nickname']= $guest;
+            $data['group_id'] = '0';
+            $data['kuser'] = $tuser;
+            $data['tuser'] = $tuser;
+            $data['status'] = 'normal';
+            $data['level'] = '0';
+
+            $id = Db::table('zb_user')->insert($data);
             cookie("guest", $guest, time() + 315360000, "/");
+            session('login_uid',$id);
         } else {
             //如果登录失败，则将游客信息置空，表示重新配置
             if ($this->userLogin(cookie('guest'), '123123') != true) {
@@ -174,14 +214,14 @@ class Room extends Frontend
     }
 
     //直播室用户登录
-    protected function userLogin($u,$p){
+    protected function userLogin($u,$p=''){
         if($this->auth->login($u, $p)){
             session('login_uid',$this->auth->id);
             session('login_user',$this->auth->username);
             session('login_nick',$this->auth->nickname);
             session('login_gid',$this->auth->group_id);
             session('login_sex',$this->auth->gender);
-            session('onlines_state.time',$time);
+            session('onlines_state.time',time());
             $tuser = $this->userinfo(cookie('tg'), 'username');
             //随机找一个客服
             if (trim($tuser) == "") {

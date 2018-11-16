@@ -38,7 +38,7 @@ echo $userinfo['id'];
 ?>',name:'<?php
 echo $userinfo['username'];
 ?>',nick:'<?php
-echo $userinfo['nickname'];
+echo $userinfo['username'];
 ?>',sex:'<?php
 echo $userinfo['gender'];
 ?>',age:'0',fuser:'<?php
@@ -132,7 +132,7 @@ echo $cfg['config']['id'];
       </div>
       <div  class="title_tab"> <a href="javascript:void(0)" class="bg_png2" onClick="bt_SwitchListTab('User')" id="listTab1">在线会员(<span id="OnlineUserNum"></span>)</a>
       <a href="javascript:void(0)" onClick="bt_SwitchListTab('Other')" id="listTab2">
-{$userinfo['group_id'] == '3' ? "我的客户" : "我的客服"}(<span id="OnlineOtherNum"></span>)</a> </div>
+{$userinfo['group_id'] != '3' ? "我的客户" : "我的客服"}(<span id="OnlineOtherNum"></span>)</a> </div>
       <div style="clear:both"></div>
       <div id="OnlineUser_Find" style="height:25px; margin:0px; padding:2px; overflow:hidden; line-height:25px; border:1px solid #999" class="bg_png2">
         <input name="" type="image" title="找人" onClick="bt_FindUser()" src="__CDN__/style/room/images/search.png" style="float:right; margin:5px;" />
