@@ -46,6 +46,7 @@ class Mlogin extends Frontend
            Cookie::delete('uid');
            Cookie::delete('token');
            Cookie::delete('guest');
+           Session::delete('login_uid');
        });
     }
 

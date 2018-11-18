@@ -41,7 +41,7 @@ function vote_N(n){
 	show_vote(n);
 }
 function more_vote(value,vote_id){
-	$.post('vote' ,{rid:{$rid},vid:vote_id,v:value},function(data){
+	$.post('vote/vote' ,{rid:{$rid},vid:vote_id,v:value},function(data){
 		if( data.status){
 			top.layer.msg('投票成功');
 		}else{
@@ -52,7 +52,7 @@ function more_vote(value,vote_id){
 	show_vote(vote_id);
 }
 function show_vote(vid){
-	$.post('show' ,{rid:{$rid},vid:vid},function(data){
+	$.post('vote/show' ,{rid:{$rid},vid:vid},function(data){
 		if( data.status){
 			var sum=data.v1+data.v2+data.v3;
 

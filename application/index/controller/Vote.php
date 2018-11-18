@@ -37,7 +37,7 @@ class Vote extends Frontend
 
     public function Vote(){
         //用户登录后的id，开发期间先给默认值
-        //$uid = $Think.session.uid;
+        $uid = session('login_uid');
         $uid = 3307;
         $vid = $this->request->param('vid');
         $rid = $this->request->param('rid');
@@ -48,7 +48,7 @@ class Vote extends Frontend
             return json($data);
         }
 
-        if(count(Db::query("select * from zb_apps_vote where uid='$uid' and vid='$vid' and FROM_UNIXTIME(time,'%Y%m%d')='".date('Ymd',gdate())."'"))>0){
+        if(count(Db::query("select * from zb_apps_vote where uid='$uid' and vid='$vid' and FROM_UNIXTIME(time,'%Y%m%d')='".date('Ymd',time())."'"))>0){
             $data["status"]=0;
             $data["msg"]="你今日已经投过了！明日再投";
             return json($data);
@@ -57,7 +57,7 @@ class Vote extends Frontend
         $tmpdata['vid'] = $vid;
         $tmpdata['uid'] = $uid;
         $tmpdata['v'] =$v;
-        $tmpdata['time'] = gdate();
+        $tmpdata['time'] = time();
         if(Db::table('zb_apps_vote')->insert($tmpdata)){
             $data["status"]=1;
             $data["msg"]="投票成功";

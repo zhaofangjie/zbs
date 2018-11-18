@@ -132,7 +132,7 @@ echo $cfg['config']['id'];
       </div>
       <div  class="title_tab"> <a href="javascript:void(0)" class="bg_png2" onClick="bt_SwitchListTab('User')" id="listTab1">在线会员(<span id="OnlineUserNum"></span>)</a>
       <a href="javascript:void(0)" onClick="bt_SwitchListTab('Other')" id="listTab2">
-{$userinfo['group_id'] != '3' ? "我的客户" : "我的客服"}(<span id="OnlineOtherNum"></span>)</a> </div>
+{$userinfo['group_id'] == '3' ? "我的客户" : "我的客服"}(<span id="OnlineOtherNum"></span>)</a> </div>
       <div style="clear:both"></div>
       <div id="OnlineUser_Find" style="height:25px; margin:0px; padding:2px; overflow:hidden; line-height:25px; border:1px solid #999" class="bg_png2">
         <input name="" type="image" title="找人" onClick="bt_FindUser()" src="__CDN__/style/room/images/search.png" style="float:right; margin:5px;" />
@@ -158,7 +158,7 @@ echo $cfg['config']['id'];
 		<span id="Div_VN1">直播视频</span> [<a href='javascript:showLive()'>刷新</a>]
 		<span id="defvideosrc">当前讲师:{$cfg['config']['defvideonick']}</span>
 		<span id="bt_defvideosrc" style="display:none"> [<a href='javascript:bt_defvideosrc()'>上课</a>]</span>
-		<a href="javascript://" onClick="openWin(2,'讲师榜','/apps/rank',820,600)" style="float:right; color:#FF0">《为讲师点赞》</a></div>
+		<a href="javascript://" onClick="openWin(2,'讲师榜','apps/rank',820,600)" style="float:right; color:#FF0">《为讲师点赞》</a></div>
       <div id="OnLine_MV">
       <span style="font-size:18px">您还没有安装flash播放器,请点击<a href="http://www.adobe.com/go/getflash" target="_blank"  style="font-size:18px;color:#090">这里</a>安装</span>
 

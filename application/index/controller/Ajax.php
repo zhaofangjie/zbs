@@ -101,4 +101,10 @@ class Ajax extends Frontend
              exit();
         }
     }
+    
+    
+    //我的客服
+    public function getmylist(){
+        
+    }
 }

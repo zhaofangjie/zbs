@@ -33,16 +33,14 @@ class Room extends Frontend
 
     public function index(){
 
-
         //判断房间状态
         $url = $this->request->request('url');
         if ($this->cfg['config']['state'] == '0') {
             $this->error('系统处于关闭状态！请稍候……',$url);
         }
 
-
-        //如果已经登录,首次进入
-        if($this->auth->isLogin() and !session::has('login_uid')){
+        //如果已经登录,首次进入,将客户信息写入session
+        if($this->auth->id){
             //如果已经的登录，则把直播室所需相关信息写入session
             session('login_uid',$this->auth->id);
             session('login_user',$this->auth->username);
@@ -54,13 +52,13 @@ class Room extends Frontend
             //随机找一个客服
             if (trim($tuser) == "") {
                 $rowt = Db::table("zb_user")->where('group_id',3)->where('status','normal')->orderRaw('rand()')->limit(1)->find();
-                $tuser = $this->auth->username;
-                cookie("tg", $this->auth->id, time() + 315360000, '/');
+                $tuser =  $rowt['username'];
+                cookie("tg",$rowt['id'], time() + 315360000, '/');
             }
         }
 
         //如果客户没有登录，且系统允许游客登录，则赋予游客身份并随机分配客服
-        if (!session::has('login_uid') and $this->cfg['config']['loginguest'] == "1") {
+        if (!session::has('login_uid') and ($this->cfg['config']['loginguest'] == "1")) {
             if ($this->gusetLogin()) {
                 exit("<script>location.reload();</script>");
             }
@@ -170,8 +168,8 @@ class Room extends Frontend
     }
 
     protected function gusetLogin(){
-        //是否已经登录，1.auth登录  2.游客登录
-        if (!session::has('login_uid')) {
+        //游客是否登陆
+        if (!cookie::has('guest') || cookie('guest') == '' || cookie('guest')=='deleted') {
             $guest = "游客" . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9);
             $p = md5(md5('123123').'guest');
 
@@ -199,12 +197,11 @@ class Room extends Frontend
             $data['tuser'] = $tuser;
             $data['status'] = 'normal';
             $data['level'] = '0';
-
+                
             $id = Db::table('zb_user')->insert($data);
-            cookie("guest", $guest, time() + 315360000, "/");
-            session('login_uid',$id);
+            cookie("guest", $guest, time() + 315360000, "/");          
         } else {
-            //如果登录失败，则将游客信息置空，表示重新配置
+            //如果登录失败，则将游客信息置空，清空cookie，重新赋予游客身份
             if ($this->userLogin(cookie('guest'), '123123') != true) {
                 cookie("guest", '', time() - 1, "/");
                 return false;
@@ -227,7 +224,7 @@ class Room extends Frontend
             if (trim($tuser) == "") {
                 $rowt = Db::table("zb_user")->where('group_id',3)->where('prevtime','>',time()-3600*24)->orderRaw('rand()')->limit(1)->find();
                 $tuser = $this->auth->username;
-                cookie("tg", $this->auth->id, time() + 315360000, '/');
+                cookie("tg", $rowt['id'], time() + 315360000, '/');
             }
             return true;
         }
