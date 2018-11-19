@@ -12,14 +12,14 @@
 html{height:100%; }
 body{background:#fff;font-family:microsoft yahei,Helvetica,arial,sans-serif;font-size:14px;color:#888;}
 .grap{width:800px;margin:0 auto;}
-.grap h1{text-align:center;color:#ff0;font-size:36px;background:url(__CDN__/style/room/images/tbg.gif) center no-repeat;}
+.grap h1{text-align:center;color:#ff0;font-size:36px;background:url(__CDN__/style/apps/img/tbg.gif) center no-repeat;}
 li i{font-style:normal;}
 .grap h1 i{font-size:14px;font-style:normal;font-weight:normal;margin-left:10px;color:#E8C2C6;}
 .vote{clear:both;padding:25px;border:2px solid #B20000;border-radius:15px;}
 .vote li{height:115px; padding-top:15px;border-bottom:1px solid #ddd;list-style-type:none;}
-.vote li a{float:right;width:100px; height:100px;display:block;background:url(__CDN__/style/room/images/vote.gif) no-repeat;font-size:0px;overflow:hidden;text-indent:-50px;}
-.vote li a:hover{background:url(__CDN__/style/room/images/voon.gif) no-repeat;}
-.vote li a.voted{background:url(__CDN__/style/room/images/voted.gif) no-repeat;}
+.vote li a{float:right;width:100px; height:100px;display:block;background:url(__CDN__/style/apps/img/vote.gif) no-repeat;font-size:0px;overflow:hidden;text-indent:-50px;}
+.vote li a:hover{background:url(__CDN__/style/apps/img/voon.gif) no-repeat;}
+.vote li a.voted{background:url__CDN__/style/apps/img/voted.gif) no-repeat;}
 .vote li p{float:left;width:620px;}
 .v_name{height:35px;line-height:35px;font-size:18px;color:#333;}
 .v_name i{float:right;padding-right:10px;font-style:normal;color:#B20000;}
@@ -42,18 +42,18 @@ $(function(){
 
 	calpercent();
 
-	
+
 });
 function calpercent(){
 		$('ul li').each(function(){
 			var count = parseInt($(this).find('.count').text());
 			var amount = parseInt($(this).find('.amount').text());
-			
+
 			var percent= sum ? Math.round(amount/sum*10000)/100: 1;
 			percent = percent+'%';
 			$(this).find('.percent').html(percent);
 			$(this).find('.percent_line').css('width',percent);
-		
+
 		});
 }
 function vote(t){
@@ -80,14 +80,14 @@ function vote(t){
 </script>
 <body>
 <div class="grap">
-<h1><?=date('Y年m',strtotime($om."28"))?>月讲师榜单</h1>
+<h1>{$om}月讲师榜单</h1>
 <span style="position:absolute;right:12px;top:12px;text-decoration:none;font-size:16px;color:#f00;" >
 <select onChange="location.href='?om='+this.value">
 <?="<option value='".date('Ym',time())."'>历史排行榜</option>"?>
 <?="<option value='".date('Ym',time())."'>".date('Y年m月',time())."排行榜</option>"?>
 <?="<option value='".date('Ym',strtotime('-1 month'))."'>".date('Y年m月',strtotime('-1 month'))."排行榜</option>"?>
 <?="<option value='".date('Ym',strtotime('-2 month'))."'>".date('Y年m月',strtotime('-2 month'))."排行榜</option>"?>
-<?="<option value='".date('Ym',strtotime('-2 month'))."'>".date('Y年m月',strtotime('-3 month'))."排行榜</option>"?>
+<?="<option value='".date('Ym',strtotime('-3 month'))."'>".date('Y年m月',strtotime('-3 month'))."排行榜</option>"?>
 </select></span>
 <div class="vote">
 <ul id='vote'>

@@ -25,7 +25,6 @@ class Room extends Frontend
         parent::_initialize();
         $auth = $this->auth;
 
-
         //读取房间配置
         //默认为第一个房间配置
         $this->cfg['config'] = Db::table('zb_room_config')->where('id',1)->find();
@@ -197,9 +196,9 @@ class Room extends Frontend
             $data['tuser'] = $tuser;
             $data['status'] = 'normal';
             $data['level'] = '0';
-                
+
             $id = Db::table('zb_user')->insert($data);
-            cookie("guest", $guest, time() + 315360000, "/");          
+            cookie("guest", $guest, time() + 315360000, "/");
         } else {
             //如果登录失败，则将游客信息置空，清空cookie，重新赋予游客身份
             if ($this->userLogin(cookie('guest'), '123123') != true) {

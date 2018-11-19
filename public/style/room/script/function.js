@@ -305,7 +305,7 @@ UserList=(function(){
 		get:function(id){return list[id];},
 		getmylist:function(user){
 
-			$.ajax({type: 'get',dataType:'json',url: '../ajax.php?act=getmylist&rid='+My.rid+'&user='+encodeURIComponent(My.name),
+			$.ajax({type: 'get',dataType:'json',url: 'ajax/getmylist?rid='+My.rid+'&user='+encodeURIComponent(My.name),
 			success:function(data){
 				//alert(data);
 				addmyuser=function(u){
@@ -315,7 +315,7 @@ UserList=(function(){
 
 					li.innerHTML='<a href="javascript:void(0)"><font style="color:#FFF">'
 					 +iscam
-					 +'<cite><img src="index/ajax/getFaceImg/?t=p1&u='+u.chatid+'" border="0" class="head" /></cite>'
+					 +'<cite><img src="ajax/getFaceImg/?t=p1&u='+u.chatid+'" border="0" class="head" /></cite>'
 					 +'<dt><strong id="cnick_'+u.chatid+'">'+u.nick+'</strong> &nbsp;<code> </code></dt>'
 					 +'<dl> </dl>'
 					 +'</font></a>';

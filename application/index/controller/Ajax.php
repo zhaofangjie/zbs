@@ -13,9 +13,23 @@ use think\Db;
 class Ajax extends Frontend
 {
 
-    protected $noNeedLogin = ['lang','getrlist','getFaceImg'];
+    protected $noNeedLogin = ['lang','getrlist','getFaceImg','getmylist'];
     protected $noNeedRight = ['*'];
     protected $layout = '';
+
+    protected $cfg;
+
+    public function _initialize()
+    {
+        parent::_initialize();
+        $auth = $this->auth;
+
+
+        //读取房间配置
+        //默认为第一个房间配置
+        $this->cfg['config'] = Db::table('zb_room_config')->where('id',1)->find();
+    }
+
 
     /**
      * 加载语言包
@@ -101,10 +115,48 @@ class Ajax extends Frontend
              exit();
         }
     }
-    
-    
+
+
     //我的客服
     public function getmylist(){
-        
+        $data['state'] = 'false';
+        $uid = session('login_uid');
+        //$userinfo = $db->fetch_row($db->query("select m.*,ms.* from {$tablepre}members m,{$tablepre}memberfields ms  where m.uid=ms.uid and m.uid='{$uid}'"));
+        $userinfo = Db::name('user')->find($uid);
+        $i = 0;
+        if ($userinfo['group_id'] != '3') {
+            if ($userinfo['kuser'] == "") {
+                //如果没有专属客服，则分配当日值班客服
+                $userinfo['kuser'] = $this->cfg['config']['defkf'];
+            }
+            //$query = $db->query("select m.*,ms.* from {$tablepre}members m left join {$tablepre}memberfields ms\r\n\t\t\t\t\t\t\t  on m.uid=ms.uid   where m.username ='{$userinfo['fuser']}'");
+            $query = Db::name('user')->where('username',$userinfo['kuser'])->select();
+            if(!empty($query)){
+                foreach($query as $row){
+                    $tmp['uid'] = $row['id'];
+                    $tmp['chatid'] = $row['id'];
+                    $tmp['nick'] = $row['nickname'];
+                    $tmp['phone'] = $row['mobile'];
+                    $tmp['qq'] = $row['realname'];
+                    $tmp['gid'] = $row['group_id'];
+                    $tmp['mood'] = $row['bio'];
+                    $data['row'][$i++] = $tmp;
+                    $data['state'] = 'true';
+                }
+            }
+        } else {
+            $query = $db->query("select m.*,ms.* from {$tablepre}members m left join {$tablepre}memberfields ms\r\n\t\t\t\t\t\t\t  on m.uid=ms.uid   where m.fuser='{$user}' and m.username!='{$user}' order by m.uid desc");
+            while ($row = $db->fetch_row($query)) {
+                $tmp['uid'] = $row['uid'];
+                $tmp['chatid'] = $row['uid'];
+                $tmp['nick'] = $row['nickname'];
+                $tmp['phone'] = $row['phone'];
+                $tmp['qq'] = $row['realname'];
+                $tmp['gid'] = $row['gid'];
+                $data['row'][$i++] = $tmp;
+                $data['state'] = 'true';
+            }
+        }
+        return json($data);
     }
 }
