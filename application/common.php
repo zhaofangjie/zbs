@@ -315,3 +315,10 @@ if(!function_exists('group_info')){
         return null;
     }
 }
+
+if(!function_exists('tohtml')){
+    function tohtml($str)
+    {
+        return str_replace(array('&', '"', '<', '>'), array('&', '"', '<', '>'), $str);
+    }
+}

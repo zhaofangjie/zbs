@@ -134,13 +134,51 @@ class Room extends Frontend
             session('room_' . $uid . '_' . $this->cfg['config']['id'],1);
         }
 
-        //直播室权限检查
+        
+        //幻灯广告
+        
+        $query = Db::name('notice')->where('type','notice')->order("ov desc,id desc")->select();
+        $tab='';
+        $txt='';
+       foreach($query as $row){
+            $tab .= "<a href='javascript:void(0)' id='notice_".$row['id']."' class='notice_tab'>".$row['title']."</a>";
+            $txt .= "<div id='notice_".$row['id']."_div' class='notice_div' style='display:none'>" . tohtml($row['txt']) . "</div>";
+        }
+        
+      
+        $query = Db::name('notice')->where('id',1)->select();
+        foreach($query as $row) {
+            $pic_ad_c = "<div id='notice_".$row['id']."_div' class='notice_div' style='display:none'>" . tohtml($row['txt']) . "</div>";
+            $pic_ad_t = "<a href='javascript:void(0)' id='notice_".$row['id']."' class='notice_tab'>{$row['title']}</a>";
+        }
+        
+        //滚动广告
+     
+        $query = Db::name('msg')->where('rid',$this->cfg['config']['id'])->where('state',2)->where('type','0')->order('id desc')->find();
+        $msga="<span style='color:#FF0'>" . tohtml($query['msg']) . "</span>";
+        
+        $query = Db::name('msg')->where('rid',$this->cfg['config']['id'])->where('state',3)->where('type','0')->order('id desc')->find();
+        $msgb="<span style='color:red'>" . tohtml($query['msg']) . "</span>";
+
+        
+        //首页弹窗
+        $query = Db::name('notice')->find(2);
+        $msgc=tohtml($query['txt']);
+        
+        $this->assign('msga',$msga);
+        $this->assign('msgb',$msgb);
+        $this->assign('msgc',$msgc);
+        $this->assign('tab',$tab);
+        $this->assign('txt',$txt);
+        $this->assign('pic_ad_c',$pic_ad_c);
+        $this->assign('pic_ad_t',$pic_ad_t);
         $this->assign('ts',$ts);
         $this->assign('omsg',$omsg);
         $this->assign('cfg',$this->cfg);
         $this->assign('onlineip',request()->ip());
         $this->assign('userinfo',$userinfo);
 
+        
         //左侧工具栏
         $apps = Db::table('zb_apps_manage')->where('s','0')->order('ov desc')->select();
         $this->assign('apps',$apps);

@@ -167,10 +167,14 @@ echo $cfg['config']['id'];
 
     <div class="bg_png2 NoticeList">
             <div class="tab bg_png1">
-          <a href='javascript:void(0)' id='notice_1' class='notice_tab'>活动公告</a>          <a href='javascript:void(0)' id='notice_12' class='notice_tab'>财运直播介绍</a>          <div style=" clear:both"></div>
-        </div>
+            {$pic_ad_t}
+            {$tab}
+            <div style=" clear:both"></div>
+           </div>
       <div id="NoticeList" style="height:50px;">
-        <div id='notice_1_div' class='notice_div' style='display:none'><div style="height:250px; width:100%; overflow:hidden" id="gd_ad"><!--这里开始广告代码   其他勿动-->        <a href="javascript://" target="_blank"><img src="__CDN__/uploads/day_150526/11111.png" width="100%" height="100%" alt="" /></a><a href="javascript://" target="_blank"><img src="__CDN__/uploads/day_150526/201505261637226033.jpg" width="100%" height="100%" alt="" /></a>  <!--这里结束广告代码   其他勿动--></div>                                                     </div>        <div id='notice_12_div' class='notice_div' style='display:none'><span style="font-family:Microsoft YaHei;"><span style="font-size: 16px;">跟着老师不挣钱，80%以上都是贪心所致，另外20%是胆小</span></span></div>      </div>
+         {$pic_ad_c}{$txt}
+       </div>      
+       
 <script>
 	$('.tab a:first').addClass('active');
 	$('.notice_div:first').css('display','');
@@ -203,7 +207,7 @@ echo $cfg['config']['id'];
   <div id="UI_Central"  class="bg_png">
     <div class="title_bar">
     <marquee scrollamount="3" id="msg_tip_show">
-    我是帅哥
+  {$msga}
     	    </marquee>
     </div>
     <div id="MsgBox" style="position:relative;">
@@ -217,7 +221,7 @@ echo $cfg['config']['id'];
     <div id="UI_Control" class="tool_bar" >
     <div style="background:#FFF; height:30px; line-height:30px; overflow: hidden; font-size:14px;">
     <marquee scrollamount="3" id="msg_tip_admin_show">
-    <span style="color:red">我是美女</span>
+    {$msgb}
         </marquee>
     </div>
     <select id="ToUser">
@@ -308,7 +312,8 @@ echo $cfg['config']['id'];
 </form>
 <iframe name="e" id="e" style="display:none"></iframe>
 <div id="tip_login_win" style="display:none">
-<div>     <div class="ad mt10 tc"><a href="#" target="_blank"><img src="__CDN__/uploads/day_150601/300.png" alt="" /></a></div></div></div>
+{$msgc}
+</div>
 </body>
 </html>
 <script>OnInit();</script>

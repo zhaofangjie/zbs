@@ -117,10 +117,12 @@ class Ajax extends Frontend
     }
 
 
-    //我的客服
+    //客户与客服
     public function getmylist(){
         $data['state'] = 'false';
         $uid = session('login_uid');
+        $rid = $this->request->param('rid');
+        $user = $this->request->param('user');
         //$userinfo = $db->fetch_row($db->query("select m.*,ms.* from {$tablepre}members m,{$tablepre}memberfields ms  where m.uid=ms.uid and m.uid='{$uid}'"));
         $userinfo = Db::name('user')->find($uid);
         $i = 0;
@@ -129,7 +131,6 @@ class Ajax extends Frontend
                 //如果没有专属客服，则分配当日值班客服
                 $userinfo['kuser'] = $this->cfg['config']['defkf'];
             }
-            //$query = $db->query("select m.*,ms.* from {$tablepre}members m left join {$tablepre}memberfields ms\r\n\t\t\t\t\t\t\t  on m.uid=ms.uid   where m.username ='{$userinfo['fuser']}'");
             $query = Db::name('user')->where('username',$userinfo['kuser'])->select();
             if(!empty($query)){
                 foreach($query as $row){
@@ -145,17 +146,21 @@ class Ajax extends Frontend
                 }
             }
         } else {
-            $query = $db->query("select m.*,ms.* from {$tablepre}members m left join {$tablepre}memberfields ms\r\n\t\t\t\t\t\t\t  on m.uid=ms.uid   where m.fuser='{$user}' and m.username!='{$user}' order by m.uid desc");
-            while ($row = $db->fetch_row($query)) {
-                $tmp['uid'] = $row['uid'];
-                $tmp['chatid'] = $row['uid'];
-                $tmp['nick'] = $row['nickname'];
-                $tmp['phone'] = $row['phone'];
-                $tmp['qq'] = $row['realname'];
-                $tmp['gid'] = $row['gid'];
-                $data['row'][$i++] = $tmp;
-                $data['state'] = 'true';
-            }
+            //我的客户
+           $query = Db::name('user')->where('kuser',$user)->where('username','<>',$user)->select();
+
+           if(!empty($query)){
+               foreach($query as $row){
+                   $tmp['uid'] = $row['id'];
+                   $tmp['chatid'] = $row['id'];
+                   $tmp['nick'] = $row['nickname'];
+                   $tmp['phone'] = $row['mobile'];
+                   $tmp['qq'] = $row['realname'];
+                   $tmp['gid'] = $row['group_id'];
+                   $data['row'][$i++] = $tmp;
+                   $data['state'] = 'true';
+               }
+           }
         }
         return json($data);
     }
