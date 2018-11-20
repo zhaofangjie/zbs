@@ -102,9 +102,15 @@ class Ajax extends Frontend
 
     //随机头像
     public function getFaceImg(){
-        $data = $this->request->param();
-        $u = '/style/face/'.$data['t'].'/'.$data['u'].'.gif';
-        if(file_exists($u)) header("Location: $u");
+        $t = $this->request->param('t');
+        $p = $this->request->param('u');
+
+        $u = './style/face/'.$t.'/'.$p.'.gif';
+        //如果头像存在，则直接返回
+        if(file_exists($u)){
+            header("Content-Type:image/gif");
+            readfile($u);
+        }
         else
         {
             if($_GET['t']=='p1')
@@ -123,7 +129,6 @@ class Ajax extends Frontend
         $uid = session('login_uid');
         $rid = $this->request->param('rid');
         $user = $this->request->param('user');
-        //$userinfo = $db->fetch_row($db->query("select m.*,ms.* from {$tablepre}members m,{$tablepre}memberfields ms  where m.uid=ms.uid and m.uid='{$uid}'"));
         $userinfo = Db::name('user')->find($uid);
         $i = 0;
         if ($userinfo['group_id'] != '3') {

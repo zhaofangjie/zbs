@@ -324,7 +324,7 @@ UserList=(function(){
 						li.innerHTML=li.innerHTML+'<p class="sn bg_png1">客户介绍: '+u.mood+'</p>';
 					}
 					li.oncontextmenu=function(){UserList.menu_kf(u);return false;}
-					li.onclick=function(){ToUser.set(u.chatid,u.nick);openWin(2,false,'profiles.php?uid='+u.chatid,460,600);}
+					li.onclick=function(){ToUser.set(u.chatid,u.nick);openWin(2,false,'room/profiles/?uid='+u.chatid,460,600);}
 					//li.ondblclick=function(){if(u.chatid!=My.chatid||u.chatid.indexOf('x_r')<0){POPChat.newtab(u);POPChat.showtab(u);}}
 					$(li).find('.osl').click(function(){if(u.chatid!=My.chatid||u.chatid.indexOf('x_r')<0){POPChat.newtab(u);POPChat.showtab(u);}return false;});
 					$(li).find('.qsl').click(function(){window.open('http://wpa.qq.com/msgrd?v=3&uin='+u.qq+'&site=qq&menu=yes');return false;});
@@ -515,7 +515,7 @@ UserList=(function(){
 			//UserMenu.add('Vlove.gif','视频语音对聊',function(){if(confirm("请求和"+u.nick+"视频密聊"))VideoList.Connect(u.chatid,u.nick,0);getId('menu').style.display='none';});
 			//UserMenu.add('lw.gif','赠送礼物',function(){bt_gifts();ToUser.set(u.chatid,u.nick);getId('menu').style.display='none';});
 			UserMenu.hr();
-			UserMenu.add('zl.gif','查看资料',function(){getId('menu').style.display='none';if(!check_auth("user_info")){layer.msg('没有用户资料查看权限！',{shift: 6});return;}openWin(2,false,'profiles.php?uid='+u.chatid,460,600);});
+			UserMenu.add('zl.gif','查看资料',function(){getId('menu').style.display='none';if(!check_auth("user_info")){layer.msg('没有用户资料查看权限！',{shift: 6});return;}openWin(2,false,'room/profile?uid='+u.chatid,460,600);});
 			UserMenu.hr();
 			UserMenu.add('pb.gif','屏蔽消息',function(){BList.add(u.chatid,u);getId('menu').style.display='none';});
 
@@ -537,7 +537,7 @@ UserList=(function(){
 			var UserMenu= Menu.init('120px');
 			if(My.chatid==u.chatid)
 			{
-				UserMenu.add('zl.gif','个人资料',function(){getId('menu').style.display='none';openWin(2,false,'profiles.php?uid='+u.chatid,460,600);});
+				UserMenu.add('zl.gif','个人资料',function(){getId('menu').style.display='none';openWin(2,false,'room/profile/?uid='+u.chatid,460,600);});
 				if(RoomInfo.OtherVideoAutoPlayer=='0'&&check_auth("room_admin"))
 					UserMenu.add('tv.gif','上麦-房间主持人',function(){UserList.setVideo(u);getId('menu').style.display='none';});
 			}
@@ -547,7 +547,7 @@ UserList=(function(){
 			//UserMenu.add('Vlove.gif','视频语音对聊',function(){if(confirm("请求和"+u.nick+"视频密聊"))VideoList.Connect(u.chatid,u.nick,0);getId('menu').style.display='none';});
 			//UserMenu.add('lw.gif','赠送礼物',function(){bt_gifts();ToUser.set(u.chatid,u.nick);getId('menu').style.display='none';});
 			UserMenu.hr();
-			UserMenu.add('zl.gif','查看资料',function(){getId('menu').style.display='none';openWin(2,false,'profiles.php?uid='+u.chatid,460,600);});
+			UserMenu.add('zl.gif','查看资料',function(){getId('menu').style.display='none';openWin(2,false,'room/profile?uid='+u.chatid,460,600);});
 			UserMenu.hr();
 			UserMenu.add('pb.gif','屏蔽消息',function(){BList.add(u.chatid,u);getId('menu').style.display='none';});
 

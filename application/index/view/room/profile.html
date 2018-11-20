@@ -10,7 +10,7 @@
 <title>用户资料</title>
 <style>
 .main { width: 460px; background: #FDFDFD }
-.head { height: 119px; padding-top: 80px; background: url(images/b1.jpg) no-repeat }
+.head { height: 119px; padding-top: 80px; background: url(__CDN__/style/room/images/b1.jpg) no-repeat }
 #nav { border-top: 1px dotted #FFFFFF; width: 460px; }
 #nav a { float: left; display: block; padding: 5px; width: 60px; color: #FFF; background: #09F; font-size: 12px; text-align: center; text-decoration: none; }
 #tab { width: 460px; height: 400px; overflow: hidden; font-size: 12px; color: #666 }
@@ -37,7 +37,7 @@
           {$userinfo['username']}
           </span></div>
         <div>
-          {showstars($userinfo['onlinetime'])}
+          {:showstars($userinfo['onlinetime'])}
         </div>
         <div class="ttff f14 cfff" style="height:20px; overflow:hidden">
           {$userinfo['bio']}
@@ -66,7 +66,7 @@
         </tr>
         <tr>
           <td  class="th">在线时长：</td>
-          <td><?php echo round($userinfo['logintime'] / 60/60, 2).'小时';?></td>
+          <td><?php echo round($userinfo['onlinetime'] / 60/60, 2).'小时';?></td>
         </tr>
         <tr>
           <td class="th">注册时间：</td>
@@ -79,18 +79,16 @@
         </tr>
 <?php
 if($userinfo['group_id']=='3'){
-
-
 ?>
         <tr>
           <td class="th">客服手机：</td>
-          <td>{$userinfo['phone']}
+          <td>{$userinfo['mobile']}
             &nbsp;</td>
         </tr>
         <tr>
           <td class="th">客服QQ：</td>
-          <td><a href="http://wpa.qq.com/msgrd?v=3&uin={$userinfo['realname']}&site=qq&menu=yes">
-    {$userinfo['realname']}</a>
+          <td><a href="http://wpa.qq.com/msgrd?v=3&uin={$userinfo['realname']}&site=qq&menu=yes" target='_blank'>
+    {$userinfo['qq']}</a>
             &nbsp;</td>
         </tr>
 <?php
@@ -101,7 +99,7 @@ if($gl){
 ?>
         <tr>
           <td class="th">登录IP：</td>
-          <td>{$userinfo['regip']}
+          <td>{$userinfo['joinip']}
             &nbsp;</td>
         </tr>
         <tr>
@@ -111,19 +109,19 @@ if($gl){
         </tr>
         <tr>
           <td class="th">手机：</td>
-          <td>{$userinfo['phone']}
+          <td>{$userinfo['mobile']}
             &nbsp;</td>
         </tr>
         <tr>
           <td class="th">QQ：</td>
-          <td><a href="http://wpa.qq.com/msgrd?v=3&uin={$userinfo['realname']}&site=qq&menu=yes">
+          <td><a href="http://wpa.qq.com/msgrd?v=3&uin={$userinfo['qq']}&site=qq&menu=yes">
     {$userinfo['realname']}</a>
             &nbsp;</td>
         </tr>
         <tr>
           <td class="th">用户关联：</td>
           <td>用户客服：
-            {$userinfo['fuser']}
+            {$userinfo['kuser']}
             &nbsp; 推广人：
             {$userinfo['tuser']}</td>
         </tr>
@@ -136,7 +134,7 @@ if($gl){
 //end后台管理资料
 ?>
       </table>
-      <div class="user_pic"><img src="index/ajax/getFaceImg/?t=p2&u={$userinfo['id']}"></div>
+      <div class="user_pic"><img src="/index/ajax/getFaceImg/?t=p2&u={$userinfo['id']}"></div>
     </div>
 
     <div id="tab_2" style="margin:10px;" class="ttff tab hide">
@@ -160,7 +158,7 @@ if($gl){
         </tr>
         <tr>
           <td class="th">联系邮箱：</td>
-          <td><input name="email" type="text" id="email" value="{$userinfo['email']}" style=" width:115px">QQ:<input name="realname" type="text" id="realname" value="{$userinfo['nickname']}" style=" width:100px;"></td>
+          <td><input name="email" type="text" id="email" value="{$userinfo['email']}" style=" width:115px">QQ:<input name="qq" type="text" id="realname" value="{$userinfo['qq']}" style=" width:100px;"></td>
         </tr>
 
                 <tr>
@@ -176,7 +174,7 @@ if($gl){
           <td colspan="2"  class="th">推送消息：(私聊消息)</td>
           </tr>
 		<tr>
-		  <td colspan="2"  class="th"><textarea name="kfmsg" id="kfmsg" style="width:100%;" class="xheditor {height:120,tools:'FontSize,Bold,Italic,Underline,FontColor,Emot,Img,Source'}">{tohtml($userinfo['kfmsg'])}</textarea></td>
+		  <td colspan="2"  class="th"><textarea name="kfmsg" id="kfmsg" style="width:100%;" class="xheditor {height:120,tools:'FontSize,Bold,Italic,Underline,FontColor,Emot,Img,Source'}">{:tohtml($userinfo['kfmsg'])}</textarea></td>
 		  </tr>
                                 <tr>
           <td  class="th">&nbsp;</td>
@@ -184,7 +182,7 @@ if($gl){
         </tr>
       </table>
       </form>
-      <div class="user_pic"><img src="index/ajax/getFaceImg/?t=p2&u={$userinfo['id']}"></div>
+      <div class="user_pic"><img src="/index/ajax/getFaceImg?t=p2&u={$userinfo['id']}"></div>
       <div class="user_edit_pic"><div id="epf"></div>
       <input type="button" onClick="saveToServer();" class="bc"  value="确定"  style="width:40px; border:0px;">
       <input type="button" onClick="$('.user_edit_pic').hide()" class="bc"  value="取消" style="width:40px; border:0px; background:#666"></div>
@@ -263,7 +261,7 @@ function flashError(event)
 }
 function saveToServer()
 {
-	var b=thisMovie('PhotoEditor').saveToServer('profiles.php?editface='+ept+'&w');
+	var b=thisMovie('PhotoEditor').saveToServer('profile/?editface='+ept+'&w');
 }
   function swfupload_ok(fileObj,server_data){
 	  $('.user_edit_pic').show();
@@ -273,12 +271,12 @@ function saveToServer()
 	  if(data.msg.info=="ep1"){wh="slice_width=100&slice_height=100"; ept='p1'}
 	  else {wh="slice_width=110&slice_height=150"; ept='p2'}
 
-	  var so = new SWFObject("../images/PhotoEditor.swf?imageEncoder=jpg&jpgQuality=97&"+wh, 'PhotoEditor', "325", "312", "9", "#FFF");
+	  var so = new SWFObject("/style/images/PhotoEditor.swf?imageEncoder=jpg&jpgQuality=97&"+wh, 'PhotoEditor', "325", "312", "9", "#FFF");
 		  so.write("epf");
 
-	 //alert(server_data);
-	 //var data=eval("("+server_data+")") ;
-	 //$("#"+data.msg.info).val(data.msg.url);
+	 alert(server_data);
+	 var data=eval("("+server_data+")") ;
+	 $("#"+data.msg.info).val(data.msg.url);
   }
   $(function(){
 
@@ -298,10 +296,10 @@ function saveToServer()
 		file_dialog_complete_handler:function(){this.startUpload();},
 		file_queue_error_handler:function(){alert("选择文件错误");}
 		}
-  swfdef.flash_url="../upload/swfupload/swfupload.swf";
+  swfdef.flash_url="/style/upload/swfupload/swfupload.swf";
   swfdef.button_placeholder_id="ep1";
   swfdef.file_types="*.png;*.jpg;*.gif";
-  swfdef.upload_url="../upload/upload.php";
+  swfdef.upload_url="/style/upload/upload.php";
   swfdef.post_params={"info":"ep1"}
 
   swfu = new SWFUpload(swfdef);

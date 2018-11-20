@@ -322,3 +322,42 @@ if(!function_exists('tohtml')){
         return str_replace(array('&', '"', '<', '>'), array('&', '"', '<', '>'), $str);
     }
 }
+
+
+
+if(!function_exists('showstars')){
+
+    /**
+     *根据在线时长 返回用户等级
+     * @param $totalol int 时间
+     * @return string
+     */
+    function showstars($totalol)
+    {
+        $upgrade =15;
+        $starthreshold = 4;
+        $onlinetime_total = round($totalol / 60 / 60, 2);
+        $num = @ceil(($onlinetime_total + 1) / $upgrade);
+        if ($onlinetime_total > 24) {
+            $d = floor($onlinetime_total / 24);
+            $onlinetime_total = $onlinetime_total - $d * 24;
+            $d .= "天 ";
+        }
+        $alt = 'title="等级: ' . $num . ' (在线:' . round($totalol / 60 / 60, 2) . '小时)"';
+        $str = '';
+        if (empty($starthreshold)) {
+            for ($i = 0; $i < $num; $i++) {
+                $str .= "<img src=\"/style/room/images/star_level1.gif\" {$alt}/>";
+            }
+        } else {
+            for ($i = 3; $i > 0; $i--) {
+                $numlevel = intval($num / pow($starthreshold, $i - 1));
+                $num = $num % pow($starthreshold, $i - 1);
+                for ($j = 0; $j < $numlevel; $j++) {
+                    $str .= "<img src=\"/style/room/images/star_level{$i}.gif\" {$alt}/>";
+                }
+            }
+        }
+        return $str;
+    }
+}
