@@ -346,11 +346,61 @@ class Room extends Frontend
 
     public function profile(){
         $editface = $this->request->param('editface');
-
-        if(isset($editface) and isset($GLOBALS["HTTP_RAW_POST_DATA"]))
+        $act= $this->request->param('act');
+        if(isset($act)){
+            switch($act){
+                case "edit":
+                    //数据未过滤
+                    $uid=$this->request->param('uid');
+                    if($uid != session('login_uid')) die('0');
+                    $nickname = $this->request->param('nickname');
+                    $gender = $this->request->param('gender');
+                    $bio = $this->request->param('bio');
+                    $email = $this->request->param('email');
+                    $qq = $this->request->param('qq');
+                    $mobile = $this->request->param('mobile');
+                    $kfmsg = $this->request->param('kfmsg');
+                    $data['nickname'] = $nickname;
+                    $data['gender'] = $gender;
+                    $data['bio'] = $bio;
+                    $data['email'] = $email;
+                    $data['qq'] = $qq;
+                    $data['mobile'] = $mobile;
+                    $data['kfmsg'] = $kfmsg;
+                    $res = Db::name('user')->where('id',$uid)->update($data);
+                    if($res){
+                        $msg="<script>$('.tab').hide();$('#tab_2').show();alert('修改成功！');</script>";
+                    }else{
+                        $msg="<script>$('.tab').hide();$('#tab_3').show();alert('修改失败！');</script>";
+                    }
+                    break;
+                case "editpwd":
+                    $uid=$this->request->param('uid');
+                    if($uid != session('login_uid')) die('0');
+                    $pwd1 = $this->request->param('pwd1');
+                    $pwd2 = $this->request->param('pwd2');
+                    $oldpwd = $this->request->param('oldpwd');
+                    if($pwd1!=$pwd2){
+                        $msg = "<script>$('.tab').hide();$('#tab_3').show();alert('新密码不一致！');</script>";
+                    }else{
+                        //检验旧密码
+                        $user = Db::name('user')->find($uid);
+                        if ($user['password'] == $this->auth->getEncryptPassword($oldpwd, $user['salt'])){
+                            $newpassword = $this->auth->getEncryptPassword($pwd1, $user['salt']);
+                            Db::name('user')->where('id',$uid)->update(['password'=>$newpassword]);
+                            $msg="<script>$('.tab').hide();$('#tab_3').show();alert('密码已修改！');</script>";
+                        }
+                        else
+                            $msg="<script>$('.tab').hide();$('#tab_3').show();alert('旧密码错误！');</script>";
+                    }
+                    break;
+            }
+        }
+        $this->assign('msg',isset($msg)?$msg:'');
+        if(isset($editface) and file_get_contents('php://input'))
         {
-            $filename='/style//face/'.$editface.'/'.$_SESSION['login_uid'].'.gif';
-            $somecontent = $GLOBALS["HTTP_RAW_POST_DATA"];
+            $filename='./style/face/'.$editface.'/'.session('login_uid').'.gif';
+            $somecontent =file_get_contents('php://input');
             if (!$handle = fopen($filename, 'w+')) {
                 print '{code:"#1057", msg:"不能打开文"}';
                 exit;

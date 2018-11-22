@@ -321,10 +321,10 @@ UserList=(function(){
 					 +'</font></a>';
 					if(u.gid=='3'){
 						li.innerHTML=li.innerHTML+'<p class="bts"><input type="button" value="私聊" class="osl"><input type="button" value="QQ对话" class="qsl"></p>';
-						li.innerHTML=li.innerHTML+'<p class="sn bg_png1">客户介绍: '+u.mood+'</p>';
+						li.innerHTML=li.innerHTML+'<p class="sn bg_png1">客服介绍: '+u.mood+'</p>';
 					}
 					li.oncontextmenu=function(){UserList.menu_kf(u);return false;}
-					li.onclick=function(){ToUser.set(u.chatid,u.nick);openWin(2,false,'room/profiles/?uid='+u.chatid,460,600);}
+					li.onclick=function(){ToUser.set(u.chatid,u.nick);openWin(2,false,'room/profile/?uid='+u.chatid,460,600);}
 					//li.ondblclick=function(){if(u.chatid!=My.chatid||u.chatid.indexOf('x_r')<0){POPChat.newtab(u);POPChat.showtab(u);}}
 					$(li).find('.osl').click(function(){if(u.chatid!=My.chatid||u.chatid.indexOf('x_r')<0){POPChat.newtab(u);POPChat.showtab(u);}return false;});
 					$(li).find('.qsl').click(function(){window.open('http://wpa.qq.com/msgrd?v=3&uin='+u.qq+'&site=qq&menu=yes');return false;});

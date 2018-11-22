@@ -138,23 +138,24 @@ if($gl){
     </div>
 
     <div id="tab_2" style="margin:10px;" class="ttff tab hide">
-    <form action="" method="post" enctype="application/x-www-form-urlencoded">
+    <form action="{:url('room/profile')}" method="post" enctype="application/x-www-form-urlencoded">
       <table width="100%" border="0" cellspacing="0" cellpadding="0">
 
         <tr>
           <td class="th">用户昵称：</td>
           <td><input name="nickname" type="text" id="nickname" value="{$userinfo['nickname']}" style="width:120px;">
-          性别：<select name="sex" id="sex">
+          性别：<select name="gender" id="sex">
             <option value="{$userinfo['gender']}"><?php $sex=array("女","男","保密");echo  $sex[$userinfo['gender']];?></option>
             <option value="1">男</option>
             <option value="0">女</option>
             <option value="2">保密</option>
           </select>
-          <input type="hidden" name="uid" value="{$userinfo['id']}"><input type="hidden" name="act" value="edit"></td>
+          <input type="hidden" name="uid" value="{$userinfo['id']}">
+          <input type="hidden" name="act" value="edit"></td>
         </tr>
         <tr>
           <td  class="th">用户签名：</td>
-          <td><input name="mood" type="text" id="mood" value="{$userinfo['bio']}">  </td>
+          <td><input name="bio" type="text" id="mood" value="{$userinfo['bio']}">  </td>
         </tr>
         <tr>
           <td class="th">联系邮箱：</td>
@@ -163,7 +164,7 @@ if($gl){
 
                 <tr>
           <td  class="th">联系手机：</td>
-          <td><input name="phone" type="text" id="phone" value="{$userinfo['mobile']}">
+          <td><input name="mobile" type="text" id="phone" value="{$userinfo['mobile']}">
             </td>
         </tr>
                         <tr>
@@ -194,7 +195,9 @@ if($gl){
 
         <tr>
           <td class="th">旧密码：</td>
-          <td><input name="oldpwd" type="password" id="oldpwd" ><input type="hidden" name="uid" value="{$userinfo['id']}"><input type="hidden" name="act" value="editpwd"></td>
+          <td><input name="oldpwd" type="password" id="oldpwd" >
+          <input type="hidden" name="uid" value="{$userinfo['id']}">
+          <input type="hidden" name="act" value="editpwd"></td>
         </tr>
         <tr>
           <td  class="th">新密码：</td>
@@ -213,6 +216,7 @@ if($gl){
     </div>
   </div>
 </div>
+{$msg}
 <script type="text/javascript" src="__CDN__/style/xheditor/xheditor.js"></script>
 <script type="text/javascript" src="__CDN__/style/xheditor/xheditor_lang/zh-cn.js"></script>
 <script type="text/javascript" src="__CDN__/style/upload/swfupload/swfupload.js"></script>
@@ -274,7 +278,6 @@ function saveToServer()
 	  var so = new SWFObject("/style/images/PhotoEditor.swf?imageEncoder=jpg&jpgQuality=97&"+wh, 'PhotoEditor', "325", "312", "9", "#FFF");
 		  so.write("epf");
 
-	 alert(server_data);
 	 var data=eval("("+server_data+")") ;
 	 $("#"+data.msg.info).val(data.msg.url);
   }
