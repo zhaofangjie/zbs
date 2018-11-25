@@ -416,6 +416,7 @@ class Room extends Frontend
         $uid = request()->param('uid');
         $this->view->assign('uid',$uid);
         $userinfo = Db::table('zb_user')->find($uid);
+        if(empty($userinfo)) $userinfo = Db::table('zb_user')->find(0);
         //检查是否具有管理权限
         $gl = $this->check_auth('user_info_gl');
         $this->assign('gl',$gl);

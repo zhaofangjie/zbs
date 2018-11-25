@@ -87,7 +87,7 @@ function OnInit()
 	OnResize();
 
 	if(RoomInfo.OtherVideoAutoPlayer!="0"){
-		$('#OnLine_MV').html('<iframe height="100%" width="100%" allowTransparency="true" marginwidth="0" marginheight="0"  frameborder="0" scrolling="no" src="player.php?type=pc"></iframe>');
+		$('#OnLine_MV').html('<iframe height="100%" width="100%" allowTransparency="true" marginwidth="0" marginheight="0"  frameborder="0" scrolling="no" src="/index/play?type=pc"></iframe>');
 	}else{
 		var vFlash = new SWFObject("images/Video_main.swf?Q="+RoomInfo.VideoQ, "pVideo", "520", "390", "9", "#FFF");
 		vFlash.addParam("wmode","transparent");

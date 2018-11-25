@@ -13,7 +13,7 @@ use think\Db;
 class Ajax extends Frontend
 {
 
-    protected $noNeedLogin = ['lang','getrlist','getFaceImg','getmylist'];
+    protected $noNeedLogin = ['lang','getrlist','getFaceImg','getmylist','mymsgold','putmsg'];
     protected $noNeedRight = ['*'];
     protected $layout = '';
 
@@ -71,14 +71,14 @@ class Ajax extends Frontend
             shuffle($rebots_arr);
             $roomListUserJsonStr = array("type" => "UonlineUser", "stat" => "OK");
             $roomListUser = array();
-            $roomUser = array("roomid" => $_SERVER['HTTP_HOST'] . "." . $data['rid'], "chatid" => "", "ip" => "0.0.0.0", "qx" => "0", "cam" => "", "vip" => "0", "age" => "-", "sex" => "", "mood" => "", "state" => "0", "nick" => "", "color" => "0");
+            $roomUser = array("roomid" => $_SERVER['HTTP_HOST'] . "." . $data['rid'], "chatid" => "", "ip" => "0.0.0.0", "qx" => "0", "cam" => "", "vip" => "0", "age" => "-", "gender" => "", "mood" => "", "state" => "0", "nick" => "", "color" => "0");
             $count = count($rebots_arr);
             for ($i = 0; $i < $count; $i++) {
                 if (trim($rebots_arr[$i]) == "") {
                     continue;
                 }
                 $roomUser['chatid'] = 'x_r'. $i;
-                $roomUser['sex'] = rand(0, 2);
+                $roomUser['gender'] = rand(0, 2);
                 $roomUser['cam'] = rand(0, 2);
                 $roomUser['nick'] = $rebots_arr[$i];
                 $roomListUser[$i] = $roomUser;
@@ -168,5 +168,88 @@ class Ajax extends Frontend
            }
         }
         return json($data);
+    }
+    
+    //历史消息
+    public function mymsgold(){
+        $uid =session('login_uid');
+        $tuid = $this->request->param('tuid');
+        $list = Db::name('msg')->where(function($query) use($uid,$tuid) {
+            $query->where('uid',$uid)->where('tuid',$tuid);
+        })->whereOr(function($query) use($tuid,$uid){
+             $query->where('uid',$tuid)->where('tuid',$uid);
+        })->where('type','0')->order('id desc')->limit(20)->select();
+       $msgold='';
+       if(!empty($list)){
+           foreach ($list as $row) {
+               $str1 = '
+				<li class="layim_chate[me]"><div class="layim_chatuser"><span class="layim_chattime">[date]</span><span class="layim_chatname">[uname]</span><img src="ajax/getFaceImg?t=p1&u=[uid]"></div><div class="layim_chatsay"><font style="color:#000">[msg]</font><em class="layim_zero"></em></div></li>
+				';
+               $str2 = '
+				<li class="layim_chate[me]"><div class="layim_chatuser"><img src="ajax/getFaceImg?t=p1&u=[uid]"><span class="layim_chatname">[uname]</span><span class="layim_chattime">[date]</span></div><div class="layim_chatsay"><font style="color:#000">[msg]</font><em class="layim_zero"></em></div></li>
+				';
+               if ($row['uid'] == $uid) {
+                   $str = str_replace("[me]", "me", $str1);
+               } else {
+                   $str = str_replace("[me]", "he", $str2);
+               }
+               $str = str_replace("[uid]", $row['uid'], $str);
+               $str = str_replace("[uname]", $row['uname'], $str);
+               $str = str_replace("[msg]", tohtml($row['msg']), $str);
+               $str = str_replace("[date]", date("Y-m-d H:i:s", $row['mtime']), $str);
+               $msgold = $str . $msgold;
+           }
+       }
+        $userinfo = Db::name('user')->find($tuid);
+        $data['qq'] = $userinfo['qq'];
+        $data['kfmsg'] = tohtml($userinfo['kfmsg']);
+        $data['tuid'] = $tuid;
+        $data['msg'] = $msgold;
+        return json($data);
+    }
+    
+    //聊天记录
+    
+    public function putmsg(){
+        //数据未过滤
+        if(!session('login_uid')) return;
+        $msgtip = $this->request->param('msgtip');
+        $rid = $this->request->param('rid');
+        $muid = $this->request->param('muid');
+        $tid = $this->request->param('tid');
+        $uname = $this->request->param('uname');
+        $tname = $this->request->param('tname');
+        $privacy = $this->request->param('privacy');
+        $style = $this->request->param('style');
+        $msg = $_POST['msg'];
+        $msgid = $this->request->param('msgid');
+        
+        if ($this->cfg['config']['msgaudit'] == '1') {
+            $state = '1';
+        }
+        if(!isset($magtip)){
+            $state = '0';
+        }
+        if ($msgtip == "2") {
+            $state = '2';
+        }
+        if ($msgtip == "3") {
+            $state = '3';
+        }
+        //组装数据
+        $data['rid'] = $rid;
+        $data['uid'] = $muid;
+        $data['tuid'] = $tid;
+        $data['uname'] = $uname;
+        $data['tname'] = $tname;
+        $data['p'] = $privacy;
+        $data['style'] = $style;
+        $data['msg'] = $msg;
+        $data['mtime'] = time();
+        $data['ugid'] = session('login_gid');
+        $data['msgid'] = $msgid;
+        $data['ip'] = $this->request->ip();
+        $data['state'] = $state;
+        Db::name('msg')->insert($data);
     }
 }

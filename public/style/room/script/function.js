@@ -160,13 +160,13 @@ POPChat=(function(){
 				layim_chatarea.find('.layim_chatview').removeClass('layim_chatthis');
         		layim_chatarea.append('<ul class="layim_chatview layim_chatthis" id="layim_area'+ u.chatid +'"></ul>');
 
-				$.ajax({type:'GET',dataType:'JSON',url:'../ajax.php?act=mymsgold&tuid='+u.chatid,
+				$.ajax({type:'GET',dataType:'JSON',url:'ajax/mymsgold?tuid='+u.chatid,
 				success:function(data){
 					$("#layim_area"+ data.tuid).prepend(data.msg);
 
-					$("#layim_user"+data.tuid).attr('data-qq',data.realname);
-					win.find('.layim_qq').html("<span><a href='http://wpa.qq.com/msgrd?v=3&uin="+data.realname+"&site=qq&menu=yes' target='_blank'><img src='./images/icon_qq.png' border=0>"+data.realname+"</a></span>");
-					if(data.realname!=""&&data.realname!='0'){
+					$("#layim_user"+data.tuid).attr('data-qq',data.qq);
+					win.find('.layim_qq').html("<span><a href='http://wpa.qq.com/msgrd?v=3&uin="+data.qq+"&site=qq&menu=yes' target='_blank'><img src='/style/room/images/icon_qq.png' border=0>"+data.qq+"</a></span>");
+					if(data.qq!=null &&data.qq!='0'){
 						win.find('.layim_names').css("line-height",'20px');
 						win.find('.layim_qq').show();
 					}else{
@@ -176,7 +176,7 @@ POPChat=(function(){
 
 					u=UserList.get(u.chatid)
 					if(u!=undefined&&data.kfmsg!=""&&data.kfmsg!='null'){
-						var str='<li class="layim_chatehe"><div class="layim_chatuser"><img src="index/ajax/getFaceImg/?t=p1&u='+u.chatid+'"><span class="layim_chatname">'+u.nick+'</span><span class="layim_chattime">'+Datetime(0)+'</span></div><div class="layim_chatsay"><font style="color:#000">'+data.kfmsg+'</font><em class="layim_zero"></em></div></li>';
+						var str='<li class="layim_chatehe"><div class="layim_chatuser"><img src="ajax/getFaceImg/?t=p1&u='+u.chatid+'"><span class="layim_chatname">'+u.nick+'</span><span class="layim_chattime">'+Datetime(0)+'</span></div><div class="layim_chatsay"><font style="color:#000">'+data.kfmsg+'</font><em class="layim_zero"></em></div></li>';
 						$("#layim_area"+ u.chatid).append(str);
 					}
 					win.find('#layim_area'+ data.tuid).scrollTop(win.find('#layim_area'+ data.tuid)[0].scrollHeight);
@@ -207,15 +207,15 @@ POPChat=(function(){
 			win.find('.layim_chatnow .layim_msgnum').text("0");
 			win.find('.layim_chatnow .layim_msgnum').hide();
 
-			win.find('.layim_face>img').attr('src', 'index/ajax/getFaceImg/?t=p1&u='+u.chatid);
+			win.find('.layim_face>img').attr('src', 'ajax/getFaceImg/?t=p1&u='+u.chatid);
     		win.find('.layim_names').text(u.nick);
 
 			win.show();
 			win.find('#layim_area'+ u.chatid).scrollTop(win.find('#layim_area'+ u.chatid)[0].scrollHeight);
 
-			win.find('.layim_qq').html("<span><a href='http://wpa.qq.com/msgrd?v=3&uin="+$("#layim_user"+u.chatid).attr('data-qq')+"&site=qq&menu=yes'  target='_blank'><img src='./images/icon_qq.png' border=0>"+$("#layim_user"+u.chatid).attr('data-qq')+"</a>");
+			win.find('.layim_qq').html("<span><a href='http://wpa.qq.com/msgrd?v=3&uin="+$("#layim_user"+u.chatid).attr('data-qq')+"&site=qq&menu=yes'  target='_blank'><img src='/style/room/images/icon_qq.png' border=0>"+$("#layim_user"+u.chatid).attr('data-qq')+"</a>");
 
-			if($("#layim_user"+u.chatid).attr('data-qq')!=""&&$("#layim_user"+u.chatid).attr('data-qq')!='0'){
+			if($("#layim_user"+u.chatid).attr('data-qq')!=null && $("#layim_user"+u.chatid).attr('data-qq')!='0'){
 						win.find('.layim_names').css("line-height",'20px');
 						win.find('.layim_qq').show();
 					}else{
@@ -254,7 +254,7 @@ POPChat=(function(){
 			log.imarea.append(log.html({
                 time: Datetime(0),
                 name: u.nick,
-                face: 'index/ajax/getFaceImg/?t=p1&u='+u.chatid,
+                face: 'ajax/getFaceImg/?t=p1&u='+u.chatid,
                 content: str
             },u.chatid==My.chatid?'me':""));
 			log.imarea.scrollTop(log.imarea[0].scrollHeight);
@@ -1004,7 +1004,7 @@ function PutMessage(rid,uid,tid,uname,tname,privacy,style,str,msgid){
 		$("#msg_tip_admin_show").html(decodeURIComponent("<span style='color:red'>"+str+"</span>"));
 	}
 	if(RoomInfo.Msglog=='0')return;
-	var request_url='../ajax.php?act=putmsg';
+	var request_url='ajax/putmsg';
 	var postdata=msgtip+'msgid='+msgid+'&uname='+encodeURIComponent(uname)+'&tname='+encodeURIComponent(tname)+'&muid='+uid+'&rid='+rid+'&tid='+tid+'&privacy='+privacy+'&style='+style+'&msg='+str+'&'+Math.random() * 10000;
 
 	$.ajax({type: 'POST',url:request_url,data:postdata});
@@ -1092,7 +1092,7 @@ function FormatMsg(Msg)
 
 					if(RoomInfo.OtherVideoAutoPlayer!="0"){
 
-						$('#OnLine_MV').html('<iframe height="390" width="100%" allowTransparency="true" marginwidth="0" marginheight="0"  frameborder="0" scrolling="no" src="player.php?type=pc"></iframe>');
+						$('#OnLine_MV').html('<iframe height="390" width="100%" allowTransparency="true" marginwidth="0" marginheight="0"  frameborder="0" scrolling="no" src="/index/play?type=pc"></iframe>');
 
 					}
 
@@ -1324,7 +1324,7 @@ function ColorNick(id,i){return;
 	setTimeout("ColorNick('"+id+"',"+i+")",100);
 }
 function playSound(file){
-	getId('MsgSound').innerHTML='<audio  src="sounds/' + file + '" loop="0" autostart="true" hidden="true"></audio>';
+	getId('MsgSound').innerHTML='<audio  src="/style/room/sounds/' + file + '" loop="0" autostart="true" hidden="true"></audio>';
 }
 function openWin(type,title,content,w,h){
 	layer.closeAll('iframe');
