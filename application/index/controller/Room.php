@@ -303,7 +303,9 @@ class Room extends Frontend
         return NULL;
     }
 
-    protected function check_auth($auth)
+
+    //权限检查
+    public function check_auth($auth)
     {
         $auth_rules = $this->auth_group(session('login_gid'));
         if (in_array($auth,$auth_rules) !== false) {
