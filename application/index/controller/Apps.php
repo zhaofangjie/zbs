@@ -100,16 +100,45 @@ class Apps extends Frontend
 
     //喊单
     public function handan(){
+        $this->fetch();
+    }
+
+
+    //添加喊单
+    public function appHdAdd($ktime,$ptime,$sp,$kcj,$lx,$cw,$zsj,$zyj,$username,$pcj,$sn){       
+        
+        $data['ktime'] = $ktime;
+        $data['ptime'] = $ptime;
+        $data['sp'] = $sp;
+        $data['kcj'] = $kcj;
+        $data['lx'] = $lx;
+        $data['cw'] = $cw;
+        $data['zsj'] = $zsj;
+        $data['zyj'] = $zyj;
+        $data['username'] = $username;
+        $data['pcj'] = $pcj;
+        $data['sn'] = $sn;
+        $id = Db::name('apps_hd')->insertGetId($data);
+        if($id) return $id;
+    }
+
+    //喊单列表 分页显示
+    public function appHdList(){
+        if(!session('login_uid')) exit("<script>top.layer.msg('没有权限查看喊单数据！请联系客服！');</script>");
+        //操作
         $act = $this->request->param('act');
+        $id = $this->request->param('id');
         switch($act){
+            //点赞  10年之内点一次，哈哈
             case "z":
-                if($_SESSION['z'.$id]==""&&$_COOKIE['z'.$id]==""){
-                    $db->query("update {$tablepre}apps_hd set z=z+1 where id='$id' ");
-                    $_SESSION['z'.$id]=1;
-                    setcookie('z'.$id, '1', gdate()+315360000);
+                if(session('z'.$id)=="" && cookie('z'.$id)==""){                    
+                    Db::name('apps_hd')->where('id',$id)->setInc('z');
+                    session('z'.$id,1);
+                    cookie('z'.$id,'1',time()+315360000);
                 }
                 break;
             case "hd_del":
+                //删除
                 $db->query("delete from {$tablepre}apps_hd where username='$_SESSION[login_user]' and id='$id'");
                 break;
             case "app_hd_pc":
@@ -118,28 +147,24 @@ class Apps extends Frontend
                 exit('<script>top.app_sendmsg("'.$str.'");location.href="?"</script>');
                 break;
             case "app_hd_add":
-                app_hd_add($ktime,$ptime,$sp,$kcj,$lx,$cw,$zsj,$zyj,$username,$pcj,$sn);
-                $id=$db->insert_id();
+                //发布邯郸
+                $ktime = time();
+                $ptime='';
+                $sp = $this->request->param('sp');
+                $kcj = $this->request->param('kcj');
+                $lx = $this->request->param('lx');
+                $cw = $this->request->param('cw');
+                $zsj = $this->request->param('zsj');
+                $zyj = $this->request->param('zyj');
+                $username = session('login_user');
+                $pcj = '';
+                $sn = '';
+                $id = $this->appHdAdd($ktime,$ptime,$sp,$kcj,$lx,$cw,$zsj,$zyj,$username,$pcj,$sn);
                 $str="<font style='border-bottom:1px solid #999; color:red;font-size:14px;'>[喊单提醒]</font><br>单号：$id,$lx,$sp …… [<font style='color:red;  cursor:pointer' onClick='$(\\\"#app_1\\\").trigger(\\\"click\\\")'>详细</font>]";
                 exit('<script>top.app_sendmsg("'.$str.'");location.href="?"</script>');
                 break;
+                break;
         }
-        $this->fetch();
-    }
-
-
-    //添加喊单
-    public function appHdAdd($ktime,$ptime,$sp,$kcj,$lx,$cw,$zsj,$zyj,$username,$pcj,$sn){
-        global $db,$tablepre;
-        $time=gdate();
-        $ktime=strtotime($ktime);
-        $ptime=strtotime($ptime);
-        $username=$_SESSION['login_user'];
-        $db->query("insert into {$tablepre}apps_hd(ktime,sp,kcj,lx,cw,zsj,zyj,username,sn,ttime)values('$ktime','$sp','$kcj','$lx','$cw','$zsj','$zyj','$username','$sn','$time')");
-    }
-
-    //喊单列表 分页显示
-    public function appHdList(){
 
         $key  = $this->request->param('key');
         if($key!="") $sql.=" where uname like '%$key%'";
@@ -152,40 +177,10 @@ class Apps extends Frontend
         $this->assign('hdView',$hdView);
 
         // 查询状态为1的用户数据 并且每页显示20条数据
-        $list = Db::name('apps_hd')->paginate(20,true);
-        $this->assign('list', $list);
+        $list = Db::name('apps_hd')->order('id desc')->paginate(10);
         // 把分页数据赋值给模板变量list
         $this->assign('list', $list);
         // 渲染模板输出
         return $this->fetch('handan');
-
-        $count=$db->num_rows($db->query($sql));
-        pageft($count,$num,"");
-        $sql.=" order by id desc";
-        $sql.=" limit $firstcount,$displaypg";
-        $query=$db->query($sql);
-        while($row=$db->fetch_row($query)){
-            $t=$tpl;
-            if($row['username']==$_SESSION['login_user']&&$row['pcj']==""){
-                $t=str_replace('{pcj}',"<a href=\"javascript:bt_hd_pc('{$row[id]}','{$row[lx]}','{$row[sp]}')\">平仓</a>",$t);
-            }
-            if($row['username']==$_SESSION['login_user']){
-                $t=str_replace('{username}',"{username} <a href=\"javascript:bt_hd_del('{$row[id]}','{$row[lx]}','{$row[sp]}')\">删</a>",$t);
-            }
-            if(strpos($row[lx],'买')&&$row['pcj']!=""){
-                $t=str_replace('{yld}',round($row['pcj']-$row['kcj'],2),$t);
-            }
-            else if(strpos($row[lx],'卖')&&$row['pcj']!=""){
-                $t=str_replace('{yld}',round($row['kcj']-$row['pcj'],2),$t);
-            }else{
-                $t=str_replace('{yld}','',$t);
-            }
-            foreach($row as $k=>$value){
-                $t=str_replace('{'.$k.'}',$value,$t);
-            }
-            $str.=$t;
-
-        }
-        return $str;
     }
 }
