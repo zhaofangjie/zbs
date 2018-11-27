@@ -143,7 +143,7 @@ class Ajax extends Frontend
                     $tmp['chatid'] = $row['id'];
                     $tmp['nick'] = $row['nickname'];
                     $tmp['phone'] = $row['mobile'];
-                    $tmp['qq'] = $row['realname'];
+                    $tmp['qq'] = $row['qq'];
                     $tmp['gid'] = $row['group_id'];
                     $tmp['mood'] = $row['bio'];
                     $data['row'][$i++] = $tmp;
@@ -160,7 +160,7 @@ class Ajax extends Frontend
                    $tmp['chatid'] = $row['id'];
                    $tmp['nick'] = $row['nickname'];
                    $tmp['phone'] = $row['mobile'];
-                   $tmp['qq'] = $row['realname'];
+                   $tmp['qq'] = $row['qq'];
                    $tmp['gid'] = $row['group_id'];
                    $data['row'][$i++] = $tmp;
                    $data['state'] = 'true';
@@ -169,7 +169,7 @@ class Ajax extends Frontend
         }
         return json($data);
     }
-    
+
     //历史消息
     public function mymsgold(){
         $uid =session('login_uid');
@@ -207,9 +207,9 @@ class Ajax extends Frontend
         $data['msg'] = $msgold;
         return json($data);
     }
-    
+
     //聊天记录
-    
+
     public function putmsg(){
         //数据未过滤
         if(!session('login_uid')) return;
@@ -223,7 +223,7 @@ class Ajax extends Frontend
         $style = $this->request->param('style');
         $msg = $_POST['msg'];
         $msgid = $this->request->param('msgid');
-        
+
         if ($this->cfg['config']['msgaudit'] == '1') {
             $state = '1';
         }

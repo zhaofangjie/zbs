@@ -7,13 +7,13 @@ use think\Db;
 class Play extends Frontend
 {
     protected $cfg;
-    
+
     public function _initialize()
-    {     
-        //Ĭ��Ϊ��һ����������
+    {
+        //默认第一个房间
         $this->cfg['config'] = Db::name('room_config')->where('id',1)->find();
     }
-    
+
     public function index(){
         $type = $this->request->param('type');
         switch($type){

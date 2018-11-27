@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>在线答疑</title>
+</head>
+
+
+<style type="text/css">
+/* CSS Document */
+body {
+ font: normal 11px auto "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+ color: #4f6b72;
+}
+a {
+ color: #c75f3e;
+}
+table {
+ width: 100%;
+ padding: 0;
+ margin: 0;
+}
+caption {
+ padding: 0 0 5px 0;
+ width: 700px;
+ font: italic 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+ text-align: right;
+}
+th {
+ font: bold 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+ color: #4f6b72;
+ border-right: 1px solid #C1DAD7;
+ border-bottom: 1px solid #C1DAD7;
+ border-top: 1px solid #C1DAD7;
+ letter-spacing: 2px;
+ text-transform: uppercase;
+ text-align:center;
+ padding: 6px 6px 6px 12px;
+ background: #CAE8EA ;
+}
+th.nobg {
+ border-top: 0;
+ border-left: 0;
+ border-right: 1px solid #C1DAD7;
+ background: none;
+}
+td {
+ border-right: 1px solid #C1DAD7;
+ border-bottom: 1px solid #C1DAD7;
+ font-size:11px;
+ padding: 6px 6px 6px 12px;
+ color: #4f6b72;
+}
+
+td.alt {
+ background: #F5FAFA;
+ color: #797268;
+}
+th.spec {
+ border-left: 1px solid #C1DAD7;
+ border-top: 0;
+ background: #fff ;
+ font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+}
+th.specalt {
+ border-left: 1px solid #C1DAD7;
+ border-top: 0;
+ background: #f5fafa ;
+ font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+ color: #797268;
+}
+tr{ background: #fff }
+tr:hover{background: #f5fafa}
+tr:hover td {background:none;}
+</style>
+<body>
+<?php
+if($wtView and $wtRe){
+?>
+<form action="?act=wt_re&id={$row['id']}" method="post" enctype="application/x-www-form-urlencoded">
+<table width="100%" cellspacing="0" id="mytable"  style="border-left: 1px solid #C1DAD7;border-top: 1px solid #C1DAD7; margin-bottom:5px;">
+          <tr>
+            <td width="30" class="tableleft" style="width:80px;">问题：</td>
+            <td colspan="3">{$row['q']}<br>{$row['qtime']}</td>
+      </tr>
+          <tr>
+            <td class="tableleft">答案：</td>
+            <td colspan="3"><textarea name="a" rows="3" id="a" style="width:98%">{$row['a']}</textarea></td>
+          </tr>
+          <tr>
+            <td class="tableleft">提问：</td>
+            <td>
+           {$row['quser']}</td>
+            <td width="60"><span class="tableleft">回答</span>：</td>
+            <td width="100"><input name="auser" type="hidden" id="auser" value="{:session('login_user')}">{:session('login_user')}</td>
+          </tr>
+          <tr>
+            <td class="tableleft">&nbsp;</td>
+            <td colspan="3"><input type="submit" name="button" id="button" value="回答问题"></td>
+          </tr>
+    </table>
+</form>
+<?php
+}
+if($wtAdd){
+?>
+<form action="?act=wt_add" method="post" enctype="application/x-www-form-urlencoded">
+<table width="100%" cellspacing="0" id="wt_add"  style="border-left: 1px solid #C1DAD7;border-top: 1px solid #C1DAD7; margin-bottom:5px; display:none">
+          <tr>
+            <td width="30" class="tableleft" style="width:80px;">问题：</td>
+            <td><textarea name="q" rows="3" id="q" style="width:98%"></textarea></td>
+      </tr>
+          <tr>
+            <td class="tableleft">&nbsp;</td>
+            <td><input type="submit" name="button" id="button" value="发布问题"></td>
+          </tr>
+    </table>
+</form>
+<div style="margin:5px 0px;"><button onClick="document.getElementById('wt_add').style.display=''">提出问题</button></div>
+<?php
+}
+else {
+	echo '<div style="margin:5px 0px;"><font style="color:red">没有提问权限</font></div>';
+}
+if($wtView){
+?>
+<table width="100%" cellspacing="0" id="mytable">
+
+      <tr  >
+        <th width="30" align="center" bgcolor="#FFFFFF"  style="border-left: 1px solid #C1DAD7;">编号</th>
+        <th  align="left" bgcolor="#FFFFFF">问题/答案</th>
+  </tr>
+{volist name='list' id='vo'}
+ <tr>
+    <td align="center" bgcolor="#FFFFFF"  style="border-left: 1px solid #C1DAD7;">{$vo['id']}</td>
+      <td align="left" bgcolor="#FFFFFF">问题：{$vo['q']} ( {$vo['quser']} {$vo['qtime']})<br>
+      答案：{$vo['a']} ( {$vo['auser']} ) 【<a href="?id={$vo['id']}&act=wt_view">回答</a>】
+      </td>
+
+    </tr>
+{/volist}
+</table>
+<div style="height:30px; line-height:30px;">{$list->render()}</div>
+<?php
+}else{
+	echo "<script>top.layer.msg('没有权限查看在线答疑！请联系客服！');</script>";
+}
+?>
+</body>
+</html>

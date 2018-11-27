@@ -257,7 +257,7 @@ if($hdAdd){
               <option value="国内原油">国内原油</option>
             </select></td>
             <td>
-            <input name="act"  type="hidden" id="act" value="app_hd_add"/>          
+            <input name="act"  type="hidden" id="act" value="app_hd_add"/>
       </tr>
           <tr>
             <td align="right" class="tableleft">开仓价：</td>
@@ -302,22 +302,22 @@ if($hdView){
       <td align="center" bgcolor="#FFFFFF">{$vo['kcj']}</td>
       <td align="center" bgcolor="#FFFFFF">{$vo['zsj']}&nbsp;</td>
       <td align="center" bgcolor="#FFFFFF">{$vo['zyj']}&nbsp;</td>
-      <td align="center" bgcolor="#FFFFFF">{$vo['ptime']}</td>
+      <td align="center" bgcolor="#FFFFFF">{$vo['ptime']?$vo['ptime']:''}</td>
       <td align="center" bgcolor="#FFFFFF">{if condition="($vo['username'] == session('login_user')) and ($vo['pcj']=='')"} <a href="javascript:bt_hd_pc('{$vo['id']}','{$vo['lx']}','{$vo['sp']}')">平仓</a> {else/}{$vo['pcj']}&nbsp; {/if}</td>
 	  <td align="center" bgcolor="#FFFFFF">
-	  	{if condition="(strpos($vo['lx'],'买'))&&$vo['pcj']"} 
-	  	{:round($vo['pcj']-$vo['kcj'],2)} 
-	  	{elseif condition="(strpos($vo['lx'],'卖'))&&($vo['pcj']!='')"} 
+	  	{if condition="(strpos($vo['lx'],'买'))&&$vo['pcj']"}
+	  	{:round($vo['pcj']-$vo['kcj'],2)}
+	  	{elseif condition="(strpos($vo['lx'],'卖'))&&($vo['pcj']!='')"}
 	  	{:round($vo['kcj']-$vo['pcj'],2)}
-	  	{else/} 
-	  	
-	  	{/if}	
+	  	{else/}
+
+	  	{/if}
 	  </td>
       <td align="center" bgcolor="#FFFFFF">{$vo['z']} <a href="?id={$vo['id']}&act=z">赞</a></td>
       <td align="center" bgcolor="#FFFFFF">{if condition="$vo['username'] == session('login_user')"} {$vo['username']} <a href="javascript:bt_hd_del('{$vo['id']}','{$vo['lx']}','{$vo['sp']}')">删</a> {else/}{$vo['username']} {/if}</td>
-      
+
     </tr>
- 
+
  {/volist}
 
 </table>

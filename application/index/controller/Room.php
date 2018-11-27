@@ -178,7 +178,6 @@ class Room extends Frontend
         $this->assign('onlineip',request()->ip());
         $this->assign('userinfo',$userinfo);
 
-
         //左侧工具栏
         $apps = Db::table('zb_apps_manage')->where('s','0')->order('ov desc')->select();
         $this->assign('apps',$apps);

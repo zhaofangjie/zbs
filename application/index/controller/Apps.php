@@ -12,11 +12,13 @@ use think\Db;
 class Apps extends Frontend
 {
     protected $layout = '';
-    protected $noNeedLogin = ['kefu','vote','rank','appHdList'];
+    protected $noNeedLogin = ['kefu','vote','rank','appHdList','wt','jycl'];
     protected $noNeedRight = ['*'];
+    protected $room;
 
     public function _initialize(){
         parent::_initialize();
+        $this->room = new Room;
         $auth = $this->auth;
     }
 
@@ -98,15 +100,9 @@ class Apps extends Frontend
 
     }
 
-    //喊单
-    public function handan(){
-        $this->fetch();
-    }
-
-
     //添加喊单
-    public function appHdAdd($ktime,$ptime,$sp,$kcj,$lx,$cw,$zsj,$zyj,$username,$pcj,$sn){       
-        
+    public function appHdAdd($ktime,$ptime,$sp,$kcj,$lx,$cw,$zsj,$zyj,$username,$pcj,$sn){
+
         $data['ktime'] = $ktime;
         $data['ptime'] = $ptime;
         $data['sp'] = $sp;
@@ -131,23 +127,40 @@ class Apps extends Frontend
         switch($act){
             //点赞  10年之内点一次，哈哈
             case "z":
-                if(session('z'.$id)=="" && cookie('z'.$id)==""){                    
+                if(session('z'.$id)=="" && cookie('z'.$id)==""){
                     Db::name('apps_hd')->where('id',$id)->setInc('z');
                     session('z'.$id,1);
                     cookie('z'.$id,'1',time()+315360000);
                 }
                 break;
             case "hd_del":
-                //删除
-                $db->query("delete from {$tablepre}apps_hd where username='$_SESSION[login_user]' and id='$id'");
+                $username = session('login_user');
+                $id = $this->request->param('id');
+                $re = Db::name('apps_hd')->where('username',$username)->where('id',$id)->delete();
+                if(!$re){
+
+                }
                 break;
             case "app_hd_pc":
-                $db->query("update {$tablepre}apps_hd set pcj='{$pc_pcj}',ptime='".gdate()."' where id='{$pc_id}'");
-                $str="<font style='border-bottom:1px solid #999; color:red;font-size:14px;'>[喊单提醒]</font><br>单号：$pc_id,$pc_lx,$pc_sp 平仓 [<font style='color:red;  cursor:pointer' onClick='$(\\\"#app_1\\\").trigger(\\\"click\\\")'>详细</font>]";
-                exit('<script>top.app_sendmsg("'.$str.'");location.href="?"</script>');
+                //平仓
+                $pc_pcj = $this->request->param('pc_pcj');
+                $pc_id = $this->request->param('pc_id');
+                $pc_lx = $this->request->param('pc_lx');
+                $pc_sp = $this->request->param('pc_sp');
+                $hd = Db::name('apps_hd')->find($pc_id);
+                if(session('login_user') != $hd['username']){
+                    exit('<script>alert("禁止访问");location.href="?"</script>');
+                }
+                $data['pcj'] = $pc_pcj;
+                $data['ptime'] = time();
+                $re = Db::name('apps_hd')->where('id',$pc_id)->update($data);
+                if($re){
+                    $str="<font style='border-bottom:1px solid #999; color:red;font-size:14px;'>[喊单提醒]</font><br>单号：$pc_id,$pc_lx,$pc_sp 平仓 [<font style='color:red;  cursor:pointer' onClick='$(\\\"#app_1\\\").trigger(\\\"click\\\")'>详细</font>]";
+                    exit('<script>top.app_sendmsg("'.$str.'");location.href="?"</script>');
+                }
                 break;
             case "app_hd_add":
-                //发布邯郸
+                //发布喊单
                 $ktime = time();
                 $ptime='';
                 $sp = $this->request->param('sp');
@@ -163,16 +176,12 @@ class Apps extends Frontend
                 $str="<font style='border-bottom:1px solid #999; color:red;font-size:14px;'>[喊单提醒]</font><br>单号：$id,$lx,$sp …… [<font style='color:red;  cursor:pointer' onClick='$(\\\"#app_1\\\").trigger(\\\"click\\\")'>详细</font>]";
                 exit('<script>top.app_sendmsg("'.$str.'");location.href="?"</script>');
                 break;
-                break;
         }
 
-        $key  = $this->request->param('key');
-        if($key!="") $sql.=" where uname like '%$key%'";
 
-        $room = new Room;
         //权限检查
-        $hdAdd = $room->check_auth('hd_add');
-        $hdView = $room->check_auth('hd_view');
+        $hdAdd = $this->room->check_auth('hd_add');
+        $hdView = $this->room->check_auth('hd_view');
         $this->assign('hdAdd',$hdAdd);
         $this->assign('hdView',$hdView);
 
@@ -183,4 +192,65 @@ class Apps extends Frontend
         // 渲染模板输出
         return $this->fetch('handan');
     }
+
+    //问答模块
+    public function wt(){
+        //权限检查
+        $wtAdd = $this->room->check_auth('wt_add');
+        $wtView = $this->room->check_auth('wt_view');
+        $wtRe = $this->room->check_auth('wt_re');
+        $act = $this->request->param('act');
+        switch($act){
+            case "wt_re":
+                //回答问题
+                if(!$wtRe) exit('<script>alert("没有权限");location.href="?"</script>');
+                $a = $this->request->param('a');
+                $auser = $this->request->param('auser');
+                $id = $this->request->param('id');
+                $data['a']=$a;
+                $data['auser']=$auser;
+                $re = Db::name('apps_wt')->where('id',$id)->update($data);
+                if($re){
+                   $str="<font style='border-bottom:1px solid #999; color:red;font-size:14px;'>[回答问题]</font><br>问题编号【{$id}】有了答案！请查看 …… [<font style='color:red;  cursor:pointer' onClick='$(\\\"#app_2\\\").trigger(\\\"click\\\")'>详细</font>]";
+                   exit('<script>top.app_sendmsg("'.$str.'");location.href="?"</script>');
+                }
+                break;
+            case "wt_add":
+                //提问
+                $quser=session('login_user');
+                $q = $this->request->param('q');
+                $data['quser'] = $quser;
+                $data['q'] = $q;
+                $data['zt']=0;
+                $data['qtime'] = time();
+                $re = Db::name('apps_wt')->insert($data);
+                if($re){
+                    $str="<font style='border-bottom:1px solid #999; color:#09F;font-size:14px;'>[提出问题]</font><br>问题【{$q}】我来解答！ …… [<font style='color:red;  cursor:pointer' onClick='$(\\\"#app_2\\\").trigger(\\\"click\\\")'>详细</font>]";
+                    exit('<script>top.app_sendmsg("'.$str.'");location.href="?"</script>');
+                }
+
+                break;
+        }
+        if(!session('login_uid')) exit("<script>top.layer.msg('没有权限,请联系客服！');</script>");
+        //权限检查
+        $wtAdd = $this->room->check_auth('wt_add');
+        $wtView = $this->room->check_auth('wt_view');
+        $wtRe = $this->room->check_auth('wt_re');
+        $this->assign('wtAdd',$wtAdd);
+        $this->assign('wtView',$wtView);
+        $this->assign('wtRe',$wtRe);
+        $id = $this->request->param('id');
+        $row = Db::name('apps_wt')->find($id);
+        $this->assign('row',$row);
+        // 查询状态为1的用户数据 并且每页显示10条数据
+        $list = Db::name('apps_wt')->order('id desc')->paginate(10);
+        $list = $this->assign('list',$list);
+        return $this->fetch();
+    }
+
+    //交易策略
+    public function jycl(){
+        echo '待开发中';
+    }
+
 }

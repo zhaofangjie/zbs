@@ -91,11 +91,11 @@ echo config('room.msg_unallowable');
 ?>";
 </script>
 </head>
-<body onresize="OnResize()" onUnload="OnUnload()" style="background:url(__CDN__/uploads/day_150529/201505292232163512.jpg) repeat 0 0 #408080; ">
+<body onresize="OnResize()" onUnload="OnUnload()" style="background:url(__CDN__{$cfg['config']['bg']}) repeat 0 0 #408080; ">
 <div id="UI_MainBox" >
 <script>if (!device.desktop()){window.location = './m';}</script>
   <div id="UI_Head">
-    <div class="head" style=" background:#000" >
+    <div class="head">
       <div id="head_box" class="head_box">
         <div class="logo_bg" style="BACKGROUND: url(<?php
 echo $cfg['config']['logo'];
@@ -161,7 +161,6 @@ echo $cfg['config']['id'];
 		<a href="javascript://" onClick="openWin(2,'讲师榜','apps/rank',820,600)" style="float:right; color:#FF0">《为讲师点赞》</a></div>
       <div id="OnLine_MV">
       <span style="font-size:18px">您还没有安装flash播放器,请点击<a href="http://www.adobe.com/go/getflash" target="_blank"  style="font-size:18px;color:#090">这里</a>安装</span>
-
       </div>
     </div>
 
@@ -190,7 +189,7 @@ echo $cfg['config']['id'];
 		var $myul = $("#gd_ad");
 		if($myul.find("a").length < 2)
 		{
-			return;
+			return false;
 		}
 		$actli=$myul.find("a:first");
 		$actli.fadeToggle(function(){
