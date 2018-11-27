@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
 encoding//application/admin/controller/Index.php=UTF-8
+encoding//application/admin/controller/room/Config.php=UTF-8
 encoding//application/api/controller/User.php=UTF-8
 encoding//application/common.php=UTF-8
 encoding//application/common/controller/Api.php=UTF-8

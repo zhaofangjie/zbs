@@ -91,14 +91,14 @@ echo config('room.msg_unallowable');
 ?>";
 </script>
 </head>
-<body onresize="OnResize()" onUnload="OnUnload()" style="background:url(__CDN__{$cfg['config']['bg']}) repeat 0 0 #408080; ">
+<body onresize="OnResize()" onUnload="OnUnload()" style="background:url(__CDN__{$cfg['config']['bgimage']}) repeat 0 0 #408080; ">
 <div id="UI_MainBox" >
 <script>if (!device.desktop()){window.location = './m';}</script>
   <div id="UI_Head">
     <div class="head">
       <div id="head_box" class="head_box">
         <div class="logo_bg" style="BACKGROUND: url(<?php
-echo $cfg['config']['logo'];
+echo $cfg['config']['logoimage'];
 ?>) no-repeat">
 <a href="{:url('room/ico')}" target="_blank" class="zmurl"><img src="__CDN__/style/room/images/icon1.png">桌面快捷</a>   
  <a href="javascript:void(0)" class="kefu" onClick="openWin(2,'客服列表','apps/kefu',810,500)"><img src="__CDN__/style/room/images/icon_qq.png">客服列表</a>
@@ -148,7 +148,7 @@ echo $cfg['config']['id'];
         <div id="group_rebots"></div>
       </div>
       <div style="height:100px; background:#fff">
-      <img src="{$cfg['config']['ewm']}" width='190'></div>
+      <img src="{$cfg['config']['ewmimage']}" width='190'></div>
     </div>
 
   </div>

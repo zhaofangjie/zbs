@@ -1,0 +1,258 @@
+<form id="edit-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Title')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-title" class="form-control form-control" name="row[title]" type="text" value="{$row.title}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Keys')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-keys" class="form-control  form-control" rows="5" name="row[keys]" cols="50">{$row.keys}</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Dc')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-dc" class="form-control  form-control" rows="5" name="row[dc]" cols="50">{$row.dc}</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Logoimage')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <div class="input-group">
+                <input id="c-logoimage" class="form-control form-control" size="50" name="row[logoimage]" type="text" value="{$row.logoimage}">
+                <div class="input-group-addon no-border no-padding">
+                    <span><button type="button" id="plupload-logoimage" class="btn btn-danger plupload" data-input-id="c-logoimage" data-mimetype="image/gif,image/jpeg,image/png,image/jpg,image/bmp" data-multiple="false" data-preview-id="p-logoimage"><i class="fa fa-upload"></i> {:__('Upload')}</button></span>
+                    <span><button type="button" id="fachoose-logoimage" class="btn btn-primary fachoose" data-input-id="c-logoimage" data-mimetype="image/*" data-multiple="false"><i class="fa fa-list"></i> {:__('Choose')}</button></span>
+                </div>
+                <span class="msg-box n-right" for="c-logoimage"></span>
+            </div>
+            <ul class="row list-inline plupload-preview" id="p-logoimage"></ul>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Icoimage')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <div class="input-group">
+                <input id="c-icoimage" class="form-control form-control" size="50" name="row[icoimage]" type="text" value="{$row.icoimage}">
+                <div class="input-group-addon no-border no-padding">
+                    <span><button type="button" id="plupload-icoimage" class="btn btn-danger plupload" data-input-id="c-icoimage" data-mimetype="image/gif,image/jpeg,image/png,image/jpg,image/bmp" data-multiple="false" data-preview-id="p-icoimage"><i class="fa fa-upload"></i> {:__('Upload')}</button></span>
+                    <span><button type="button" id="fachoose-icoimage" class="btn btn-primary fachoose" data-input-id="c-icoimage" data-mimetype="image/*" data-multiple="false"><i class="fa fa-list"></i> {:__('Choose')}</button></span>
+                </div>
+                <span class="msg-box n-right" for="c-icoimage"></span>
+            </div>
+            <ul class="row list-inline plupload-preview" id="p-icoimage"></ul>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Bgimage')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <div class="input-group">
+                <input id="c-bgimage" class="form-control form-control" size="50" name="row[bgimage]" type="text" value="{$row.bgimage}">
+                <div class="input-group-addon no-border no-padding">
+                    <span><button type="button" id="plupload-bgimage" class="btn btn-danger plupload" data-input-id="c-bgimage" data-mimetype="image/gif,image/jpeg,image/png,image/jpg,image/bmp" data-multiple="false" data-preview-id="p-bgimage"><i class="fa fa-upload"></i> {:__('Upload')}</button></span>
+                    <span><button type="button" id="fachoose-bgimage" class="btn btn-primary fachoose" data-input-id="c-bgimage" data-mimetype="image/*" data-multiple="false"><i class="fa fa-list"></i> {:__('Choose')}</button></span>
+                </div>
+                <span class="msg-box n-right" for="c-bgimage"></span>
+            </div>
+            <ul class="row list-inline plupload-preview" id="p-bgimage"></ul>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Ewmimage')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <div class="input-group">
+                <input id="c-ewmimage" data-rule="required" class="form-control form-control" size="50" name="row[ewmimage]" type="text" value="{$row.ewmimage}">
+                <div class="input-group-addon no-border no-padding">
+                    <span><button type="button" id="plupload-ewmimage" class="btn btn-danger plupload" data-input-id="c-ewmimage" data-mimetype="image/gif,image/jpeg,image/png,image/jpg,image/bmp" data-multiple="false" data-preview-id="p-ewmimage"><i class="fa fa-upload"></i> {:__('Upload')}</button></span>
+                    <span><button type="button" id="fachoose-ewmimage" class="btn btn-primary fachoose" data-input-id="c-ewmimage" data-mimetype="image/*" data-multiple="false"><i class="fa fa-list"></i> {:__('Choose')}</button></span>
+                </div>
+                <span class="msg-box n-right" for="c-ewmimage"></span>
+            </div>
+            <ul class="row list-inline plupload-preview" id="p-ewmimage"></ul>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Regban')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-regban" class="form-control  form-control" rows="5" name="row[regban]" cols="50">{$row.regban}</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Msgban')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-msgban" class="form-control  form-control" rows="5" name="row[msgban]" cols="50">{$row.msgban}</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('State')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            
+            <div class="radio">
+            {foreach name="stateList" item="vo"}
+            <label for="row[state]-{$key}"><input id="row[state]-{$key}" name="row[state]" type="radio" value="{$key}" {in name="key" value="$row.state"}checked{/in} /> {$vo}</label> 
+            {/foreach}
+            </div>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Pwd')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-pwd" class="form-control form-control" name="row[pwd]" type="text" value="{$row.pwd}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Regaudit')}:</label>
+        <div class="col-xs-12 col-sm-8">
+                        
+            <select  id="c-regaudit" class="form-control selectpicker" name="row[regaudit]">
+                {foreach name="regauditList" item="vo"}
+                    <option value="{$key}" {in name="key" value="$row.regaudit"}selected{/in}>{$vo}</option>
+                {/foreach}
+            </select>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Msgblock')}:</label>
+        <div class="col-xs-12 col-sm-8">
+                        
+            <select  id="c-msgblock" class="form-control selectpicker" name="row[msgblock]">
+                {foreach name="msgblockList" item="vo"}
+                    <option value="{$key}" {in name="key" value="$row.msgblock"}selected{/in}>{$vo}</option>
+                {/foreach}
+            </select>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Msgaudit')}:</label>
+        <div class="col-xs-12 col-sm-8">
+                        
+            <select  id="c-msgaudit" class="form-control selectpicker" name="row[msgaudit]">
+                {foreach name="msgauditList" item="vo"}
+                    <option value="{$key}" {in name="key" value="$row.msgaudit"}selected{/in}>{$vo}</option>
+                {/foreach}
+            </select>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Msglog')}:</label>
+        <div class="col-xs-12 col-sm-8">
+                        
+            <select  id="c-msglog" class="form-control selectpicker" name="row[msglog]">
+                {foreach name="msglogList" item="vo"}
+                    <option value="{$key}" {in name="key" value="$row.msglog"}selected{/in}>{$vo}</option>
+                {/foreach}
+            </select>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Logintip')}:</label>
+        <div class="col-xs-12 col-sm-8">
+                        
+            <select  id="c-logintip" class="form-control selectpicker" name="row[logintip]">
+                {foreach name="logintipList" item="vo"}
+                    <option value="{$key}" {in name="key" value="$row.logintip"}selected{/in}>{$vo}</option>
+                {/foreach}
+            </select>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Loginguest')}:</label>
+        <div class="col-xs-12 col-sm-8">
+                        
+            <select  id="c-loginguest" class="form-control selectpicker" name="row[loginguest]">
+                {foreach name="loginguestList" item="vo"}
+                    <option value="{$key}" {in name="key" value="$row.loginguest"}selected{/in}>{$vo}</option>
+                {/foreach}
+            </select>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Copyright')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-copyright" class="form-control  form-control" rows="5" name="row[copyright]" cols="50">{$row.copyright}</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Tserver')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-tserver" class="form-control form-control" name="row[tserver]" type="text" value="{$row.tserver}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Vserver')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-vserver" class="form-control form-control" name="row[vserver]" type="text" value="{$row.vserver}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Livetype')}:</label>
+        <div class="col-xs-12 col-sm-8">
+                        
+            <select  id="c-livetype" class="form-control selectpicker" name="row[livetype]">
+                {foreach name="livetypeList" item="vo"}
+                    <option value="{$key}" {in name="key" value="$row.livetype"}selected{/in}>{$vo}</option>
+                {/foreach}
+            </select>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Online')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-online" class="form-control form-control" name="row[online]" type="number" value="{$row.online}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Defvideo')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-defvideo" class="form-control form-control" name="row[defvideo]" type="text" value="{$row.defvideo}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Phonefp')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-phonefp" class="form-control  form-control" rows="5" name="row[phonefp]" cols="50">{$row.phonefp}</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Livefp')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-livefp" class="form-control  form-control" rows="5" name="row[livefp]" cols="50">{$row.livefp}</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Rebots')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-rebots" class="form-control form-control" name="row[rebots]" type="text" value="{$row.rebots}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Defkf')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-defkf" class="form-control form-control" name="row[defkf]" type="text" value="{$row.defkf}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Defvideonick')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-defvideonick" data-rule="required" class="form-control form-control" name="row[defvideonick]" type="text" value="{$row.defvideonick}">
+        </div>
+    </div>
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-success btn-embossed disabled">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
+        </div>
+    </div>
+</form>
