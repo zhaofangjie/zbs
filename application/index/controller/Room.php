@@ -135,20 +135,20 @@ class Room extends Frontend
         }
 
 
-        //幻灯广告
+        //公告内容
 
         $query = Db::name('notice')->where('type','notice')->order("ov desc,id desc")->select();
         $tab='';
         $txt='';
        foreach($query as $row){
             $tab .= "<a href='javascript:void(0)' id='notice_".$row['id']."' class='notice_tab'>".$row['title']."</a>";
-            $txt .= "<div id='notice_".$row['id']."_div' class='notice_div' style='display:none'>" . tohtml($row['txt']) . "</div>";
+            $txt .= "<div id='notice_".$row['id']."_div' class='notice_div' style='display:none'>" . tohtml($row['txtcontent']) . "</div>";
         }
 
 
         $query = Db::name('notice')->where('id',1)->select();
         foreach($query as $row) {
-            $pic_ad_c = "<div id='notice_".$row['id']."_div' class='notice_div' style='display:none'>" . tohtml($row['txt']) . "</div>";
+            $pic_ad_c = "<div id='notice_".$row['id']."_div' class='notice_div' style='display:none'>" . tohtml($row['txtcontent']) . "</div>";
             $pic_ad_t = "<a href='javascript:void(0)' id='notice_".$row['id']."' class='notice_tab'>{$row['title']}</a>";
         }
 
@@ -163,7 +163,7 @@ class Room extends Frontend
 
         //首页弹窗
         $query = Db::name('notice')->find(2);
-        $msgc=tohtml($query['txt']);
+        $msgc=tohtml($query['txtcontent']);
 
         $this->assign('msga',$msga);
         $this->assign('msgb',$msgb);
