@@ -22,6 +22,7 @@ return [
     'Createtime'             => '创建时间',
     'Updatetime'             => '更新时间',
     'The data already exist' => '已经存在',
+    'Iscontribute'           => '是否允许投稿',
     'Status'                 => '状态',
     'Channel'                => '栏目',
     'List'                   => '列表',

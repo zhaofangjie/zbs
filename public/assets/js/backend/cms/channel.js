@@ -66,6 +66,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                             addclass: 'datetimerange',
                             formatter: Table.api.formatter.datetime
                         },
+                        {field: 'iscontribute', title: __('Iscontribute'), searchList: {"1":__('Yes'),"0":__('No')}, formatter: Table.api.formatter.toggle},
                         {field: 'status', title: __('Status'), formatter: Table.api.formatter.status},
                         {
                             field: 'operate',
@@ -78,6 +79,20 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                 ],
                 search: false,
                 commonSearch: false
+            });
+
+            // 绑定TAB事件
+            $('.panel-heading a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                var field = $(this).closest("ul").data("field");
+                var value = $(this).data("value");
+                var options = table.bootstrapTable('getOptions');
+                options.pageNumber = 1;
+                options.queryParams = function (params) {
+                    params.model_id = value;
+                    return params;
+                };
+                table.bootstrapTable('refresh', {});
+                return false;
             });
 
             $(document).on("change", ".text-weigh", function () {

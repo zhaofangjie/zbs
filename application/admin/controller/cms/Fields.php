@@ -25,7 +25,7 @@ class Fields extends Backend
     public function _initialize()
     {
         parent::_initialize();
-        $this->model = model('Fields');
+        $this->model = new \app\admin\model\cms\Fields;
         $this->view->assign("statusList", $this->model->getStatusList());
         $this->view->assign('typeList', Config::getTypeList());
         $this->view->assign('regexList', Config::getRegexList());
@@ -36,19 +36,21 @@ class Fields extends Backend
      */
     public function index()
     {
-        $model_id = $this->request->param('model_id');
+        $model_id = $this->request->param('model_id', 0);
+        $diyform_id = $this->request->param('diyform_id', 0);
+        $condition = $model_id ? ['model_id' => $model_id] : ['diyform_id' => $diyform_id];
         //设置过滤方法
         $this->request->filter(['strip_tags']);
         if ($this->request->isAjax()) {
             list($where, $sort, $order, $offset, $limit) = $this->buildparams();
             $total = $this->model
-                ->where('model_id', $model_id)
+                ->where($condition)
                 ->where($where)
                 ->order($sort, $order)
                 ->count();
 
             $list = $this->model
-                ->where('model_id', $model_id)
+                ->where($condition)
                 ->where($where)
                 ->order($sort, $order)
                 ->limit($offset, $limit)
@@ -59,7 +61,28 @@ class Fields extends Backend
             return json($result);
         }
         $this->assignconfig('model_id', $model_id);
+        $this->assignconfig('diyform_id', $diyform_id);
+        $this->view->assign('model_id', $model_id);
+        $this->view->assign('diyform_id', $diyform_id);
+
+        $model = $model_id ? \app\admin\model\cms\Modelx::get($model_id) : \app\admin\model\cms\Diyform::get($diyform_id);
+        $this->view->assign('model', $model);
+        $modelList = $model_id ? \app\admin\model\cms\Modelx::all() : \app\admin\model\cms\Diyform::all();
+        $this->view->assign('modelList', $modelList);
+
         return $this->view->fetch();
+    }
+
+    /**
+     * 添加
+     */
+    public function add()
+    {
+        $model_id = $this->request->param('model_id', 0);
+        $diyform_id = $this->request->param('diyform_id', 0);
+        $this->view->assign('model_id', $model_id);
+        $this->view->assign('diyform_id', $diyform_id);
+        return parent::add();
     }
 
     /**
@@ -71,13 +94,14 @@ class Fields extends Backend
         //主键
         $primarykey = $this->request->request("keyField");
         //主键值
-        $primaryvalue = $this->request->request("keyValue");
+        $keyValue = $this->request->request("keyValue", "");
 
+        $keyValueArr = array_filter(explode(',', $keyValue));
         $regexList = Config::getRegexList();
         $list = [];
         foreach ($regexList as $k => $v) {
-            if ($primaryvalue !== null) {
-                if ($primaryvalue == $k) {
+            if ($keyValueArr) {
+                if (in_array($k, $keyValueArr)) {
                     $list[] = ['id' => $k, 'name' => $v];
                 }
             } else {

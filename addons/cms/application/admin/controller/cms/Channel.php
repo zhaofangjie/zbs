@@ -3,7 +3,7 @@
 namespace app\admin\controller\cms;
 
 use app\common\controller\Backend;
-use app\admin\model\Channel as ChannelModel;
+use app\admin\model\cms\Channel as ChannelModel;
 use fast\Tree;
 
 /**
@@ -28,12 +28,12 @@ class Channel extends Backend
     {
         parent::_initialize();
         $this->request->filter(['strip_tags']);
-        $this->model = model('Channel');
+        $this->model = new \app\admin\model\cms\Channel;
 
         $tree = Tree::instance();
         $tree->init(collection($this->model->order('weigh desc,id desc')->select())->toArray(), 'parent_id');
         $this->channelList = $tree->getTreeList($tree->getTreeArray(0), 'name');
-        $this->modelList = \app\admin\model\Modelx::order('id asc')->select();
+        $this->modelList = \app\admin\model\cms\Modelx::order('id asc')->select();
 
         $this->view->assign("modelList", $this->modelList);
         $this->view->assign("channelList", $this->channelList);
@@ -49,6 +49,7 @@ class Channel extends Backend
 
         if ($this->request->isAjax()) {
             $search = $this->request->request("search");
+            $model_id = $this->request->request("model_id");
             //构造父类select列表选项数据
             $list = [];
             if ($search) {
@@ -60,6 +61,12 @@ class Channel extends Backend
             } else {
                 $list = $this->channelList;
             }
+            foreach ($list as $index => $item) {
+                if ($model_id && $model_id != $item['model_id']) {
+                    unset($list[$index]);
+                }
+            }
+            $list = array_values($list);
             $modelNameArr = [];
             foreach ($this->modelList as $k => $v) {
                 $modelNameArr[$v['id']] = $v['name'];
@@ -159,7 +166,7 @@ class Channel extends Backend
                     if (!isset($itemArr[1])) {
                         $this->error('格式:分类名称|自定义名称');
                     }
-                    $exist = \app\admin\model\Channel::getByDiyname($itemArr[1]);
+                    $exist = \app\admin\model\cms\Channel::getByDiyname($itemArr[1]);
                     if ($exist) {
                         $this->error('自定义名称[' . $itemArr[1] . ']已经存在');
                     }

@@ -4,7 +4,7 @@ return array (
   'autoload' => false,
   'hooks' => 
   array (
-    'addon_after_upgrade' => 
+    'user_sidenav_after' => 
     array (
       0 => 'cms',
     ),
@@ -15,12 +15,13 @@ return array (
     '/blog/p/[:id]' => 'blog/index/post',
     '/blog/c/[:id]' => 'blog/index/category',
     '/blog/archieve' => 'blog/index/archieve',
-    '/$' => 'cms/index/index',
-    '/c/[:diyname]' => 'cms/channel/index',
-    '/t/[:name]' => 'cms/tags/index',
-    '/a/[:diyname]' => 'cms/archives/index',
-    '/p/[:diyname]' => 'cms/page/index',
-    '/s' => 'cms/search/index',
+    '/cms/$' => 'cms/index/index',
+    '/cms/a/[:diyname]' => 'cms/archives/index',
+    '/cms/t/[:name]' => 'cms/tags/index',
+    '/cms/p/[:diyname]' => 'cms/page/index',
+    '/cms/s' => 'cms/search/index',
+    '/cms/c/[:diyname]' => 'cms/channel/index',
+    '/cms/d/[:diyname]' => 'cms/diyform/index',
     '/example$' => 'example/index/index',
     '/example/d/[:name]' => 'example/demo/index',
     '/example/d1/[:name]' => 'example/demo/demo1',

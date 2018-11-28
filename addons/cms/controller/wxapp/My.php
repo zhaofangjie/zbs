@@ -43,7 +43,7 @@ class My extends Base
     public function aboutus()
     {
         $pageInfo = Page::getByDiyname('aboutus');
-        if (!$pageInfo || $pageInfo['status'] == 'hidden') {
+        if (!$pageInfo || $pageInfo['status'] != 'normal') {
             $this->error(__('单页未找到'));
         }
         $this->success('', ['pageInfo' => $pageInfo]);

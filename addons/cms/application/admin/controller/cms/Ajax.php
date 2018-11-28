@@ -2,10 +2,7 @@
 
 namespace app\admin\controller\cms;
 
-use app\admin\model\Channel;
 use app\common\controller\Backend;
-use fast\Tree;
-use think\db\Query;
 
 /**
  * Ajax

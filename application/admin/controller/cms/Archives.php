@@ -2,7 +2,7 @@
 
 namespace app\admin\controller\cms;
 
-use app\admin\model\Channel;
+use app\admin\model\cms\Channel;
 use app\common\controller\Backend;
 use fast\Tree;
 use think\Db;
@@ -25,7 +25,7 @@ class Archives extends Backend
     public function _initialize()
     {
         parent::_initialize();
-        $this->model = model('Archives');
+        $this->model = new \app\admin\model\cms\Archives;
 
         $channelList = [];
         $disabledIds = [];
@@ -87,7 +87,7 @@ class Archives extends Backend
             return json($result);
         }
 
-        $modelList = \app\admin\model\Modelx::all();
+        $modelList = \app\admin\model\cms\Modelx::all();
         $this->view->assign('modelList', $modelList);
         return $this->view->fetch();
     }
@@ -97,11 +97,11 @@ class Archives extends Backend
      */
     public function content($model_id = null)
     {
-        $model = \app\admin\model\Modelx::get($model_id);
+        $model = \app\admin\model\cms\Modelx::get($model_id);
         if (!$model) {
             $this->error('未找到对应模型');
         }
-        $fieldsList = \app\admin\model\Fields::where('model_id', $model['id'])->where('type', '<>', 'text')->select();
+        $fieldsList = \app\admin\model\cms\Fields::where('model_id', $model['id'])->where('type', '<>', 'text')->select();
 
         //设置过滤方法
         $this->request->filter(['strip_tags']);
@@ -147,6 +147,8 @@ class Archives extends Backend
         $this->view->assign('fieldsList', $fieldsList);
         $this->view->assign('model', $model);
         $this->assignconfig('model_id', $model_id);
+        $modelList = \app\admin\model\cms\Modelx::all();
+        $this->view->assign('modelList', $modelList);
         return $this->view->fetch();
     }
 
@@ -173,7 +175,7 @@ class Archives extends Backend
         if (!$channel) {
             $this->error(__('No specified channel found'));
         }
-        $model = \app\admin\model\Modelx::get($channel['model_id']);
+        $model = \app\admin\model\cms\Modelx::get($channel['model_id']);
         if (!$model) {
             $this->error(__('No specified model found'));
         }
@@ -201,7 +203,7 @@ class Archives extends Backend
      */
     public function del($ids = "")
     {
-        \app\admin\model\Archives::event('after_delete', function ($row) {
+        \app\admin\model\cms\Archives::event('after_delete', function ($row) {
             Channel::where('id', $row['channel_id'])->where('items', '>', 0)->setDec('items');
         });
         return parent::del($ids);
@@ -251,7 +253,7 @@ class Archives extends Backend
             $this->model->where($pk, 'in', $ids);
             $channel = Channel::get($channel_id);
             if ($channel && $channel['type'] === 'list') {
-                $channelNums = \app\admin\model\Archives::
+                $channelNums = \app\admin\model\cms\Archives::
                 with('channel')
                     ->where('archives.' . $pk, 'in', $ids)
                     ->where('channel_id', '<>', $channel['id'])
@@ -299,11 +301,12 @@ class Archives extends Backend
                 $values = db($channel['model']['table'])->where('id', $archives_id)->find();
             }
 
-            $fields = \app\admin\model\Fields::where('model_id', $channel['model_id'])
+            $fields = \app\admin\model\cms\Fields::where('model_id', $channel['model_id'])
                 ->order('weigh desc,id desc')
                 ->select();
             foreach ($fields as $k => $v) {
-                $v->value = isset($values[$v['name']]) ? $values[$v['name']] : '';
+                //优先取编辑的值,再次取默认值
+                $v->value = isset($values[$v['name']]) ? $values[$v['name']] : (is_null($v['defaultvalue']) ? '' : $v['defaultvalue']);
                 $v->rule = str_replace(',', '; ', $v->rule);
                 if (in_array($v->type, ['checkbox', 'lists', 'images'])) {
                     $checked = '';

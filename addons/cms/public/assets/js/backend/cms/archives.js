@@ -41,19 +41,19 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form', 'template'], function
                         {checkbox: true},
                         {field: 'id', title: __('Id'), sortable: true},
                         {
-                            field: 'model_id',
-                            title: __('Model_id'),
+                            field: 'user_id',
+                            title: __('User_id'),
                             visible: false,
                             addclass: 'selectpage',
-                            extend: 'data-source="cms/modelx/index"',
+                            extend: 'data-source="user/user/index" data-field="nickname"',
+                            operate: '=',
                             formatter: Table.api.formatter.search
                         },
                         {
                             field: 'channel_id',
                             title: __('Channel_id'),
                             visible: false,
-                            addclass: 'selectpage',
-                            extend: 'data-source="cms/channel/index"',
+                            operate: false,
                             formatter: Table.api.formatter.search
                         },
                         {
@@ -94,7 +94,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form', 'template'], function
                             addclass: 'datetimerange',
                             formatter: Table.api.formatter.datetime
                         },
-                        {field: 'status', title: __('Status'), operate: false, formatter: Table.api.formatter.status},
+                        {field: 'status', title: __('Status'), searchList: {"normal": __('Status normal'), "hidden": __('Status hidden'), "rejected": __('Status rejected'), "pulloff": __('Status pulloff')}, formatter: Table.api.formatter.status},
                         {
                             field: 'operate',
                             title: __('Operate'),
@@ -123,8 +123,6 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form', 'template'], function
                     $("#channeltree").jstree($(this).prop("checked") ? "open_all" : "close_all");
                 });
                 $('#channeltree').on("changed.jstree", function (e, data) {
-                    console.log(data);
-                    console.log(data.selected);
                     var options = table.bootstrapTable('getOptions');
                     options.pageNumber = 1;
                     options.queryParams = function (params) {
@@ -220,8 +218,75 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form', 'template'], function
                 //这里因为涉及到关联多个表,因为用了两个字段来操作,一个隐藏,一个搜索
                 {field: 'main.id', title: __('Id'), visible: false},
                 {field: 'id', title: __('Id'), operate: false},
-                {field: 'channel_id', title: __('Channel_id'), formatter: Table.api.formatter.search},
+                {
+                    field: 'channel_id',
+                    title: __('Channel_id'),
+                    addclass: 'selectpage',
+                    extend: 'data-source="cms/channel/index"',
+                    formatter: Table.api.formatter.search
+                },
                 {field: 'channel_name', title: __('Channel_name'), operate: false}
+            ];
+            //动态追加字段
+            $.each(Config.fields, function (i, j) {
+                var data = {field: j.field, title: j.title, operate: 'like'};
+                //如果是图片,加上formatter
+                if (j.type == 'image') {
+                    data.formatter = Table.api.formatter.image;
+                } else if (j.type == 'images') {
+                    data.formatter = Table.api.formatter.images;
+                } else if (j.type == 'radio' || j.type == 'check' || j.type == 'select' || j.type == 'selects') {
+                    data.formatter = Controller.api.formatter.content;
+                    data.extend = j.content;
+                }
+                columns.push(data);
+            });
+            //追加操作字段
+            columns.push({
+                field: 'operate',
+                title: __('Operate'),
+                table: table,
+                events: Table.api.events.operate,
+                formatter: Table.api.formatter.operate
+            });
+
+            // 初始化表格
+            table.bootstrapTable({
+                url: $.fn.bootstrapTable.defaults.extend.index_url,
+                pk: 'id',
+                sortName: 'id',
+                columns: columns
+            });
+
+            // 为表格绑定事件
+            Table.api.bindevent(table);
+        },
+        diyform: function () {
+            // 初始化表格参数配置
+            Table.api.init({
+                extend: {
+                    index_url: 'cms/archives/diyform/diyform_id/' + Config.diyform_id,
+                    add_url: '',
+                    edit_url: 'cms/archives/edit',
+                    del_url: 'cms/archives/del',
+                    multi_url: '',
+                    table: '',
+                }
+            });
+
+            var table = $("#table");
+            //在表格内容渲染完成后回调的事件
+            table.on('post-body.bs.table', function (e, settings, json, xhr) {
+                $(".btn-editone", this)
+                    .off("click")
+                    .removeClass("btn-editone")
+                    .addClass("btn-addtabs")
+                    .prop("title", __('Edit'));
+            });
+            //默认字段
+            var columns = [
+                {checkbox: true},
+                {field: 'id', title: __('Id'), operate: false},
             ];
             //动态追加字段
             $.each(Config.fields, function (i, j) {
