@@ -15,7 +15,4 @@ class Msg extends Model
         return date('Y-m-d H:i:s', $value);
     }
 
-    //自动完成
-
-
 }

@@ -27,8 +27,6 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {field: 'id', title: __('Id')},
                         {field: 'rid', title: __('Rid')},
                         {field: 'ugid', title: __('Ugid')},
-                        {field: 'uid', title: __('Uid')},
-                        {field: 'tuid', title: __('Tuid')},
                         {field: 'uname', title: __('Uname')},
                         {field: 'tname', title: __('Tname')},
                         {field: 'p', title: __('P')},

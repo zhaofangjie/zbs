@@ -49,5 +49,26 @@ class Msg extends Model
         return $value && !is_numeric($value) ? strtotime($value) : $value;
     }
 
-
+    //状态    
+    public function getStateAttr($value){
+        $state=array('正常','待审','置顶公告','管理提示');
+        return $state[$value];
+    }
+    
+    //私聊 
+    public function getPAttr($value){
+        if($value==''){
+            return '系统';
+        }else{
+            $p = array('true'=>'是','false'=>'否');
+            return $p[$value];
+        }
+    }
+    
+    //获取组名 
+    public function getUgidAttr($value){
+        $group = new \app\admin\model\UserGroup();
+        $info = $group->find($value);
+        return $info->name;
+    }
 }
