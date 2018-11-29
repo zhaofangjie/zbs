@@ -153,7 +153,6 @@ class Room extends Frontend
         }
 
         //滚动广告
-
         $query = Db::name('msg')->where('rid',$this->cfg['config']['id'])->where('state',2)->where('type','0')->order('id desc')->find();
         $msga="<span style='color:#FF0'>" . tohtml($query['msg']) . "</span>";
 
