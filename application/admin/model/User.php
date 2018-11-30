@@ -81,9 +81,25 @@ class User extends Model
         return $value && !is_numeric($value) ? strtotime($value) : $value;
     }
 
+    
+    /*
+     * 游客
+     */
+    protected function scopeGroup_id($query){
+        $query->where('group_id', '0');
+    }
+    
+    
+    //我的客户
+    protected function scopeKuser($query,$kuser=''){
+        $query->where('kuser',$kuser);
+    }
+    
     public function group()
     {
         return $this->belongsTo('UserGroup', 'group_id', 'id', [], 'LEFT')->setEagerlyType(0);
     }
 
+    
+    
 }

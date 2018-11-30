@@ -74,5 +74,75 @@ class User extends Backend
         $this->view->assign('groupList', build_select('row[group_id]', \app\admin\model\UserGroup::column('id,name'), $row['group_id'], ['class' => 'form-control selectpicker']));
         return parent::edit($ids);
     }
+    
 
+   /*
+    *游客 
+    */
+    public function guest(){ 
+        //设置过滤方法
+        $this->request->filter(['strip_tags']);
+        if ($this->request->isAjax())
+        {
+            //如果发送的来源是Selectpage，则转发到Selectpage
+            if ($this->request->request('keyField'))
+            {
+                return $this->selectpage();
+            }
+            list($where, $sort, $order, $offset, $limit) = $this->buildparams();
+            $total = \app\admin\model\User::scope('group_id')
+            ->with('group')
+            ->where($where)
+            ->order($sort, $order)
+            ->count();
+            $list = \app\admin\model\User::scope('group_id')
+            ->with('group')
+            ->where($where)
+            ->order($sort, $order)
+            ->limit($offset, $limit)
+            ->select();
+            foreach ($list as $k => $v)
+            {
+                $v->hidden(['password', 'salt']);
+            }
+            $result = array("total" => $total, "rows" => $list);
+            
+            return json($result);
+        }
+        return $this->view->fetch();
+    }    
+    
+    //我的客户
+    public function myuser(){
+        //设置过滤方法
+        $this->request->filter(['strip_tags']);
+        if ($this->request->isAjax())
+        {
+            //如果发送的来源是Selectpage，则转发到Selectpage
+            if ($this->request->request('keyField'))
+            {
+                return $this->selectpage();
+            }
+            list($where, $sort, $order, $offset, $limit) = $this->buildparams();
+            $total = \app\admin\model\User::scope('kuser',$this->auth->username)
+            ->with('group')
+            ->where($where)
+            ->order($sort, $order)
+            ->count();
+            $list =  \app\admin\model\User::scope('kuser',$this->auth->username)
+            ->with('group')
+            ->where($where)
+            ->order($sort, $order)
+            ->limit($offset, $limit)
+            ->select();
+            foreach ($list as $k => $v)
+            {
+                $v->hidden(['password', 'salt']);
+            }
+            $result = array("total" => $total, "rows" => $list);
+            
+            return json($result);
+        }
+        return $this->view->fetch();
+    }
 }
