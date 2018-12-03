@@ -1,4 +1,4 @@
-define(['jquery', 'bootstrap', 'frontend', 'form', 'template'], function ($, undefined, Frontend, Form, Template) {
+define(['jquery', 'bootstrap', 'frontend', 'table', 'template'], function ($, undefined, Frontend, Table, Template) {
     var validatoroptions = {
         invalid: function (form, errors) {
             $.each(errors, function (i, j) {
@@ -96,7 +96,44 @@ define(['jquery', 'bootstrap', 'frontend', 'form', 'template'], function ($, und
                     }
                 });
             });
-        }
+        },
+        myuser: function () {
+            // 初始化表格参数配置
+            Table.api.init({
+                extend: {
+                    index_url: 'user/myuser',
+                    table: 'user',
+                }
+            });
+
+            var table = $("#table");
+
+            // 初始化表格
+            table.bootstrapTable({
+                url: $.fn.bootstrapTable.defaults.extend.index_url,
+                pk: 'id',
+                sortName: 'user.id',
+                columns: [
+                    [
+                        {field: 'group.name', title: __('Group')},
+                        {field: 'username', title: __('Username'), operate: 'LIKE'},
+                        {field: 'nickname', title: __('Nickname'), operate: 'LIKE'},
+                        {field: 'email', title: __('Email'), operate: 'LIKE'},
+                        {field: 'mobile', title: __('Mobile'), operate: 'LIKE'},
+                        {field: 'avatar', title: __('Avatar'), formatter: Table.api.formatter.image, operate: false},
+                        {field: 'gender', title: __('Gender'), visible: false, searchList: {1: __('Male'), 0: __('Female')}},
+                        {field: 'logintime', title: __('Logintime'), formatter: Table.api.formatter.datetime, operate: 'RANGE', addclass: 'datetimerange', sortable: true},
+                        {field: 'loginip', title: __('Loginip'), formatter: Table.api.formatter.search},
+                        {field: 'jointime', title: __('Jointime'), formatter: Table.api.formatter.datetime, operate: 'RANGE', addclass: 'datetimerange', sortable: true},
+                        {field: 'joinip', title: __('Joinip'), formatter: Table.api.formatter.search},
+                        {field: 'status', title: __('Status'), formatter: Table.api.formatter.status, searchList: {normal: __('Normal'), hidden: __('Hidden')}},
+                     ]
+                ]
+            });
+
+            // 为表格绑定事件
+            Table.api.bindevent(table);
+        },
     };
     return Controller;
 });

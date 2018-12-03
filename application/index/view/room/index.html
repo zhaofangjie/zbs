@@ -105,7 +105,7 @@ echo $cfg['config']['logoimage'];
  </div>
         <div class="head_user">
                     {if $user}
-<a href="javascript:void(0)" class="userinfo" onClick="openWin(2,false,'profiles.php?uid={$user->id}',460,600)">
+<a href="user/index" target="_blank" class="userinfo">
 <img src="{:url('/index/ajax/getFaceImg')}?t=p1&u={$user->id}" border="0" class="userimg"/>{$user->nickname}▼</a>
 <a href="mlogin/logout" class="userlogout">退出</a>
                     {else /}

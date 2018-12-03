@@ -64,4 +64,11 @@ return [
     'Invalid parameters'                    => '参数不正确',
     'Change password failure'               => '修改密码失败',
     'Change password successful'            => '修改密码成功',
+    'Avatar'                                =>'头像',
+    'Loginip'                               =>'登录ip',
+    'Jointime'                              =>'注册时间',
+    'Joinip'                                =>'注册IP',
+    'Group'                                 =>'用户组',
+    'Level'                                 =>'用户等级'
+
 ];

@@ -18,11 +18,13 @@ class User extends Frontend
     protected $layout = 'default';
     protected $noNeedLogin = ['login', 'register', 'third'];
     protected $noNeedRight = ['*'];
+    protected $model;
 
     public function _initialize()
     {
         parent::_initialize();
         $auth = $this->auth;
+        $this->model = new \app\index\model\User();
 
         if (!Config::get('fastadmin.usercenter')) {
             $this->error(__('User center already closed'));
@@ -60,6 +62,7 @@ class User extends Frontend
     {
         $this->view->assign('title', __('User center'));
         return $this->view->fetch();
+
     }
 
     /**
@@ -267,6 +270,43 @@ class User extends Frontend
             }
         }
         $this->view->assign('title', __('Change password'));
+        return $this->view->fetch();
+    }
+
+    //我的客户
+    public function myuser()
+    {
+        $kuser=session('login_user');
+        //设置过滤方法
+        $this->request->filter(['strip_tags']);
+        if ($this->request->isAjax())
+        {
+            //如果发送的来源是Selectpage，则转发到Selectpage
+            if ($this->request->request('keyField'))
+            {
+                return $this->selectpage();
+            }
+            list($where, $sort, $order, $offset, $limit) = $this->buildparams();
+            $total = $this->model->scope('kuser',$kuser)
+            ->with('group')
+            ->where($where)
+            ->order($sort, $order)
+            ->count();
+            $list = $this->model->scope('kuser',$kuser)
+            ->with('group')
+            ->where($where)
+            ->order($sort, $order)
+            ->limit($offset, $limit)
+            ->select();
+            foreach ($list as $k => $v)
+            {
+                $v->hidden(['password', 'salt']);
+            }
+            $result = array("total" => $total, "rows" => $list);
+
+            return json($result);
+        }
+        $this->view->assign('title', '我的客户');
         return $this->view->fetch();
     }
 
