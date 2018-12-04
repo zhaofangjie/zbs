@@ -309,5 +309,4 @@ class User extends Frontend
         $this->view->assign('title', '我的客户');
         return $this->view->fetch();
     }
-
 }

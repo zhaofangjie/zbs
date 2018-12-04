@@ -102,6 +102,7 @@ define(['jquery', 'bootstrap', 'frontend', 'table', 'template'], function ($, un
             Table.api.init({
                 extend: {
                     index_url: 'user/myuser',
+                    multi_url: 'user/user/multi',
                     table: 'user',
                 }
             });
@@ -120,7 +121,6 @@ define(['jquery', 'bootstrap', 'frontend', 'table', 'template'], function ($, un
                         {field: 'nickname', title: __('Nickname'), operate: 'LIKE'},
                         {field: 'email', title: __('Email'), operate: 'LIKE'},
                         {field: 'mobile', title: __('Mobile'), operate: 'LIKE'},
-                        {field: 'avatar', title: __('Avatar'), formatter: Table.api.formatter.image, operate: false},
                         {field: 'gender', title: __('Gender'), visible: false, searchList: {1: __('Male'), 0: __('Female')}},
                         {field: 'logintime', title: __('Logintime'), formatter: Table.api.formatter.datetime, operate: 'RANGE', addclass: 'datetimerange', sortable: true},
                         {field: 'loginip', title: __('Loginip'), formatter: Table.api.formatter.search},
@@ -130,10 +130,14 @@ define(['jquery', 'bootstrap', 'frontend', 'table', 'template'], function ($, un
                      ]
                 ]
             });
-
             // 为表格绑定事件
             Table.api.bindevent(table);
         },
+        api: {
+            bindevent: function () {
+                Form.api.bindevent($("form[role=form]"));
+            }
+        }
     };
     return Controller;
 });

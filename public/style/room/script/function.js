@@ -1134,7 +1134,7 @@ function FormatMsg(Msg)
 	var msgBlockBt="";
 	if(RoomInfo.msgBlock=="1"){
 		if(check_auth('msg_block'))
-		msgBlockBt=" <a href='javascript:void(0)' onclick='bt_msgBlock(\""+msgid+"\")'><img src='images/11.png' style='border:0px;' title='屏蔽消息'></a>";
+		msgBlockBt=" <a href='javascript:void(0)' onclick='bt_msgBlock(\""+msgid+"\")'><img src='/style/room/images/11.png' style='border:0px;' title='屏蔽消息'></a>";
 	}
 
 	var msgAuditBt="";

@@ -186,7 +186,8 @@ class Apps extends Frontend
         $this->assign('hdView',$hdView);
 
         // 查询状态为1的用户数据 并且每页显示20条数据
-        $list = Db::name('apps_hd')->order('id desc')->paginate(10);
+        $hd = new \app\index\model\Hd();
+        $list = $hd->order('id desc')->paginate(10);
         // 把分页数据赋值给模板变量list
         $this->assign('list', $list);
         // 渲染模板输出
