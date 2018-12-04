@@ -1011,11 +1011,11 @@ function PutMessage(rid,uid,tid,uname,tname,privacy,style,str,msgid){
 }
 function Mkick(adminid,rid,ktime,cause)
 {
-	$.ajax({type: 'get',dataType:'json',url: '../ajax.php?act=kick&aid='+adminid+'&rid='+rid+'&ktime='+ktime+'&cause='+encodeURIComponent(cause)+'&u='+encodeURIComponent(My.name)+'&'+Math.random() * 10000,
+	$.ajax({type: 'get',dataType:'json',url: 'ajax/kick?aid='+adminid+'&rid='+rid+'&ktime='+ktime+'&cause='+encodeURIComponent(cause)+'&u='+encodeURIComponent(My.name)+'&'+Math.random() * 10000,
 			success:function(data){
 				//alert(data);
 				if(data.state=="yes"){
-				location.href="error.php?msg="+encodeURI('你被踢出！并禁止'+ktime+'分钟内登陆该房间！<br>原因是 '+cause+'');
+				location.href="room/ti?msg="+encodeURI('你被踢出！并禁止'+ktime+'分钟内登陆该房间！<br>原因是 '+cause+'');
 				}
 			}
 	});

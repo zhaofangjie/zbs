@@ -62,12 +62,12 @@ class Room extends Frontend
                 exit("<script>location.reload();</script>");
             }
         }
-
+        
         $uid = session('login_uid');
         //更新用户ip
-        Db::name('user')->update(['joinip'=>request()->ip(),'id'=>$uid]);
+        Db::table('zb_user')->update(['joinip'=>request()->ip(),'id'=>$uid]);
         //查询用户相关信息
-        $userinfo = Db::name('user')->find($uid);
+        $userinfo = Db::table('zb_user')->find($uid);
         if ($userinfo['kuser'] == "") {
             $userinfo['kuser'] = $this->userinfo(cookie('tg'), 'username');
         }
@@ -424,6 +424,11 @@ class Room extends Frontend
         return $this->view->fetch();
     }
 
+    //错误提示
+    public function ti(){
+        $msg = $this->request->param('msg');
+        $this->error($msg);
+    }
 }
 
 ?>
