@@ -1,6 +1,5 @@
-后台基于FastAdmin急速开发
+后台基于FastAdmin急速开发（thinkphp 5.1）
 集成workman异步框架
-前台借鉴了ppchat
 
 
 财经直播喊单系统

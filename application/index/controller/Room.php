@@ -65,9 +65,9 @@ class Room extends Frontend
 
         $uid = session('login_uid');
         //更新用户ip
-        Db::table('zb_user')->update(['joinip'=>request()->ip(),'id'=>$uid]);
+        Db::name('user')->update(['joinip'=>request()->ip(),'id'=>$uid]);
         //查询用户相关信息
-        $userinfo = Db::table('zb_user')->find($uid);
+        $userinfo = Db::name('user')->find($uid);
         if ($userinfo['kuser'] == "") {
             $userinfo['kuser'] = $this->userinfo(cookie('tg'), 'username');
         }
