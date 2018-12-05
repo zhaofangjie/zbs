@@ -1435,7 +1435,7 @@ function sendCaitiao(tag){
 	var ct=[];
 	ct['dyg']='<img src="/style/room/face/colorbar/dyg.gif">';
 	ct['zyg']='<img src="/style/room/face/colorbar/zyg.gif">';
-	ct['gl']='<img src="/style/room/face/pic/s1.gif"><img src="/room/face/pic/s1.gif"><img src="/room/face/pic/s6.gif"><img src="/style/room/face/pic/s6.gif"><img src="/room/face/pic/geili_thumb.gif"><img src="/room/face/pic/geili_thumb.gif"><img src="/style/room/face/pic/s0.gif"><img src="/room/face/pic/s0.gif">';
+	ct['gl']='<img src="/style/room/face/pic/s1.gif"><img src="/style/room/face/pic/s6.gif"><img src="/style/room/face/pic/geili_thumb.gif"><img src="/style/room/face/pic/s0.gif">';
 	ct['zs']='<img src="/style/room/face/colorbar/zs.gif">';
 	ct['xh']='<img src="/style/room/face/colorbar/xh.gif">';
 	app_sendmsg(ct[tag]);
