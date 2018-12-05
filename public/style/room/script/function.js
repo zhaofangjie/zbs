@@ -1015,7 +1015,7 @@ function Mkick(adminid,rid,ktime,cause)
 			success:function(data){
 				//alert(data);
 				if(data.state=="yes"){
-				location.href="room/ti?msg="+encodeURI('你被踢出！并禁止'+ktime+'分钟内登陆该房间！<br>原因是 '+cause+'');
+				location.href="room/ti?msg="+encodeURI('傻叉，你被踢出！并禁止'+ktime+'分钟内登陆该房间！<br>原因是 '+cause+'');
 				}
 			}
 	});

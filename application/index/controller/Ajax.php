@@ -252,11 +252,11 @@ class Ajax extends Frontend
         $data['state'] = $state;
         Db::name('msg')->insert($data);
     }
-    
+
     /*
      * 踢出房间
      */
-    
+
     public function kick(){
         //权限检查
             $aid = $this->request->param('aid');
@@ -264,12 +264,11 @@ class Ajax extends Frontend
             $losttime = $ktime * 60 + time();
             $u = $this->request->param('u');
             $onlineip = $this->request->ip();
-            $losttime = $this->request->param('losttime');
             $cause = $this->request->param('cause');
             $data['username'] = $u;
             $data['ip'] = $onlineip;
             $data['losttime'] = $losttime;
-            $data['sn'] = $cause; 
+            $data['sn'] = $cause;
             Db::name('ban')->insert($data);
             $state['state'] = 'yes';
             return json($state);

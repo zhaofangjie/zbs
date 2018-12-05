@@ -62,7 +62,7 @@ class Room extends Frontend
                 exit("<script>location.reload();</script>");
             }
         }
-        
+
         $uid = session('login_uid');
         //更新用户ip
         Db::table('zb_user')->update(['joinip'=>request()->ip(),'id'=>$uid]);
@@ -73,7 +73,11 @@ class Room extends Frontend
         }
         session('login_gid', $userinfo['group_id']);
         //黑名单
-        $query = Db::table('zb_ban')->where('(username = :username or ip = :ip) and losttime > :time',['username'=>$userinfo['username'],'ip'=>request()->ip(),'time'=>time()])->find();
+        //$query = Db::name('ban')->where('(username = :username or ip = :ip) and losttime > :time',['username'=>$userinfo['username'],'ip'=>request()->ip(),'time'=>time()])->find();
+        $query = Db::name('ban')->where(function($query) use($userinfo){
+            $query->where('username',$userinfo['username'])->whereOr('ip',request()->ip());
+        })->where('losttime','>',time())->find();
+
         if($query){
             $msg='用户名或IP受限！过期时间'. date("Y-m-d H:i:s", $query['losttime']);
             $this->error($msg);
@@ -427,7 +431,8 @@ class Room extends Frontend
     //错误提示
     public function ti(){
         $msg = $this->request->param('msg');
-        $this->error($msg);
+        $this->assign('msg',$msg);
+        return $this->view->fetch();
     }
 }
 

@@ -1,7 +1,7 @@
 <?php
 
 return array (
-  'name' => '财运金融直播室',
+  'name' => '知客易会',
   'beian' => '',
   'cdnurl' => '',
   'version' => '1.0.1',
