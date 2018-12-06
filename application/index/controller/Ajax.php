@@ -273,4 +273,31 @@ class Ajax extends Frontend
             $state['state'] = 'yes';
             return json($state);
     }
+
+    /*
+     * 当前讲师设置
+     */
+
+    public function setdefvideosrc(){
+        //权限检查
+        $vid = $this->request->param('vid');
+        $nick = $this->request->param('nick');
+        $rid = $this->request->param('rid');
+        $data['defvideo'] = $vid;
+        $data['defvideonick'] = $nick;
+        //$db->query("update {$tablepre}config set defvideo='{$vid}',defvideonick='{$nick}' where id='{$rid}'");
+        Db::name('room_config')->where('id',$rid)->update($data);
+        break;
+    }
+
+    /*
+     * 禁言
+     */
+
+    public function msgblock(){
+        $msgid = $this->request->param('msgid');
+        $state = $this->request->param('s');
+        Db::name('msg')->where('msgid',$msgid)->setField('state',$state);
+        break;
+    }
 }

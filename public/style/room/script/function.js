@@ -426,7 +426,7 @@ UserList=(function(){
 		setstate:function(id,state,automsg){
 			list[id].state=state;
 			getId(id).title=automsg;
-			getId('state'+id).src="images/state"+state+".png";
+			getId('state'+id).src="/style/room/images/state"+state+".png";
 		},
 		del:function(id,u){
 			if(id==My.chatid)return;
@@ -1052,12 +1052,12 @@ function FormatMsg(Msg)
 			case 'msgAudit':
 				$('#'+command[2]).show();
 				MsgAutoScroll();
-				$.ajax({type: 'get',url: '../ajax.php?act=msgblock&s=0&msgid='+command[2]});
+				$.ajax({type: 'get',url: '/index/ajax/msgblock?s=0&msgid='+command[2]});
 			break;
 			case 'msgBlock':
 				$('#'+command[2]).remove();
 				MsgAutoScroll();
-				$.ajax({type: 'get',url: '../ajax.php?act=msgblock&s=1&msgid='+command[2]});
+				$.ajax({type: 'get',url: '/index/ajax/msgblock?s=1&msgid='+command[2]});
 			break;
 			case 'rebotmsg':
 				var msg={};

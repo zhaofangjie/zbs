@@ -388,7 +388,7 @@ function bt_SwitchListTab(tag){
 function bt_defvideosrc(){
 	if(check_auth('def_videosrc')){
 		SysSend.command('setVideoSrc',My.chatid+'_+_'+My.nick);
-		$.ajax({type: 'get',url: '../ajax.php?act=setdefvideosrc&vid='+encodeURIComponent(My.chatid)+'&nick='+encodeURIComponent(My.nick)+'&rid='+My.rid});
+		$.ajax({type: 'get',url: '/index/ajax/setdefvideosrc?vid='+encodeURIComponent(My.chatid)+'&nick='+encodeURIComponent(My.nick)+'&rid='+My.rid});
 	}
 }
 function bt_msgBlock(id){
