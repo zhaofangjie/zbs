@@ -223,12 +223,9 @@ class Ajax extends Frontend
         $style = $this->request->param('style');
         $msg = $_POST['msg'];
         $msgid = $this->request->param('msgid');
-
+        $state = 0;
         if ($this->cfg['config']['msgaudit'] == '1') {
             $state = '1';
-        }
-        if(!isset($magtip)){
-            $state = '0';
         }
         if ($msgtip == "2") {
             $state = '2';
@@ -287,7 +284,7 @@ class Ajax extends Frontend
         $data['defvideonick'] = $nick;
         //$db->query("update {$tablepre}config set defvideo='{$vid}',defvideonick='{$nick}' where id='{$rid}'");
         Db::name('room_config')->where('id',$rid)->update($data);
-        break;
+
     }
 
     /*
@@ -296,8 +293,7 @@ class Ajax extends Frontend
 
     public function msgblock(){
         $msgid = $this->request->param('msgid');
-        $state = $this->request->param('s');
-        Db::name('msg')->where('msgid',$msgid)->setField('state',$state);
-        break;
+        $state = $this->request->param('st');
+        $re = Db::name('msg')->where('msgid',$msgid)->setField('state',$state);
     }
 }

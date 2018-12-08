@@ -1052,12 +1052,12 @@ function FormatMsg(Msg)
 			case 'msgAudit':
 				$('#'+command[2]).show();
 				MsgAutoScroll();
-				$.ajax({type: 'get',url: '/index/ajax/msgblock?s=0&msgid='+command[2]});
+				$.ajax({type: 'get',url: '/index/ajax/msgblock?st=0&msgid='+command[2]});
 			break;
 			case 'msgBlock':
 				$('#'+command[2]).remove();
 				MsgAutoScroll();
-				$.ajax({type: 'get',url: '/index/ajax/msgblock?s=1&msgid='+command[2]});
+				$.ajax({type: 'get',url: '/index/ajax/msgblock?st=1&msgid='+command[2]});
 			break;
 			case 'rebotmsg':
 				var msg={};
@@ -1143,7 +1143,7 @@ function FormatMsg(Msg)
 		msgAuditShow='style="display:none"';
 
 		if(check_auth('msg_audit')){
-			msgAuditBt=" <a href='javascript:void(0)' onclick='bt_msgAudit(\""+msgid+"\",this)'><img src='images/22.png' style='border:0px;' title='审核通过'></a>";
+			msgAuditBt=" <a href='javascript:void(0)' onclick='bt_msgAudit(\""+msgid+"\",this)'><img src='/style/room/images/22.png' style='border:0px;' title='审核通过'></a>";
 			msgAuditShow="";
 		}
 		if(User.chatid==My.chatid)msgAuditShow="";
