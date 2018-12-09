@@ -161,7 +161,7 @@ function tCamState(tag)
 }
 function onConnect()
 {
-	//setInterval("online('<?=$time?>')",10000);
+	setInterval("online('<?=$time?>')",10000);
 	getId('Msg').innerHTML="";
 	var str='Login=M='+My.roomid+'|'+My.chatid+'|'+My.nick+'|'+My.sex+'|'+My.age+'|'+My.qx+'|'+My.ip+'|'+My.vip+'|'+My.color+'|'+My.cam+'|'+My.state+'|'+My.mood;
 	ws.send(str);

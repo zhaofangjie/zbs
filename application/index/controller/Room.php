@@ -56,13 +56,14 @@ class Room extends Frontend
             }
         }
 
+
         //如果客户没有登录，且系统允许游客登录，则赋予游客身份并随机分配客服
         if (!session::has('login_uid') and ($this->cfg['config']['loginguest'] == "1")) {
-            if ($this->gusetLogin()) {
+            if ($this->gusetLogin()) {              
                 exit("<script>location.reload();</script>");
             }
         }
-
+      
         $uid = session('login_uid');
         //更新用户ip
         Db::table('zb_user')->update(['joinip'=>request()->ip(),'id'=>$uid]);
@@ -208,7 +209,7 @@ class Room extends Frontend
 
     protected function gusetLogin(){
         //游客是否登陆
-        if (!cookie::has('guest') || cookie('guest') == '' || cookie('guest')=='deleted') {
+        if (!session::has('login_uid') || !cookie::has('guest') || cookie('guest') == '' || cookie('guest')=='deleted') {
             $guest = "游客" . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9);
             $p = md5(md5('123123').'guest');
 
@@ -237,7 +238,8 @@ class Room extends Frontend
             $data['status'] = 'normal';
             $data['level'] = '0';
 
-            $id = Db::table('zb_user')->insert($data);
+            $id = Db::table('zb_user')->insertGetId($data);
+            session('login_uid',$id);
             cookie("guest", $guest, time() + 315360000, "/");
         } else {
             //如果登录失败，则将游客信息置空，清空cookie，重新赋予游客身份
@@ -246,7 +248,7 @@ class Room extends Frontend
                 return false;
             }
         }
-        return true;
+        return session('login_uid');
     }
 
     //直播室用户登录

@@ -1295,7 +1295,7 @@ function online(rst)
 {
 
 	var xmlhttp=XHConn();
-	var request_url="../ajax.php?act=online&rst="+rst+"&num="+getId('OnlineUserNum').innerHTML+"&"+Math.random() * 10000;
+	var request_url="/index/ajax/online?rst="+rst+"&num="+getId('OnlineUserNum').innerHTML+"&"+Math.random() * 10000;
 	try{
 		xmlhttp.open('GET',request_url,true);
 		xmlhttp.send(null);

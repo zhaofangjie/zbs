@@ -296,4 +296,44 @@ class Ajax extends Frontend
         $state = $this->request->param('st');
         $re = Db::name('msg')->where('msgid',$msgid)->setField('state',$state);
     }
+    
+    //在线用户
+    public function online(){
+        $rst = $this->request->param('rst');
+        if (!session('login_uid')) {
+            $state['state'] = 'logout';
+        } else {
+            if (session('login_uid') == 0) {
+                $state['state'] = 'ok';
+                $data = $json->encode($state);
+                exit($data);
+            }
+            if (!empty($rst)) {
+                $time = time();
+                $u_id = session('login_uid');
+                $query_row = $db->fetch_row($db->query("select lastactivity from {$tablepre}members where uid='{$u_id}'"));
+                $_time = (int) ($time - $query_row['lastactivity']);
+                $rid = $_SESSION['onlines_state']['rid'];
+                $query = $db->query("select * from {$tablepre}memberonlines where rst='{$rst}' and uid='{$u_id}'");
+                if ($db->num_rows($query) <= 0) {
+                    $db->query("replace into {$tablepre}memberonlines(uid,rid,lastactivity,ip,rst)values('{$u_id}','{$rid}','{$time}','{$onlineip}',{$rst})");
+                    $state['state'] = 'ologin';
+                    $data = $json->encode($state);
+                    exit($data);
+                }
+                $db->query("update {$tablepre}memberonlines set lastactivity='{$time}' where rst='{$rst}' and uid='{$u_id}'");
+                $db->query("update {$tablepre}members set lastactivity='{$time}',onlinetime=onlinetime+{$_time} where uid='{$u_id}'");
+                $state['state'] = 'ok';
+                $onlineNum = (int) $num;
+                if ($num >= 1) {
+                    $db->query("update {$tablepre}config set online='{$num}' where id='{$def_cfg}'");
+                }
+            } else {
+                reonline();
+                $state['state'] = 'ok';
+            }
+        }
+        $data = $json->encode($state);
+        exit($data);
+    }
 }
