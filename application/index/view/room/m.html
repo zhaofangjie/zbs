@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="__CDN__/style/room/m/css/index.min.css">
     <link rel="apple-touch-icon" href="images/dico.png"/>
     <link rel="icon" href="__CDN__/style/room/m/images/dico.png"/>
-    <script src="__CDN__/style/room/script/jquery.min.js"></script>
+    <script src="__CDN__/style/room/script/jquery8.min.js"></script>
     <!--<script src="//cdn.amazeui.org/amazeui/2.7.2/js/amazeui.min.js"></script>-->
 	<script src="__CDN__/assets/js/amazeui.min.js"></script>
     <script src="__CDN__/style/room/script/layer.js"></script>
@@ -126,7 +126,7 @@
         <span style="font-size: 10px;"><font id="showOLNum" style="display:none"></font>人在线</span>
     </h1>
     <div class="am-header-right am-header-nav">
-        <a href="javascript:;" class="" onclick="userInfo()" style="    float: right;    margin-top:6px;    margin-left: 2px;"><img src="/face/p1/null.gif?1544418418" class="am-img-thumbnail am-circle" style="width:30px; height:30px"></a>
+        <a href="javascript:;" class="" onclick="userInfo()" style="    float: right;    margin-top:6px;    margin-left: 2px;"><img src="ajax/getFaceImg/?t=p1&u="+User.chatid+"?{:time()}" class="am-img-thumbnail am-circle" style="width:30px; height:30px"></a>
         <a href="javascript:;" class="" onclick="location.reload()"><i class="am-header-icon am-icon-refresh"style="font-size: 25px;    margin-top: 8px;"></i></a>
         <!--<a href="javascript:;" class="" onclick="qiandao()"><i class="am-header-icon am-icon-street-view" style="font-size: 25px;    margin-top: 8px;"></i></a>
         <a href="javascript:;" class="" onclick="userPay()"><i class="am-header-icon am-icon-credit-card" style="font-size: 25px;    margin-top: 8px;"></i></a> -->
@@ -150,7 +150,9 @@
                 <div id="video-status-container" class="video-status-container"></div>
                 <div class="video-win" id="video-win"  style="height:180px;">
                     <div id="a1" style="min-width: 100%;"></div>
-<script type="text/javascript" src="/ckplayer/ckplayer.js" set="utf-8"></script><script type="text/javascript">function ppchat(obj){
+<script type="text/javascript" src="/style/room/script/ckplayer.js" set="utf-8"></script>
+<script type="text/javascript">
+function ppchat(obj){
  if(!obj.hls||obj.hls==""){alert('直播地址解析错误');return false;}
     var flashvars={
         p:0,
@@ -337,8 +339,8 @@ $.getScript('http://www.ppchat.org/getVideo.php?id=17880160/2461075145');</scrip
     <!--<div class="publicChat"></div>-->
     <div class="footer">
         <div class="am-cf">
-            <div class="am-btn1  am-fl plus" onclick="$('#filedata_ptp').click()"><img src="images/m_ico4.png" width="28" height="28"></div>
-            <div class="am-btn1  am-fl smile"><img src="images/m_ico1.png" width="28" height="28"></div>
+            <div class="am-btn1  am-fl plus" onclick="$('#filedata_ptp').click()"><img src="/style/room/images/m_ico4.png" width="28" height="28"></div>
+            <div class="am-btn1  am-fl smile"><img src="/style/room/images/m_ico1.png" width="28" height="28"></div>
             <div class="am-btn1  am-fr sendBtn" onclick="PtpMsgSend()"><img src="/style/room/images/m_ico3.png" width="28" height="28"></div>
 
 

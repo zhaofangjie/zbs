@@ -441,6 +441,12 @@ class Room extends Frontend
         $this->assign('msg',$msg);
         return $this->view->fetch();
     }
+    
+    //手机版登陆
+    
+    public function mlogin(){
+       return $this->fetch();
+    }
 }
 
 ?>
