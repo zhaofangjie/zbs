@@ -88,11 +88,11 @@
                                     <span class="avatar-img"><img src="{$user.avatar|cdnurl}" style="width:30px;height:30px;border-radius:50%;" alt=""></span>
                                 </a>
                                 {else /}
-                                <a href="{:url('index/user/index')}" class="dropdown-toggle" data-toggle="dropdown">会员<span class="hidden-sm">中心</span> <b class="caret"></b></a>
+                                <a href="{:url('index/user/index')}" class="dropdown-toggle" data-toggle="dropdown">我的<span class="hidden-sm">知客</span> <b class="caret"></b></a>
                                 {/if}
                                 <ul class="dropdown-menu">
                                     {if $user}
-                                    <li><a href="{:url('index/user/index')}"><i class="fa fa-user fa-fw"></i>会员中心</a></li>
+                                    <li><a href="{:url('index/user/index')}"><i class="fa fa-user fa-fw"></i>我的知客</a></li>
                                     <li><a href="{:url('index/user/logout')}"><i class="fa fa-sign-out fa-fw"></i>退出</a></li>
                                     {else /}
                                     <li><a href="{:url('index/user/login')}"><i class="fa fa-sign-in fa-fw"></i>登录</a></li>

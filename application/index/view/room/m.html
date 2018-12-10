@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>
+        知客易会直播间 </title>
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="default">
+    <meta name="browsermode" content="application">
+    <meta name="apple-touch-fullscreen" content="no">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <link rel="shortcut icon" type="image/x-icon" href="/upload/day_180806/201808061728322018.ico" />
+    <!--<link href="//cdn.bootcss.com/amazeui/2.7.2/css/amazeui.css" rel="stylesheet">-->
+
+    <link rel="stylesheet" href="/assets/css/amazeui.min.css">
+    <link rel="stylesheet" href="__CDN__/style/room/m/css/index.min.css">
+    <link rel="apple-touch-icon" href="images/dico.png"/>
+    <link rel="icon" href="__CDN__/style/room/m/images/dico.png"/>
+    <script src="__CDN__/style/room/script/jquery.min.js"></script>
+    <!--<script src="//cdn.amazeui.org/amazeui/2.7.2/js/amazeui.min.js"></script>-->
+	<script src="__CDN__/assets/js/amazeui.min.js"></script>
+    <script src="__CDN__/style/room/script/layer.js"></script>
+    <script src="__CDN__/style/room/script/ajaxfileupload.js"></script>
+    <script src="__CDN__/style/room/script/swfobject.js"></script>
+    <script src="__CDN__/style/room/script/WebSocket.js"></script>
+    <script src="__CDN__/style/room/script/jquery.cookie.js"></script>
+    <script src="__CDN__/style/room/script/main.m.js?{:time()}"></script>
+    <script src="__CDN__/style/room/script/device.min.js"></script>
+    <script>
+        var UserList;
+        var ToUser;
+        var VideoLoaded=false;
+        var My={dm:'<?php echo $_SERVER['HTTP_HOST'];?>',rid:'<?php echo $cfg['config']['id'];?>',roomid:'<?php
+        echo $_SERVER['HTTP_HOST'];
+        ?>/<?php
+        echo $cfg['config']['id'];
+        ?>',chatid:'<?php
+        echo $userinfo['id'];
+        ?>',name:'<?php
+        echo $userinfo['username'];
+        ?>',nick:'<?php
+        echo $userinfo['nickname'];
+        ?>',sex:'<?php
+        echo $userinfo['gender'];
+        ?>',age:'<?php
+        echo $userinfo['level'];
+        ?>',fuser:'<?php
+        echo $userinfo['kuser'];
+        ?>',qx:'<?php
+        echo $isadmin ? '1' : '0';
+        ?>',ip:'<?php
+        echo $onlineip;
+        ?>',vip:'',color:'<?php
+        echo $userinfo['group_id'];
+        ?>',cam:'0',state:'0',mood:'<?php
+        echo $userinfo['avatar'];
+        ?>',rst:'<?php
+        echo time();
+        ?>',camState:'1',key:'0001'};
+
+        var RoomInfo={loginTip:'<?php
+        	echo $cfg['config']['logintip'];
+        ?>',Msglog:'<?php
+        echo $cfg['config']['msglog'];
+        ?>',msgBlock:'<?php
+        echo $cfg['config']['msgblock'];
+        ?>',msgAudit:'<?php
+        echo $cfg['config']['msgaudit'];
+        ?>',defaultTitle:document.title,MaxVideo:'10',VServer:'<?php
+        echo $cfg['config']['vserver'];
+        ?>',VideoQ:'',TServer:'<?php
+        echo $ts[0];
+        ?>',TSPort:'<?php
+        echo $ts[1];
+        ?>',PVideo:'<?php
+        echo $cfg['config']['defvideo'];
+        ?>',AutoPublicVideo:'0',AutoSelfVideo:'0',type:'1',PVideoNick:'<?php
+        echo $cfg['config']['defvideonick'];
+        ?>',OtherVideoAutoPlayer:'<?php
+        echo $cfg['config']['livetype'];
+        ?>',r:'<?php
+        echo $cfg['config']['rebots'];
+        ?>'};
+
+        var grouparr=new Array();
+        <?php
+        	echo $grouparr;
+       	?>
+        var ReLoad;
+        var isIE=document.all;
+        var aSex=['<span class="sex-womon"></span>','<span class="sex-man"></span>',''];
+        var aColor=['#FFF','#FFF','#FFF'];
+        var msg_unallowable="\u9ed1\u5e73\u53f0|\u8fd4\u4f63|\u9a97\u5b50";
+        var tuserqq;
+    </script>
+    <style type="text/css" media="screen">
+        #flashContent { display: block; text-align: left; }
+    </style>
+    <style>
+        .scroll-wrapper {
+
+        }
+        .scroll-wrapper-ios{
+            -webkit-overflow-scrolling: touch;
+            overflow-y: scroll;
+        }
+        .scroll-wrapper iframe {
+            height: 100%;
+        }
+
+    </style>
+</head>
+<body style="position: relative; top: 0px; background: #f8f8f8; /*background-image: url(/upload/upfile/day_180721/201807211630411404.jpg); background-size: cover; overflow: hidden; background-position: initial initial; background-repeat: no-repeat no-repeat;*/">
+<header data-am-widget="header"  class="am-header am-header-default" id="header">
+    <div class="am-header-left am-header-nav " >
+        <a href="javascript:;" onclick="openUserList()"><i class="am-header-icon am-icon-list-ul " style="font-size: 25px;    margin-top: 8px;"></i><span class="am-badge am-badge-danger am-round msg-num-2" >0</span></a>
+
+    </div>
+    <h1 class="am-header-title" style="    line-height: 10px;   height: 49px;">
+        <!--知客易会直播间-->
+        <img src="/upload/upfile/day_160908/201609082138421753.png" style="margin-top: 5px; "><br>
+        <span style="font-size: 10px;"><font id="showOLNum" style="display:none"></font>人在线</span>
+    </h1>
+    <div class="am-header-right am-header-nav">
+        <a href="javascript:;" class="" onclick="userInfo()" style="    float: right;    margin-top:6px;    margin-left: 2px;"><img src="/face/p1/null.gif?1544418418" class="am-img-thumbnail am-circle" style="width:30px; height:30px"></a>
+        <a href="javascript:;" class="" onclick="location.reload()"><i class="am-header-icon am-icon-refresh"style="font-size: 25px;    margin-top: 8px;"></i></a>
+        <!--<a href="javascript:;" class="" onclick="qiandao()"><i class="am-header-icon am-icon-street-view" style="font-size: 25px;    margin-top: 8px;"></i></a>
+        <a href="javascript:;" class="" onclick="userPay()"><i class="am-header-icon am-icon-credit-card" style="font-size: 25px;    margin-top: 8px;"></i></a> -->
+        <a href="javascript:;" class="" onclick="hideVideo()" style="display:none"><i class="am-header-icon am-icon-eye" id="toggleVideo" style="font-size: 30px;    margin-top: 6px;"></i></a>
+    </div>
+</header>
+<div id="details"></div>
+<div id="newsDetail" style="display: none;"></div>
+<div class="zhezhao"></div>
+<div id="sharedWrap"> </div>
+<div id="shared"></div>
+<article>
+    <section id="head_1">
+
+        <!-- 视频 -->
+        <div class="video-box" style="height:180px; display:">
+            <div class="video-wrap" style="height:180px;">
+                <div class="bg-opacity"></div>
+            </div>
+            <div class="video-wrap" id="view-wrap-container"  style="height:180px;">
+                <div id="video-status-container" class="video-status-container"></div>
+                <div class="video-win" id="video-win"  style="height:180px;">
+                    <div id="a1" style="min-width: 100%;"></div>
+<script type="text/javascript" src="/ckplayer/ckplayer.js" set="utf-8"></script><script type="text/javascript">function ppchat(obj){
+ if(!obj.hls||obj.hls==""){alert('直播地址解析错误');return false;}
+    var flashvars={
+        p:0,
+        e:1
+    };
+    var video=[obj.hls];
+    var support=['all'];
+    CKobject.embedHTML5('a1','ckplayer_a1',screen.width,180,video,flashvars,support);
+
+}
+$.getScript('http://www.ppchat.org/getVideo.php?id=17880160/2461075145');</script>                </div>
+            </div>
+        </div>
+        <div data-am-widget="tabs"       class="am-tabs am-tabs-d2" style="    position: relative;">
+            <ul class="am-tabs-nav am-cf">
+                <li class="am-active" data-showtab="1"><a href="javascript:;">聊天</a></li>
+                <li class="" data-showtab="2"><a href="javascript:;">客服</a></li>
+                <li class="" data-showtab="3" style="display:"><a href="javascript:;">讲师</a></li>
+              	<li class="" data-showtab="1" style="display:1"><a href="javascript:;" onclick="userInfo();" style="color:red">注册/登陆</a></li>
+                <li class="" data-showtab="4" style="display:none"><a href="javascript:userFun();"> </a></li>
+				<li class="" data-showtab="5" style="display:none"><a href="javascript:;">直播</a></li>
+            </ul>
+            <div  id="noticeContent">
+                <marquee scrollamount="3" style="white-space:nowrap; margin-right: 20px;">
+                    <font>综合股市、汇市、期市等具备中长期机会的品种进行实盘布局，立足实战，真正帮助到投资者少走弯路。&nbsp;&nbsp;</font> <font>教学时间：早9：00—晚 1：00 全天16小时直播&nbsp;&nbsp;</font>                 </marquee>
+                <div style="position: relative; text-align: right; z-index: 99; top: -38px;">
+                    <i class="am-header-icon am-icon-close" style="font-size: 16px; color: #fff; padding-right: 5px; " onclick="$('#noticeContent').hide();"></i>
+                </div>
+            </div>
+
+        </div>
+        </nav>
+    </section>
+    <section>
+        <div id="publicChat" class="publicChat tabsnav tabsnav-1" style="-webkit-overflow-scrolling: touch;overflow-y: auto; ">
+            <li class="history-hr-wrap"><div class="history-hr"></div><div class="history-hr-text">以上是历史消息</div></li>        </div>
+        <div class="kuaiXun tabsnav tabsnav-2" style="width: 100%; display: none; -webkit-overflow-scrolling: touch;">
+            <iframe src="/apps/kefu.m.php" frameborder="0" scrolling-y="auto" width="99.9999%" height=100%></iframe>
+        </div>
+        <div id="qqOnline" class =" tabsnav tabsnav-3" style="width: 100%; display: none;-webkit-overflow-scrolling: touch;" class="white">
+            <iframe src="/apps/rank.m.php" frameborder="0" width="100%"  height=100% ></iframe>
+        </div>
+        <div id="touzhu" class =" tabsnav tabsnav-4" style="width: 100%; display: none;-webkit-overflow-scrolling: touch;" class="white">
+            <iframe src="" style="border:none" width="100%"  id="touzhu_iframe" ></iframe>
+        </div>
+		<div  id="qqOnline" class =" tabsnav tabsnav-5" style="width: 100%; display: none;-webkit-overflow-scrolling: touch;" class="white">
+            <!--<div id="a1" style="min-width: 100%;"></div>
+<script type="text/javascript" src="/ckplayer/ckplayer.js" set="utf-8"></script><script type="text/javascript">function ppchat(obj){
+ if(!obj.hls||obj.hls==""){alert('直播地址解析错误');return false;}
+    var flashvars={
+        p:0,
+        e:1
+    };
+    var video=[obj.hls];
+    var support=['all'];
+    CKobject.embedHTML5('a1','ckplayer_a1',screen.width,180,video,flashvars,support);
+
+}
+$.getScript('http://www.ppchat.org/getVideo.php?id=17880160/2461075145');</script>-->
+        </div>
+    </section>
+</article>
+<div class="loginWrap"></div>
+<div class="tipMesWrap"></div>
+<div class="setting-expression-layer" style='display: none;'>
+    <div class="expression" id="expressions">
+        <table class="expr-tab expr-tab1">
+        </table>
+    </div>
+</div>
+<div id="footer" class="footer">
+    <div class="am-cf">
+        <!--<div class="am-btn1  am-fl plus" onclick="sendPlus()"><img src="images/m_ico2.png" width="28" height="28"></div>-->
+        <div class="am-btn1  am-fl smile"><img src="/style/room/images/m_ico1.png" width="28" height="28"></div>
+        <div class="am-btn1  am-fr sendBtn" id="sendBtn" ><img src="/style/room/images/m_ico3.png" width="28" height="28"></div>
+
+
+        <div id="editor" class="editor">
+            <div class="messageEditor" id="messageEditor" contenteditable="true"></div>
+        </div>
+    </div>
+</div>
+<input id="filedata" type="file" size="20" name="filedata" accept="image/jpeg, image/x-png, image/gif" class="input" style="display:none" onchange="uploadAvatar('filedata', '#messageEditor')">
+<div id="sendplus" style="display:none">
+    <li style="float: left;width: 50px; text-align: center; color: #999;"><a href="javascript:;" class="am-icon-btn  am-icon-credit-card" onclick="userPay()" style="color:red"></a>提现</li>
+    <li style="float: left;width: 50px; text-align: center; color: #999;"><a href="javascript:;" class="am-icon-btn am-icon-gift" onclick="openGiftdiv()" style="color:red"></a>礼物</li>
+    <li style="float: left;width: 50px; text-align: center; color: #999;"><a href="javascript:;" class="am-icon-btn am-icon-envelope" onclick="openHbdiv()" style="color:red"></a>红包</li>
+    <li style="float: left;width: 50px; text-align: center; color: #999;"><a href="javascript:;" class="am-icon-btn am-icon-picture-o" onclick="$('#filedata').click()" style="color:#3bb4f2"></a>发图</li>
+    <li style="float: left;width: 50px; text-align: center; color: #999;"><a href="javascript:;" class="am-icon-btn am-icon-street-view" onclick="qiandao()"style="color:#3bb4f2"></a>签到</li>
+    <a href="javascript:;" class="am-close am-fr" onclick="layer.closeAll()">&times;</a> </div>
+<div id="sendHbdiv" style="display:none">
+    <div class="am-g">
+        <div class="am-u-sm-11 am-u-sm-centered">
+            <div class="am-form" style="    padding: 10px 20px 10px 10px; margin: 10px 20px 10px 10px;">
+                <div class="am-form-group am-form-error  ">
+                    <input type="number" class="am-form-field" placeholder="红包金额，最小2元" id="hbmoney">
+                </div>
+                <div class="am-form-group am-form-error  ">
+                    <input  type="number" class="am-form-field" placeholder="红包数量1-30个" id="hbnum">
+                </div>
+                <div class="am-form-group am-form-error  ">
+                    <input  type="text" class="am-form-field" placeholder="恭喜发财,大吉大利！" id="hbtxt" value="恭喜发财,大吉大利！">
+                </div>
+                <div class="am-form-group am-form-error am-form-icon am-form-feedback" style="text-align: center;">
+                    <button type="button" class="am-btn am-radius am-btn-danger " onclick="sendHb($(this).parent().parent().find('#hbmoney'),$(this).parent().parent().find('#hbnum'),$(this).parent().parent().find('#hbtxt'))">发送</button>
+                    <button type="button" class="am-btn am-radius am-btn-default"  onclick="layer.closeAll()">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="giftdiv" style="display:none">
+    <div style="    padding: 10px ; margin: 10px;" class="gifts">
+        <div class="am-fl"><img class="am-img-thumbnail am-circle" onclick="sendGiftRe(this)" src="/upload/upfile/day_170907/201709072354275435.png" id="gift59" data-id="59" data-price="80" data-gif="/upload/upfile/day_170907/201709072354314154.gif" data-title="大波女" data-txt="来啊，来伤害啊~"></div><div class="am-fl"><img class="am-img-thumbnail am-circle" onclick="sendGiftRe(this)" src="/upload/upfile/day_170812/201708121931037378.png" id="gift57" data-id="57" data-price="90" data-gif="/upload/upfile/day_170813/201708131242339490.gif" data-title="999玫瑰" data-txt="永恒的爱，宝宝~我永远爱你~~"></div><div class="am-fl"><img class="am-img-thumbnail am-circle" onclick="sendGiftRe(this)" src="/upload/upfile/day_170813/201708131242177941.png" id="gift58" data-id="58" data-price="150" data-gif="/upload/upfile/day_170813/201708131242421841.gif" data-title="王者之剑" data-txt="宝剑在手，天下我有"></div>        <a href="javascript:;" class="am-close am-fr" onclick="layer.closeAll()" style="    position: absolute;    right: 10px;    top: 10px;">&times;</a> </div>
+</div>
+<div id="giftsendDiv" style="display:none">
+    <div class="giftsend">
+        <div class="gift-gif">{gif}</div>
+        <div class="gift-info">
+            <div class="gift-title"><font><b>{title}</b></font> 单价：<font style="color:#F90">{price}</font>金币</div>
+            <div class="gift-re">
+                <select  class="am-form-field gift-send-re" >
+                </select>
+                <input type="hidden" class="am-form-field gift-send-gid" value="{gid}">
+                <input type="number" class="am-form-field gift-send-num" placeholder="数量">
+                <button type="button" class="am-btn am-btn-danger" onclick="sendGifts(this)">赠送</button>
+            </div>
+        </div>
+        <a href="javascript:;" class="am-close am-fr" onclick="layer.closeAll()" style="    position: absolute;    right: 10px;    top: 10px;">&times;</a> </div>
+</div>
+<div class="div_plus" style="    top: 360px;">
+    <div class="btn_plus_toggle"><i class="am-icon-chevron-right" aria-hidden="true"  style="margin-left: 3px;"></i></div>
+    <div class="btn_plus"> <a href="javascript:void(0)" onclick="bt_MsgClear();"><span class="clear">清屏</span></a><br><a href="javascript:void(0)" onclick="bt_toggleScroll();"><span class="scroll" id="bt_gundong" select="true">滚动</span></a> </div>
+<!--
+    <div class="app_ico">
+		<a href='javascript://' class='appico col jb' onClick='openApp({"id":"32","title":"\u7ea2\u5305","ico":"\/upload\/upfile\/day_170916\/201709161859013994.png","url":"javascript:openHbdiv()","w":"0","h":"0","target":"NewWin","s":"0","col":"","jb":"","bg":"","ov":"0","rid":"1","p":"2"})' id='app_32' style='background-color:'>
+		<img src='/upload/upfile/day_170916/201709161859013994.png' />
+		</a>
+
+		<a href='javascript://' class='appico col jb' onClick='openApp({"id":"33","title":"\u7b7e\u5230","ico":"\/upload\/upfile\/day_170916\/201709161909317993.png","url":"javascript:qiandao()","w":"0","h":"0","target":"POPWin","s":"0","col":"","jb":"","bg":"","ov":"0","rid":"1","p":"2"})' id='app_33' style='background-color:'>
+		<img src='/upload/upfile/day_170916/201709161909317993.png' />
+		</a>
+		</div>
+		-->
+</div>
+
+<!--<img style="width:70%;position:fixed;bottom:0;left:15%;z-index:99999;" id="kuaijie" src="images/kuaijie.png" border="0" onclick="document.getElementById('kuaijie').style.display='none';">-->
+
+<div id="my-offcanvas" class="am-offcanvas ">
+    <div class="am-offcanvas-bar">
+        <div class="am-offcanvas-content">
+            <div class="OnLineUser">
+                <div style="    display: inline-block;">
+                    私聊会话
+                </div>
+                <div id="group_ptpchat" ></div>
+                <div style=" height:5px;"></div>
+                <div style="    display: inline-block;">
+                    在线管理/客服
+                </div>
+                <h3 class="am-panel-title"></h3>
+                <div id="group_manage" class="group"></div>
+                <div style=" height:5px;"></div>
+                <div style="    display: inline-block;">
+                    在线会员
+                </div>
+                <div id="group_my" class="group"></div>
+                <div id='group_22' class='group'></div><div id='group_5' class='group'></div><div id='group_17' class='group'></div><div id='group_16' class='group'></div><div id='group_25' class='group'></div><div id='group_14' class='group'></div><div id='group_13' class='group'></div><div id='group_12' class='group'></div><div id='group_11' class='group'></div><div id='group_4' class='group'></div><div id='group_3' class='group'></div><div id='group_2' class='group'></div><div id='group_1' class='group'></div><div id='group_10' class='group'></div><div id='group_0' class='group'></div><div id='group_19' class='group'></div><div id='group_20' class='group'></div><div id='group_26' class='group'></div>                <div id="group_rebots" class="group"></div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="PPChatptpChat" class="ptpchat" data-chatid="" data-nick="" style="display: none">
+    <header data-am-widget="header" class="am-header am-header-default">
+        <div class="am-header-left am-header-nav">
+            <a href="javascript:;" class="" onclick="$('#PPChatptpChat').hide()">
+                <i class="am-header-icon am-icon-chevron-left" style="font-size: 25px;    margin-top: 8px;"></i>
+            </a>
+        </div>
+        <h1 class="am-header-title"></h1>
+    </header>
+    <div class="ptpchatcont" id="ptpChatCont"></div>
+    <!--<div class="publicChat"></div>-->
+    <div class="footer">
+        <div class="am-cf">
+            <div class="am-btn1  am-fl plus" onclick="$('#filedata_ptp').click()"><img src="images/m_ico4.png" width="28" height="28"></div>
+            <div class="am-btn1  am-fl smile"><img src="images/m_ico1.png" width="28" height="28"></div>
+            <div class="am-btn1  am-fr sendBtn" onclick="PtpMsgSend()"><img src="/style/room/images/m_ico3.png" width="28" height="28"></div>
+
+
+            <div class="editor">
+                <div class="messageEditor" contenteditable="true"></div>
+                <input id="filedata_ptp" type="file" size="20" name="filedata" accept="image/jpeg, image/x-png, image/gif" class="input" style="display:none" onchange="uploadAvatar('filedata_ptp', '#PPChatptpChat .messageEditor')">
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    OnInit();
+    var touzhu_url='test';
+    function userFun(){
+        if(device.iphone()||device.ipad()||device.ios()){if(!$.cookie('isSafari')){$.cookie('isSafari',true);location.href=touzhu_url;}}
+    }
+    $(function(){
+        //$("#popup_red_wrap").show();
+        $("iframe").each(function(){
+            $(this).height(document.body.offsetHeight-$("#head_1").height()-$("#header").height());
+        });
+        if(device.iphone()||device.ipad()||device.ios()){
+
+            $("iframe").each(function(){
+                //*
+                $(this).attr('scrolling','no');
+                $(this).width(document.body.offsetWidth);
+                //*/
+                $(this).parent().addClass("scroll-wrapper-ios");
+                $(this).parent().height(document.body.offsetHeight-$("#head_1").height()-$("#header").height());
+                $(this).css('height','100%');
+            });
+        }
+
+    });
+</script>
+</body>
+</html>
