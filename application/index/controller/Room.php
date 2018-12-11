@@ -59,11 +59,11 @@ class Room extends Frontend
 
         //如果客户没有登录，且系统允许游客登录，则赋予游客身份并随机分配客服
         if (!session::has('login_uid') and ($this->cfg['config']['loginguest'] == "1")) {
-            if ($this->gusetLogin()) {
+            if ($this->gusetLogin()) {              
                 exit("<script>location.reload();</script>");
             }
         }
-
+      
         $uid = session('login_uid');
         //更新用户ip
         Db::table('zb_user')->update(['joinip'=>request()->ip(),'id'=>$uid]);
@@ -185,12 +185,7 @@ class Room extends Frontend
         //左侧工具栏
         $apps = Db::table('zb_apps_manage')->where('s','0')->order('ov desc')->select();
         $this->assign('apps',$apps);
-        if(is_mobile()){
-            return $this->fetch('m');
-        }else{
-            return $this->fetch();
-        }
-
+        return $this->fetch();
     }
 
 

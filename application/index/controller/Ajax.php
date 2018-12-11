@@ -212,7 +212,7 @@ class Ajax extends Frontend
 
     public function putmsg(){
         //数据未过滤
-        if(!session('login_uid')) return;
+        if(!session('login_uid')) return 0;
         $msgtip = $this->request->param('msgtip');
         $rid = $this->request->param('rid');
         $muid = $this->request->param('muid');
@@ -296,7 +296,7 @@ class Ajax extends Frontend
         $state = $this->request->param('st');
         $re = Db::name('msg')->where('msgid',$msgid)->setField('state',$state);
     }
-    
+
     //在线用户
     public function online(){
         $rst = $this->request->param('rst');
@@ -336,4 +336,16 @@ class Ajax extends Frontend
         $data = $json->encode($state);
         exit($data);
     }
+
+
+    //随机客服
+    public function remyfuser(){
+        $uid = session('login_uid');
+        $tuser = cookie('tg');
+        $data['tuser'] = $tuser;
+        $data['kuser'] = $tuser;
+        //更新客服
+        Db::name('user')->where('kuser','')->where('tuser','')->where('uid',$uid)->update($data);
+    }
+
 }

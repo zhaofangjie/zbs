@@ -76,7 +76,7 @@ function OnInit()
 	if(check_auth("def_videosrc"))$('#bt_defvideosrc').show();
 	OnSocket();
 	//5分钟提示登录
-	if(RoomInfo.loginTip=='1'&&My.chatid.indexOf('f')>-1)
+	if(RoomInfo.loginTip=='1'&&My.chatid.indexOf('r')>-1)
 	setInterval("loginTip()",1000*60*5);
 
 	$('#Msg').html("连接中...");
@@ -161,7 +161,7 @@ function tCamState(tag)
 }
 function onConnect()
 {
-	setInterval("online('<?=$time?>')",10000);
+	//setInterval("online('<?=$time?>')",10000);
 	getId('Msg').innerHTML="";
 	var str='Login=M='+My.roomid+'|'+My.chatid+'|'+My.nick+'|'+My.sex+'|'+My.age+'|'+My.qx+'|'+My.ip+'|'+My.vip+'|'+My.color+'|'+My.cam+'|'+My.state+'|'+My.mood;
 	ws.send(str);

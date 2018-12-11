@@ -126,14 +126,13 @@ POPChat=(function(){
 
 		},
 		send:function(){
-
-
-			if(user==null)return;
+			if(user==null) return;
+			alert(user.chatid.indexOf('x_r'));
 			var toUserInfo=UserList.get(user.chatid);
 			var msg=encodeURIComponent($("#layim_write").html().str_replace().replace("<br>",""));
 			PutMessage(My.rid,My.chatid,user.chatid,My.nick,user.nick,'true','',msg,'');
 
-			if(typeof(toUserInfo)=="undefined"||user.chatid.indexOf('x_r')>-1){
+			if(typeof(toUserInfo)=="undefined" || user.chatid.indexOf('x_r')>-1){
 				POPChat.showmsg(My,user,msg);
 				win.find("#layim_write").html("");
 				MsgCAlert();
@@ -142,10 +141,7 @@ POPChat=(function(){
 			}
 
 			var str='SendMsg=M='+user.chatid+'|true|color:#000|'+msg;
-
 			ws.send(str);
-
-
 			win.find("#layim_write").html("");
 			win.find("#layim_write").focus();
 			MsgCAlert();
@@ -248,7 +244,7 @@ POPChat=(function(){
                             }
                         }()
                     +'</div>'
-                    +'<div class="layim_chatsay">'+ decodeURIComponent(param.content) +'<em class="layim_zero"></em></div>'
+                    +'<div class="layim_chatsay">'+ param.content +'<em class="layim_zero"></em></div>'
                 +'</li>';
             };
 			log.imarea.append(log.html({
@@ -342,7 +338,7 @@ UserList=(function(){
 					onlinmyuser++;
 					addmyuser(u);
 					}
-				}
+					}
 				}
 
 				//未分配随机选一个在线客服 发起私聊
@@ -351,7 +347,7 @@ UserList=(function(){
 					var tmp_u=UserList.get($($('#group_3').find('li')[key]).attr('id'));
 					if(tmp_u!=undefined){
 						$.cookie('tg', $($('#group_3').find('li')[key]).attr('id'), { expires: 36500, path: '/' });
-						$.get('../ajax.php?act=remyfuser');
+						$.get('/index/ajax/remyfuser');
 						POPChat.newtab(tmp_u);
 						POPChat.showtab(tmp_u);
 						tmp_u.gid=tmp_u.color;
@@ -544,8 +540,8 @@ UserList=(function(){
 			else
 			{
 			UserMenu.add('ToMsg.gif','私聊',function(){getId('menu').style.display='none';if(u.chatid!=My.chatid&&u.chatid.indexOf('x_r')<0){POPChat.newtab(u);POPChat.showtab(u);}} );
-			//UserMenu.add('Vlove.gif','视频语音对聊',function(){if(confirm("请求和"+u.nick+"视频密聊"))VideoList.Connect(u.chatid,u.nick,0);getId('menu').style.display='none';});
-			//UserMenu.add('lw.gif','赠送礼物',function(){bt_gifts();ToUser.set(u.chatid,u.nick);getId('menu').style.display='none';});
+			UserMenu.add('Vlove.gif','视频语音对聊',function(){if(confirm("请求和"+u.nick+"视频密聊"))VideoList.Connect(u.chatid,u.nick,0);getId('menu').style.display='none';});
+			UserMenu.add('lw.gif','赠送礼物',function(){bt_gifts();ToUser.set(u.chatid,u.nick);getId('menu').style.display='none';});
 			UserMenu.hr();
 			UserMenu.add('zl.gif','查看资料',function(){getId('menu').style.display='none';openWin(2,false,'room/profile?uid='+u.chatid,460,600);});
 			UserMenu.hr();
@@ -1004,7 +1000,7 @@ function PutMessage(rid,uid,tid,uname,tname,privacy,style,str,msgid){
 		$("#msg_tip_admin_show").html(decodeURIComponent("<span style='color:red'>"+str+"</span>"));
 	}
 	if(RoomInfo.Msglog=='0')return;
-	var request_url='ajax/putmsg';
+	var request_url='/index/ajax/putmsg';
 	var postdata=msgtip+'msgid='+msgid+'&uname='+encodeURIComponent(uname)+'&tname='+encodeURIComponent(tname)+'&muid='+uid+'&rid='+rid+'&tid='+tid+'&privacy='+privacy+'&style='+style+'&msg='+str+'&'+Math.random() * 10000;
 
 	$.ajax({type: 'POST',url:request_url,data:postdata});
