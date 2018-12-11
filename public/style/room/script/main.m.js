@@ -492,12 +492,12 @@ function FormatMsg(Msg)
 		}
 
 		if(Msg.IsPersonal=='true' && toUser.chatid!='ALL'){
-			str='<div class="chat-item '+who+'" id="'+msgid+'" ><div class="user-img"> <div class="uimg"><img src="ajax/getFaceImg/?t=p1&u='+User.chatid+'" onclick="ToUser.set(\''+User.chatid+'\',\''+User.nick+'\')" /></div><div class="gimg"><img src="'+grouparr[User.color].ico+'"/></div></div><div class="chat-info"> <div class="chat-info-1"> <span class="chat-name" onclick="ToUser.set(\''+User.chatid+'\',\''+User.nick+'\')" oncontextmenu="return bt_kick(\''+User.chatid+'\',\''+User.nick+'\')">'+User.nick+'</span> <span class="chat-time">'+date+'</span><img src="/style/room/images/'+User.age+'.png"></div><div class="chat-info-2"> <div class="chat-msg">'+Txt+'</div></div></div></div>';
+			str='<div class="chat-item '+who+'" id="'+msgid+'" ><div class="user-img"> <div class="uimg"><img src="/index/ajax/getFaceImg/?t=p1&u='+User.chatid+'" onclick="ToUser.set(\''+User.chatid+'\',\''+User.nick+'\')" /></div><div class="gimg"><img src="'+grouparr[User.color].ico+'"/></div></div><div class="chat-info"> <div class="chat-info-1"> <span class="chat-name" onclick="ToUser.set(\''+User.chatid+'\',\''+User.nick+'\')" oncontextmenu="return bt_kick(\''+User.chatid+'\',\''+User.nick+'\')">'+User.nick+'</span> <span class="chat-time">'+date+'</span></div><div class="chat-info-2"> <div class="chat-msg">'+Txt+'</div></div></div></div>';
 
 			return str;
 		}
 
-		str='<div class="chat-item '+who+'" id="'+msgid+'" '+msgAuditShow+'><div class="user-img"> <div class="uimg"><img src="ajax/getFaceImg/?t=p1&u='+User.chatid+'" onclick="ToUser.set(\''+User.chatid+'\',\''+User.nick+'\')" /></div><div class="gimg"><img src="'+grouparr[User.color].ico+'"/></div></div><div class="chat-info"> <div class="chat-info-1"> <span class="chat-name" onclick="ToUser.set(\''+User.chatid+'\',\''+User.nick+'\')" oncontextmenu="return bt_kick(\''+User.chatid+'\',\''+User.nick+'\')">'+User.nick+'</span> <span class="chat-time">'+date+'</span><img src="/style/room/images/'+User.age+'.png"></div><div class="chat-info-2"> <div class="chat-msg">'+Txt+msgBlockBt+msgAuditBt+'</div></div></div></div>';
+		str='<div class="chat-item '+who+'" id="'+msgid+'" '+msgAuditShow+'><div class="user-img"> <div class="uimg"><img src="/index/ajax/getFaceImg/?t=p1&u='+User.chatid+'" onclick="ToUser.set(\''+User.chatid+'\',\''+User.nick+'\')" /></div><div class="gimg"><img src="'+grouparr[User.color].ico+'"/></div></div><div class="chat-info"> <div class="chat-info-1"> <span class="chat-name" onclick="ToUser.set(\''+User.chatid+'\',\''+User.nick+'\')" oncontextmenu="return bt_kick(\''+User.chatid+'\',\''+User.nick+'\')">'+User.nick+'</span> <span class="chat-time">'+date+'</span></div><div class="chat-info-2"> <div class="chat-msg">'+Txt+msgBlockBt+msgAuditBt+'</div></div></div></div>';
 
 	}
 	return str;
@@ -1077,10 +1077,10 @@ function hideVideo(){
 }
 function userInfo(){
 	if(My.color=="0"){
-		location.href='room/mlogin?rid='+My.rid;		
+		location.href='/index/room/mlogin?rid='+My.rid;		
 	}
 	else{
-		location.href='profiles.m.php';
+		location.href='/index/room/profile';
 	}
 }
 function userPay(){

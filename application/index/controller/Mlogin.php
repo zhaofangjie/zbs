@@ -58,6 +58,7 @@ class Mlogin extends Frontend
     //登陆
 
     public function login(){
+        $url = $this->request->request('url');
         if ($this->auth->id)
             $this->success(__('You\'ve logged in, do not login again'), $url);
             if ($this->request->isPost()) {
@@ -95,7 +96,7 @@ class Mlogin extends Frontend
                         $uc = new \addons\ucenter\library\client\Client();
                         $synchtml = $uc->uc_user_synlogin($this->auth->id);
                     }
-                    exit("<script>top.location.reload(true);location.href='./';</script>");
+                    exit("<script>top.location.reload(true);location.href='/index/room';</script>");
                 } else {
                     echo "<script>top.layer.msg('{$this->auth->getError()}',{shift: 6});layer.msg('{$this->auth->getError()}',{shift: 6});</script>";
                 }
@@ -153,7 +154,8 @@ class Mlogin extends Frontend
                     $json['msg'] = __($validate->getError());
                     return json($json);
                 }
-                if ($this->auth->register($username, $password, $email, $mobile)) {
+                $exends = array('group_id'=>1);
+                if ($this->auth->register($username, $password, $email, $mobile,$exends)) {
                     $synchtml = '';
                     ////////////////同步到Ucenter////////////////
                     if (defined('UC_STATUS') && UC_STATUS) {
