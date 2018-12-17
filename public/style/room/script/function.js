@@ -127,7 +127,6 @@ POPChat=(function(){
 		},
 		send:function(){
 			if(user==null) return;
-			alert(user.chatid.indexOf('x_r'));
 			var toUserInfo=UserList.get(user.chatid);
 			var msg=encodeURIComponent($("#layim_write").html().str_replace().replace("<br>",""));
 			PutMessage(My.rid,My.chatid,user.chatid,My.nick,user.nick,'true','',msg,'');

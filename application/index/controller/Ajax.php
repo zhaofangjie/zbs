@@ -13,8 +13,8 @@ use think\Db;
 class Ajax extends Frontend
 {
 
-    protected $noNeedLogin = ['*'];
-    protected $noNeedRight = ['*'];
+    protected $noNeedLogin = ['getrlist','getFaceImg','getmylist','mymsgold'];
+    protected $noNeedRight = [''];
     protected $layout = '';
 
     protected $cfg;
@@ -139,8 +139,8 @@ class Ajax extends Frontend
             $query = Db::name('user')->where('username',$userinfo['kuser'])->select();
             if(!empty($query)){
                 foreach($query as $row){
-                    $tmp['uid'] = $row['id'];
-                    $tmp['chatid'] = $row['id'];
+                    $tmp['uid'] = (string)$row['id'];
+                    $tmp['chatid'] = (string)$row['id'];
                     $tmp['nick'] = $row['nickname'];
                     $tmp['phone'] = $row['mobile'];
                     $tmp['qq'] = $row['qq'];
@@ -156,8 +156,8 @@ class Ajax extends Frontend
 
            if(!empty($query)){
                foreach($query as $row){
-                   $tmp['uid'] = $row['id'];
-                   $tmp['chatid'] = $row['id'];
+                   $tmp['uid'] = (string)$row['id'];
+                   $tmp['chatid'] = (string)$row['id'];
                    $tmp['nick'] = $row['nickname'];
                    $tmp['phone'] = $row['mobile'];
                    $tmp['qq'] = $row['qq'];
@@ -282,7 +282,6 @@ class Ajax extends Frontend
         $rid = $this->request->param('rid');
         $data['defvideo'] = $vid;
         $data['defvideonick'] = $nick;
-        //$db->query("update {$tablepre}config set defvideo='{$vid}',defvideonick='{$nick}' where id='{$rid}'");
         Db::name('room_config')->where('id',$rid)->update($data);
 
     }
