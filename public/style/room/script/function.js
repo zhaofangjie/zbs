@@ -243,7 +243,7 @@ POPChat=(function(){
                             }
                         }()
                     +'</div>'
-                    +'<div class="layim_chatsay">'+ param.content +'<em class="layim_zero"></em></div>'
+                    +'<div class="layim_chatsay">'+ decodeURIComponent(param.content) +'<em class="layim_zero"></em></div>'
                 +'</li>';
             };
 			log.imarea.append(log.html({
