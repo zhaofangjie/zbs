@@ -59,6 +59,7 @@ class Comment extends Backend
 
             return json($result);
         }
+        $this->assignconfig("typeList", $this->model->getTypeList());
         return $this->view->fetch();
     }
 }

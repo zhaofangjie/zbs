@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<title>{$title}</title>
+<title>{$title|default=''} – {:__('The fastest framework based on ThinkPHP5 and Bootstrap')}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="renderer" content="webkit">
 
@@ -12,7 +12,7 @@
 <meta name="author" content="FastAdmin">
 
 <link rel="shortcut icon" href="__CDN__/assets/img/favicon.ico" />
-<!-- Loading Bootstrap -->
+
 <link href="__CDN__/assets/css/frontend{$Think.config.app_debug?'':'.min'}.css?v={$Think.config.site.version}" rel="stylesheet">
 
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->

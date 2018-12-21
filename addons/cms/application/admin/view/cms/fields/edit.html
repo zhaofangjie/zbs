@@ -13,8 +13,7 @@
         <div class="col-xs-12 col-sm-4">
             <select name="row[type]" id="c-type" class="form-control selectpicker">
                 {volist name="typeList" id="type"}
-                <option value="{$key}" {if $row.type== $key}selected{
-                /if}>{$type}</option>
+                <option value="{$key}" {if $row.type==$key}selected{/if}>{$type}</option>
                 {/volist}
             </select>
         </div>

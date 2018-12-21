@@ -28,8 +28,9 @@ class Page extends Backend
 
     public function index()
     {
-        $typeArr = \app\admin\model\cms\Page::column('type');
+        $typeArr = \app\admin\model\cms\Page::distinct('type')->column('type');
         $this->view->assign('typeList', $typeArr);
+        $this->assignconfig('typeList', $typeArr);
         return parent::index();
     }
 

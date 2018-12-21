@@ -50,6 +50,7 @@ class Cms extends Addons
                             ['name' => 'cms/channel/edit', 'title' => '修改'],
                             ['name' => 'cms/channel/del', 'title' => '删除'],
                             ['name' => 'cms/channel/multi', 'title' => '批量更新'],
+                            ['name' => 'cms/channel/admin', 'title' => '栏目授权'],
                         ],
                         'remark'  => '用于管理网站的分类，可进行无限级分类，注意只有类型为列表的才可以添加文章'
                     ],

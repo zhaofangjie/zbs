@@ -1,3 +1,8 @@
+<style>
+    .radio-inline, .checkbox-inline {
+        padding-left:0;
+    }
+</style>
 {foreach $fields as $item}
 
 <div class="form-group">
@@ -44,12 +49,16 @@
         {/case}
         {case checkbox}
         {foreach name="item.content_list" item="vo"}
+        <div class="checkbox checkbox-inline">
         <label for="row[{$item.name}][]-{$key}"><input id="row[{$item.name}][]-{$key}" name="row[{$item.name}][]" type="checkbox" value="{$key}" data-rule="{$item.rule}" data-tip="{$item.tip}" {in name="key" value="$item.value"}checked{/in} /> {$vo}</label>
+        </div>
         {/foreach}
         {/case}
         {case radio}
         {foreach name="item.content_list" item="vo"}
+        <div class="radio radio-inline">
         <label for="row[{$item.name}]-{$key}"><input id="row[{$item.name}]-{$key}" name="row[{$item.name}]" type="radio" value="{$key}" data-rule="{$item.rule}" data-tip="{$item.tip}" {in name="key" value="$item.value"}checked{/in} /> {$vo}</label>
+        </div>
         {/foreach}
         {/case}
         {case value="select" break="0"}{/case}

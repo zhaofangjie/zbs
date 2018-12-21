@@ -163,12 +163,13 @@ jspdf: orientation: 'p'
                           textColor: 50
                           fontStyle: 'normal'
                           overflow: 'ellipsize'
-                          halign: 'left'
+                          halign: 'inherit'
                           valign: 'middle'
                   headerStyles: fillColor: [52, 73, 94]
                                 textColor: 255
                                 fontStyle: 'bold'
-                                halign: 'center'
+                                halign: 'inherit'
+                                valign: 'middle'
                   alternateRowStyles: fillColor: 245
                   tableExport: doc: null
                                onAfterAutotable: null
@@ -192,6 +193,8 @@ onCellData: null
 onCellHtmlData: null
 onIgnoreRow: null
 outputMode: 'file'
+preserve: leadingWS: false
+          trailingWS: false
 pdfmake: enabled: false
          docDefinition: pageOrientation: 'portrait'
                         defaultStyle: font: 'Roboto'

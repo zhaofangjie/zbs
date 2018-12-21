@@ -73,7 +73,7 @@ function OnInit()
 	//auth
 	if(check_auth("room_admin"))$('#manage_div').show();
 	if(check_auth("rebots_msg"))$('#chat_type').show();
-	if(check_auth("def_videosrc"))$('#bt_defvideosrc').show();
+	if(check_auth("setdefvideosrc"))$('#bt_defvideosrc').show();
 	OnSocket();
 	//5分钟提示登录
 	if(RoomInfo.loginTip=='1'&&My.chatid.indexOf('r')>-1)
