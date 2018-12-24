@@ -93,7 +93,9 @@
                                 <ul class="dropdown-menu">
                                     {if $user}
                                     <li><a href="{:url('index/user/index')}"><i class="fa fa-user fa-fw"></i>会员中心</a></li>
-                                    <li><a href="{:url('index/user/logout')}"><i class="fa fa-sign-out fa-fw"></i>退出</a></li>
+                                    <li><a href="{:url('index/cms.archives/my')}"><i class="fa fa-list fa-fw"></i>我发布的文章</a></li>
+                                    <li><a href="{:url('index/cms.archives/post')}"><i class="fa fa-pencil fa-fw"></i>发布文章</a></li>
+                                    <li><a href="{:url('index/user/logout')}"><i class="fa fa-sign-out fa-fw"></i>注销</a></li>
                                     {else /}
                                     <li><a href="{:url('index/user/login')}"><i class="fa fa-sign-in fa-fw"></i>登录</a></li>
                                     <li><a href="{:url('index/user/register')}"><i class="fa fa-user-o fa-fw"></i>注册</a></li>

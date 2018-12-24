@@ -86,6 +86,23 @@ class Fields extends Backend
     }
 
     /**
+     * 批量操作
+     * @param string $ids
+     */
+    public function multi($ids = "")
+    {
+        $params = $this->request->request('params');
+        parse_str($params, $paramsArr);
+        if (isset($paramsArr['isfilter'])) {
+            $field = \app\admin\model\cms\Fields::get($ids);
+            if (!$field || !in_array($field['type'], ['radio', 'checkbox', 'select', 'selects', 'array'])) {
+                $this->error('只有类型为单选、复选、下拉列表、数组才可以加入列表筛选');
+            }
+        }
+        return parent::multi($ids);
+    }
+
+    /**
      * 规则列表
      * @internal
      */

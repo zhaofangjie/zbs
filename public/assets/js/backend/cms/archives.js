@@ -19,11 +19,14 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form', 'template'], function
 
             //在表格内容渲染完成后回调的事件
             table.on('post-body.bs.table', function (e, settings, json, xhr) {
-                $(".btn-editone", this)
-                    .off("click")
-                    .removeClass("btn-editone")
-                    .addClass("btn-addtabs")
-                    .prop("title", __('Edit'));
+                //当为新选项卡中打开时
+                if (Config.cms.archiveseditmode == 'addtabs') {
+                    $(".btn-editone", this)
+                        .off("click")
+                        .removeClass("btn-editone")
+                        .addClass("btn-addtabs")
+                        .prop("title", __('Edit'));
+                }
             });
             //当双击单元格时
             table.on('dbl-click-row.bs.table', function (e, row, element, field) {
@@ -65,19 +68,17 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form', 'template'], function
                             }
                         },
                         {
+                            field: 'model_id', title: __('Model'), visible: false, align: 'left', addclass:"selectpage", extend:"data-source='cms/modelx/index' data-field='name'"
+                        },
+                        {
                             field: 'title', title: __('Title'), align: 'left', formatter: function (value, row, index) {
-                                return '<div class="tdtitle">' + value + '</div>' + Table.api.formatter.flag.call(this, row['flag'], row, index);
+                                return '<div class="tdtitle"><a href="' + row.url + '" target="_blank">' + value + '</a></div>' + Table.api.formatter.flag.call(this, row['flag'], row, index);
                             }
                         },
                         {field: 'image', title: __('Image'), operate: false, formatter: Table.api.formatter.image},
                         {field: 'views', title: __('Views'), operate: 'BETWEEN', sortable: true},
                         {field: 'comments', title: __('Comments'), operate: 'BETWEEN', sortable: true},
                         {field: 'weigh', title: __('Weigh'), operate: false},
-                        {
-                            field: 'url', title: __('Url'), operate: false, formatter: function (value, row, index) {
-                                return '<a href="' + value + '" target="_blank" class="btn btn-default btn-xs"><i class="fa fa-link"></i></a>';
-                            }
-                        },
                         {
                             field: 'createtime',
                             title: __('Createtime'),
@@ -108,6 +109,14 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form', 'template'], function
 
             // 为表格绑定事件
             Table.api.bindevent(table);
+
+            //当为新选项卡中打开时
+            if (Config.cms.archiveseditmode == 'addtabs') {
+                $(".btn-add").off("click").on("click", function () {
+                    Fast.api.addtabs('cms/archives/add', __('Add'));
+                    return false;
+                });
+            }
 
             $(document).on("click", "a.btn-channel", function () {
                 $("#archivespanel").toggleClass("col-md-9", $("#channelbar").hasClass("hidden"));
@@ -463,11 +472,13 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form', 'template'], function
                     }
                 });
                 Form.api.bindevent($("form[role=form]"), function () {
-                    var obj = top.window.$("ul.nav-addtabs li.active");
-                    top.window.Toastr.success(__('Operation completed'));
-                    top.window.$(".sidebar-menu a[url$='/cms/archives'][addtabs]").click();
-                    top.window.$(".sidebar-menu a[url$='/cms/archives'][addtabs]").dblclick();
-                    obj.find(".fa-remove").trigger("click");
+                    if (Config.cms.archiveseditmode == 'addtabs') {
+                        var obj = top.window.$("ul.nav-addtabs li.active");
+                        top.window.Toastr.success(__('Operation completed'));
+                        top.window.$(".sidebar-menu a[url$='/cms/archives'][addtabs]").click();
+                        top.window.$(".sidebar-menu a[url$='/cms/archives'][addtabs]").dblclick();
+                        obj.find(".fa-remove").trigger("click");
+                    }
                 });
             }
         }

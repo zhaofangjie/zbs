@@ -2,6 +2,7 @@
 
 namespace addons\cms\controller;
 
+use addons\cms\library\OrderException;
 use addons\cms\model\Archives;
 use think\Exception;
 
@@ -36,6 +37,12 @@ class Order extends Base
         }
         try {
             \addons\cms\model\Order::submitOrder($id, $paytype ? $paytype : 'wechat');
+        } catch (OrderException $e) {
+            if ($e->getCode() == 1) {
+                $this->success($e->getMessage(), $archives->url);
+            } else {
+                $this->error($e->getMessage());
+            }
         } catch (Exception $e) {
             $this->error($e->getMessage());
         }

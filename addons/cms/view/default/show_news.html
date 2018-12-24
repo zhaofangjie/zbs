@@ -58,6 +58,8 @@
                         <div class="alert alert-danger">
                             <strong>温馨提示!</strong> 你需要支付 <b>￥{cms:archives name='price' /}</b> 元后才能查看付费内容
                             <a href="{:addon_url('cms/order/submit', ['id'=>$__ARCHIVES__.id])}" class="btn btn-danger"><i class="fa fa-wechat"></i> 立即支付</a>
+                            <a href="{:addon_url('cms/order/submit', ['id'=>$__ARCHIVES__.id,'paytype'=>'alipay'])}" class="btn btn-info"><i class="fa fa-money"></i> 支付宝支付</a>
+                            <a href="{:addon_url('cms/order/submit', ['id'=>$__ARCHIVES__.id,'paytype'=>'balance'])}" class="btn btn-warning"><i class="fa fa-dollar"></i> 余额支付</a>
                         </div>
                         {/if}
                     </div>

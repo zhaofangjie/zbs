@@ -2,8 +2,10 @@
 
 namespace addons\cms\model;
 
+use addons\cms\library\OrderException;
 use addons\epay\library\Service;
 use app\common\library\Auth;
+use app\common\model\User;
 use think\Exception;
 use think\Model;
 use think\Request;
@@ -91,18 +93,18 @@ class Order Extends Model
     {
         $archives = Archives::get($id);
         if (!$archives) {
-            throw new Exception('文档未找到');
+            throw new OrderException('文档未找到');
         }
         $order = Order::where('archives_id', $archives['id'])
             ->where(self::getQueryCondition())
             ->order('id', 'desc')
             ->find();
         if ($order && $order['status'] == 'paid') {
-            throw new Exception('订单已支付');
+            throw new OrderException('订单已支付');
         }
+        $auth = Auth::instance();
         $request = \think\Request::instance();
         if (!$order) {
-            $auth = Auth::instance();
             $data = [
                 'user_id'     => $auth->id ? $auth->id : 0,
                 'archives_id' => $archives->id,
@@ -121,7 +123,27 @@ class Order Extends Model
                 $order->save();
             }
         }
+        //使用余额支付
+        if ($paytype == 'balance') {
+            if (!$auth->id) {
+                throw new OrderException('需要登录后才能够支付');
+            }
+            if ($auth->money < $archives->price) {
+                throw new OrderException('余额不足，无法进行支付');
+            }
+            \think\Db::startTrans();
+            try {
+                User::money(-$archives->price, $auth->id, '购买付费文档:' . $archives['title']);
+                self::settle($order->id);
+                \think\Db::commit();
+            } catch (Exception $e) {
+                \think\Db::rollback();
+                throw new OrderException($e->getMessage());
+            }
+            throw new OrderException('余额支付成功', 1);
+        }
 
+        //使用个人或企业支付
         $pay = get_addon_info('pay');
         $epay = get_addon_info('epay');
         if ($pay && $pay['state']) {
@@ -162,7 +184,7 @@ class Order Extends Model
         } else {
             $result = \think\Hook::listen('cms_order_submit', $order);
             if (!$result) {
-                throw new Exception("请先在后台安装配置个人支付或企业支付");
+                throw new OrderException("请先在后台安装配置个人支付或企业支付");
             }
         }
     }

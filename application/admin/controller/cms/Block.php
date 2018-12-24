@@ -24,6 +24,14 @@ class Block extends Backend
         $this->view->assign("statusList", $this->model->getStatusList());
     }
 
+    public function index()
+    {
+        $typeArr = \app\admin\model\cms\Block::distinct('type')->column('type');
+        $this->view->assign('typeList', $typeArr);
+        $this->assignconfig('typeList', $typeArr);
+        return parent::index();
+    }
+
     public function selectpage_type()
     {
         $list = [];

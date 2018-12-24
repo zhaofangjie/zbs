@@ -221,6 +221,18 @@ CREATE TABLE IF NOT EXISTS `__PREFIX__cms_channel` (
 ) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8 COMMENT='栏目表' ROW_FORMAT=COMPACT;
 
 --
+-- 表的结构 `__PREFIX__cms_channel_admin`
+--
+
+CREATE TABLE `__PREFIX__cms_channel_admin` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `admin_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '管理员ID',
+  `channel_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '栏目ID',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `admin_id` (`admin_id`,`channel_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='栏目权限表';
+
+--
 -- 转存表中的数据 `__PREFIX__cms_channel`
 --
 
