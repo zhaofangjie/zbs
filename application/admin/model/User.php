@@ -2,6 +2,7 @@
 
 namespace app\admin\model;
 
+use app\common\model\MoneyLog;
 use think\Model;
 
 class User extends Model
@@ -21,6 +22,11 @@ class User extends Model
         'jointime_text'
     ];
 
+    public function getOriginData()
+    {
+        return $this->origin;
+    }
+
     protected static function init()
     {
         self::beforeUpdate(function ($row) {
@@ -34,6 +40,15 @@ class User extends Model
                 } else {
                     unset($row->password);
                 }
+            }
+        });
+
+
+        self::beforeUpdate(function ($row) {
+            $changedata = $row->getChangedData();
+            if (isset($changedata['money'])) {
+                $origin = $row->getOriginData();
+                MoneyLog::create(['user_id' => $row['id'], 'money' => $changedata['money'] - $origin['money'], 'before' => $origin['money'], 'after' => $changedata['money'], 'memo' => '管理员变更金额']);
             }
         });
     }
@@ -81,25 +96,13 @@ class User extends Model
         return $value && !is_numeric($value) ? strtotime($value) : $value;
     }
 
-    
-    /*
-     * 游客
-     */
-    protected function scopeGroup_id($query){
-        $query->where('group_id', '0');
-    }
-    
-    
-    //我的客户
-    protected function scopeKuser($query,$kuser=''){
-        $query->where('kuser',$kuser);
-    }
-    
     public function group()
     {
         return $this->belongsTo('UserGroup', 'group_id', 'id', [], 'LEFT')->setEagerlyType(0);
     }
 
-    
-    
+    public function userfileds()
+    {
+        return $this->hasOne('userfields','id','uid');
+    }
 }

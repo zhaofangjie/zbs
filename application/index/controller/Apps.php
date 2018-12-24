@@ -12,8 +12,8 @@ use think\Db;
 class Apps extends Frontend
 {
     protected $layout = '';
-    protected $noNeedLogin = ['kefu','vote','rank','appHdList','wt','jycl'];
-    protected $noNeedRight = ['*'];
+    protected $noNeedLogin = ['kefu','rank','wt'];
+    protected $noNeedRight = [''];
     protected $room;
 
     public function _initialize(){

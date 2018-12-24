@@ -4,9 +4,33 @@ return array (
   'autoload' => false,
   'hooks' => 
   array (
+    'sms_send' => 
+    array (
+      0 => 'alisms',
+    ),
+    'sms_notice' => 
+    array (
+      0 => 'alisms',
+    ),
+    'sms_check' => 
+    array (
+      0 => 'alisms',
+    ),
     'user_sidenav_after' => 
     array (
       0 => 'cms',
+    ),
+    'app_init' => 
+    array (
+      0 => 'epay',
+    ),
+    'action_begin' => 
+    array (
+      0 => 'geetest',
+    ),
+    'config_init' => 
+    array (
+      0 => 'geetest',
     ),
   ),
   'route' => 
