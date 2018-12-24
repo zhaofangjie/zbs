@@ -101,8 +101,8 @@ class User extends Model
         return $this->belongsTo('UserGroup', 'group_id', 'id', [], 'LEFT')->setEagerlyType(0);
     }
 
-    public function userfileds()
+    public function userfields()
     {
-        return $this->hasOne('userfields','id','uid');
+        return $this->hasOne('Userfields','uid','id',[], 'LEFT')->setEagerlyType(0);
     }
 }

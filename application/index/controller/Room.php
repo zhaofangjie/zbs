@@ -3,7 +3,6 @@ namespace app\index\controller;
 
 use app\common\controller\Frontend;
 use app\index\model\Msg;
-use app\index\model\User;
 use think\Config;
 use think\Lang;
 
@@ -27,7 +26,7 @@ class Room extends Frontend
     {
         parent::_initialize();
         $auth = $this->auth;
-        $this->user = new User;
+        $this->user = model('User');
 
         //读取房间配置
         //默认为第一个房间配置
@@ -59,25 +58,32 @@ class Room extends Frontend
                 cookie("tg",$rowt['id'], time() + 315360000, '/');
             }
         }
-
-
+        echo 111;
+        $user = $this->user->relation('userfields')->find(1);
+        dump($user->username);
+        echo 222;
+        dump($this->gusetLogin());
+        exit();
         //如果客户没有登录，且系统允许游客登录，则赋予游客身份并随机分配客服
         if (!session::has('login_uid') and ($this->cfg['config']['loginguest'] == "1")) {
             if ($this->gusetLogin()) {
                 exit("<script>location.reload();</script>");
             }
         }
+        echo 111;
+        exit();
 
         $uid = session('login_uid');
         $user =User::get($uid);
+        dump($user);
         //更新用户ip
         $user['joinip']=request()->ip();
         //User->update(['joinip'=>request()->ip(),'id'=>$uid]);
         $user->save();
         //查询用户相关信息
         $userinfo =User::relation('userfileds')->find($uid);
-        if ($userinfo['kuser'] == "") {
-            $userinfo['kuser'] = $this->userinfo(cookie('tg'), 'username');
+        if ($userinfo->userfileds->kuser == "") {
+            $userinfo['userfileds']['kuser'] = $this->userinfo(cookie('tg'), 'username');
         }
         session('login_gid', $userinfo['group_id']);
         //黑名单
@@ -289,8 +295,8 @@ class Room extends Frontend
         if ($uid == "") {
             return "";
         }
-        $query =  Db::table("zb_user")->find($uid);
-        return $query[$tpl];
+        $query =  User::get($uid);
+        return $query->$tpl;
     }
 
 
