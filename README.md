@@ -23,16 +23,12 @@
 * 共用同一账号体系的Web端会员中心权限验证和API接口会员权限验证
 * 二级域名部署支持，同时域名支持绑定到插件
 * 多语言支持，服务端及客户端支持
-* 强大的第三方模块支持([CMS](https://www.fastadmin.net/store/cms.html)、[博客](https://www.fastadmin.net/store/blog.html)、[文档生成](https://www.fastadmin.net/store/docs.html)、[个人免签支付](https://www.fastadmin.net/store/pay.html))
+
 * 整合第三方短信接口(阿里云、创蓝短信)
 * 无缝整合第三方云存储(七牛、阿里云OSS、又拍云)功能
 * 第三方富文本编辑器支持(Summernote、Tinymce、百度编辑器)
 * 第三方登录(QQ、微信、微博)整合
 * Ucenter整合第三方应用
-
-## **安装使用**
-
-https://doc.fastadmin.net
 
 ## **在线演示**
 
