@@ -1,4 +1,4 @@
-FastAdmin是一款基于ThinkPHP5+Bootstrap的极速后台开发框架。
+一款基于ThinkPHP5+Bootstrap的在线喊单财经直播系统
 
 
 ## **主要特性**
@@ -36,56 +36,9 @@ https://doc.fastadmin.net
 
 ## **在线演示**
 
-https://demo.fastadmin.net
-
+https://ems.thingsworld.com.cn
 用户名：admin
 
 密　码：123456
 
-提　示：演示站数据无法进行修改，请下载源码安装体验全部功能
-
-## **界面截图**
-![控制台](https://gitee.com/uploads/images/2017/0411/113717_e99ff3e7_10933.png "控制台")
-
-## **问题反馈**
-
-在使用中有任何问题，请使用以下联系方式联系我们
-
-交流社区: https://forum.fastadmin.net
-
-QQ群: [636393962](https://jq.qq.com/?_wv=1027&k=487PNBb)(交流群①) [708784003](https://jq.qq.com/?_wv=1027&k=5ObjtwM)(交流群②) [696992864](https://jq.qq.com/?_wv=1027&k=5R2AB00)(高级群,邀请加入)
-
-Email: (karsonzhang#163.com, 把#换成@)
-
-Github: https://github.com/karsonzhang/fastadmin
-
-Gitee: https://gitee.com/karson/fastadmin
-
-## **特别鸣谢**
-
-感谢以下的项目,排名不分先后
-
-ThinkPHP：http://www.thinkphp.cn
-
-AdminLTE：https://adminlte.io
-
-Bootstrap：http://getbootstrap.com
-
-jQuery：http://jquery.com
-
-Bootstrap-table：https://github.com/wenzhixin/bootstrap-table
-
-Nice-validator: https://validator.niceue.com
-
-SelectPage: https://github.com/TerryZ/SelectPage
-
-
-## **版权信息**
-
-FastAdmin遵循Apache2开源协议发布，并提供免费使用。
-
-本项目包含的第三方源码和二进制文件之版权信息另行标注。
-
-版权所有Copyright © 2017-2018 by FastAdmin (https://www.fastadmin.net)
-
-All rights reserved。
+提醒：
