@@ -32,7 +32,7 @@
 
 ## **在线演示**
 
-https://ems.thingsworld.com.cn
+http://ems.thingsworld.com.cn
 用户名：admin
 
 密　码：123456
